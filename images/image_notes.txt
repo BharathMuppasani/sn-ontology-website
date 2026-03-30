@@ -1,6 +1,0 @@
-Suggested images for this ontology project:
-- ontology_diagram.png
-- protege_view.png
-- webvowl_view.png
-
-These images will be added later to improve project presentation.
