@@ -4,9 +4,9 @@
 This ontology models Surya Namaskar as poses, sequence steps, and variants. It enables querying of sequence order, repeated steps, inverse relationships, support type, mantra, and chakra.
 
 ## Files
-- models/combined.owl — Main OWL ontology file
-- queries/competency_questions_and_sparql.txt — Competency Questions and SPARQL Queries
-- metadata/ontology_metadata.txt — Ontology metadata
+- models/combined.owl - Main OWL ontology file
+- queries/competency_questions_and_sparql.txt - Competency Questions and SPARQL Queries
+- metadata/ontology_metadata.txt - Ontology metadata
 
 ## Ontology Overview
 
