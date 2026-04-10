@@ -28,9 +28,10 @@
         <h1>Surya Namaskar Ontology</h1>
         <p class="subtitle">Semantic Modeling | OWL | SPARQL | Knowledge Representation</p>
         <p>
-          This ontology models Surya Namaskar as poses, sequence steps, and variants.
-          It supports structured querying of sequence order, repeated steps, inverse
-          relationships, support type, mantra, chakra, and shared poses across variants.
+          This ontology models Surya Namaskar as asanas, numbered pose occurrences,
+          and sequence variants. It supports structured querying of sequence order,
+          repeated poses, inverse relationships, support type, mantra, chakra, and
+          shared asanas across variants.
         </p>
         <p>
           The ontology is designed to represent multiple Surya Namaskar traditions in
@@ -43,32 +44,31 @@
 
         <h3>Classes</h3>
         <ul>
-          <li><strong>Pose</strong> – Represents a yoga pose identity.</li>
-          <li><strong>SequenceStep</strong> – Represents one occurrence of a pose in a sequence.</li>
+          <li><strong>Pose</strong> – Represents one numbered occurrence of an asana within a Surya Namaskar variant sequence.</li>
+          <li><strong>Asana</strong> – Represents a yoga asana identity independent of sequence position.</li>
           <li><strong>Variant</strong> – Represents a Surya Namaskar tradition or sequence variant.</li>
         </ul>
 
         <h3>Object Properties</h3>
         <ul>
-          <li><strong>hasPose</strong> – Links a sequence step to the pose performed at that step.</li>
-          <li><strong>belongsToVariant</strong> – Links a sequence step to its variant.</li>
-          <li><strong>hasNextStep</strong> – Links a step to the next step.</li>
-          <li><strong>hasPreviousStep</strong> – Links a step to the previous step.</li>
-          <li><strong>repeatsStep</strong> – Links repeated or mirrored steps.</li>
-          <li><strong>hasInverseStep</strong> – Links inverse or opposite steps.</li>
-          <li><strong>samePoseAs</strong> – Links equivalent or normalized pose identities.</li>
+          <li><strong>hasAsana</strong> – Links a pose occurrence to the asana performed at that position.</li>
+          <li><strong>belongsToVariant</strong> – Links a pose to its Surya Namaskar variant.</li>
+          <li><strong>hasNextPose</strong> – Links a pose to the next pose in the sequence.</li>
+          <li><strong>hasPreviousPose</strong> – Links a pose to the previous pose in the sequence.</li>
+          <li><strong>repeatsPose</strong> – Links repeated or mirrored pose occurrences.</li>
+          <li><strong>hasInversePose</strong> – Links inverse or opposite pose occurrences.</li>
+          <li><strong>sameAsanaAs</strong> – Links equivalent or normalized asana identities.</li>
         </ul>
 
         <h3>Datatype Properties</h3>
         <ul>
-          <li><strong>stepNumber</strong> – Position of a step in a sequence.</li>
-          <li><strong>hasMantra</strong> – Mantra associated with a step.</li>
-          <li><strong>hasChakra</strong> – Chakra associated with a step.</li>
-          <li><strong>hasSupportType</strong> – Support/body position type for a step.</li>
-          <li><strong>isStandingOnTwoFeet</strong> – Indicates whether a pose is performed on two feet.</li>
-          <li><strong>isStandingOnAtLeastOneFoot</strong> – Indicates whether at least one foot is used for support.</li>
-          <li><strong>hasCYPPage</strong> – CYP reference page for a pose.</li>
-          <li><strong>hasAlternateName</strong> – Alternate name of a pose.</li>
+          <li><strong>poseNumber</strong> – Position of a pose in a variant sequence.</li>
+          <li><strong>hasMantra</strong> – Mantra associated with a pose.</li>
+          <li><strong>hasChakra</strong> – Chakra associated with a pose.</li>
+          <li><strong>hasSupportType</strong> – Support or body-position type for a pose.</li>
+          <li><strong>hasLaterality</strong> – Indicates laterality such as right, left, or symmetric.</li>
+          <li><strong>hasCYPPage</strong> – CYP reference page for an asana.</li>
+          <li><strong>hasAlternateName</strong> – Alternate name of an asana.</li>
         </ul>
       </section>
 
@@ -89,7 +89,7 @@
 
         <div class="file-box">
           <h3>GitHub Repository</h3>
-          <p>Source code, ontology files, and complete project structure.</p>
+          <p>Source code, ontology files, images, and project structure.</p>
           <a class="btn" href="https://github.com/mansidodiya01/sn-ontology-website" target="_blank">View on GitHub</a>
         </div>
       </section>
@@ -98,15 +98,15 @@
         <h2>Ontology Metadata</h2>
 
         <div class="metadata-box">
-          <p><strong>Title:</strong> Surya Namaskar Sequence Ontology</p>
+          <p><strong>Title:</strong> Surya Namaskar Ontology</p>
           <p><strong>Namespace:</strong> http://example.org/suryanamaskar#</p>
           <p><strong>Format:</strong> OWL (RDF/XML)</p>
-          <p><strong>Description:</strong> Ontology representing Surya Namaskar poses, sequence steps, and variants with support for semantic querying.</p>
+          <p><strong>Description:</strong> Ontology representing Surya Namaskar asanas, pose occurrences, and variants with support for semantic querying.</p>
 
           <h3>Core Concepts</h3>
           <ul>
-            <li><strong>Pose</strong> – Yoga pose identity</li>
-            <li><strong>SequenceStep</strong> – Pose occurrence in sequence</li>
+            <li><strong>Pose</strong> – Numbered occurrence of an asana in a sequence</li>
+            <li><strong>Asana</strong> – Yoga posture identity</li>
             <li><strong>Variant</strong> – Different Surya Namaskar traditions</li>
           </ul>
         </div>
@@ -116,11 +116,11 @@
         <h2>Use Cases</h2>
         <ul>
           <li>Compare Surya Namaskar variants.</li>
-          <li>Identify repeated poses and repeated sequence steps.</li>
-          <li>Find inverse poses or inverse steps.</li>
-          <li>Retrieve the ordered sequence of poses in Base SN.</li>
+          <li>Identify repeated poses and inverse pose relationships.</li>
+          <li>Retrieve the ordered sequence of poses in BaseSN.</li>
           <li>Query poses based on standing posture and support type.</li>
-          <li>Retrieve mantra and chakra associated with Base SN steps.</li>
+          <li>Retrieve mantra and chakra associated with BaseSN poses.</li>
+          <li>Identify asanas shared across multiple variants.</li>
         </ul>
       </section>
 
@@ -128,13 +128,14 @@
         <h2>Competency Questions</h2>
         <ul>
           <li>C1: What are the poses in Surya Namaskar?</li>
-          <li>C2: How many poses are in Base Surya Namaskar and what are they?</li>
-          <li>C3: What poses are performed standing on two feet or at least one foot?</li>
-          <li>C4: Which poses are repeated in Surya Namaskar?</li>
+          <li>C2: How many poses are in Base Surya Namaskar?</li>
+          <li>C3: Which poses are performed standing?</li>
+          <li>C4: Which poses are repeated?</li>
           <li>C5: Which poses have inverse relationships?</li>
-          <li>C6: How many Surya Namaskar variants are there?</li>
-          <li>C7: Which poses are common across variants?</li>
-          <li>C8: What is the sequence order of poses?</li>
+          <li>C6: How many variants exist?</li>
+          <li>C7: What are the different variants of Surya Namaskar represented in the ontology?</li>
+          <li>C8: Which asanas are shared across multiple variants of Surya Namaskar?</li>
+          <li>C9: What is the sequence order of poses in BaseSN?</li>
         </ul>
       </section>
 
@@ -143,236 +144,113 @@
 
         <div class="query-block">
           <h3>C1: What are the poses in Surya Namaskar?</h3>
-
           <div class="query-answer-row">
             <div class="query-box">
-              <h4>(a) List all pose identities</h4>
               <pre>
 PREFIX : &lt;http://example.org/suryanamaskar#&gt;
 PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 
-SELECT ?pose ?label
+SELECT ?pose ?asana
 WHERE {
   ?pose rdf:type :Pose ;
-        rdfs:label ?label .
+        :belongsToVariant :BaseSN ;
+        :hasAsana ?asana .
 }
-ORDER BY ?label
+ORDER BY ?pose
               </pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
-              <a href="images/query_ss/q1a.png" target="_blank">
-                <img src="images/query_ss/q1a.png" alt="Result for C1(a)">
+              <a href="images/queries_ss/1.png" target="_blank">
+                <img src="images/queries_ss/1.png" alt="Result for C1">
               </a>
             </div>
           </div>
+        </div>
 
+        <div class="query-block">
+          <h3>C2: How many poses are in Base Surya Namaskar?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <h4>(b) Count all pose identities</h4>
               <pre>
 PREFIX : &lt;http://example.org/suryanamaskar#&gt;
 PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 
-SELECT (COUNT(?pose) AS ?poseCount)
+SELECT (COUNT(?pose) AS ?numberOfPoses)
 WHERE {
-  ?pose rdf:type :Pose .
+  ?pose rdf:type :Pose ;
+        :belongsToVariant :BaseSN .
 }
               </pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
-              <a href="images/query_ss/q1b.png" target="_blank">
-                <img src="images/query_ss/q1b.png" alt="Result for C1(b)">
+              <a href="images/queries_ss/2.png" target="_blank">
+                <img src="images/queries_ss/2.png" alt="Result for C2">
               </a>
             </div>
           </div>
         </div>
 
         <div class="query-block">
-          <h3>C2: How many poses are in Base Surya Namaskar and what are they?</h3>
-
+          <h3>C3: Which poses are performed standing?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <h4>(a) Count poses in Base SN</h4>
               <pre>
 PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 
-SELECT (COUNT(?step) AS ?count)
+SELECT ?pose ?asana
 WHERE {
-  ?step :belongsToVariant :BaseSN .
+  ?pose rdf:type :Pose ;
+        :belongsToVariant :BaseSN ;
+        :hasAsana ?asana ;
+        :hasSupportType ?support .
+  FILTER(STR(?support) = "StandingTwoFeet")
 }
+ORDER BY ?pose
               </pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
-              <a href="images/query_ss/q2a.png" target="_blank">
-                <img src="images/query_ss/q2a.png" alt="Result for C2(a)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(b) List poses in Base SN</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-
-SELECT ?stepNo ?poseLabel
-WHERE {
-  ?step :belongsToVariant :BaseSN ;
-        :stepNumber ?stepNo ;
-        :hasPose ?pose .
-  ?pose rdfs:label ?poseLabel .
-}
-ORDER BY ?stepNo
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q2b.png" target="_blank">
-                <img src="images/query_ss/q2b.png" alt="Result for C2(b)">
+              <a href="images/queries_ss/3.png" target="_blank">
+                <img src="images/queries_ss/3.png" alt="Result for C3">
               </a>
             </div>
           </div>
         </div>
 
         <div class="query-block">
-          <h3>C3: What poses are performed standing on two feet or at least one foot?</h3>
-
+          <h3>C4: Which poses are repeated?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <h4>(a) Standing on two feet</h4>
               <pre>
 PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 
-SELECT ?step ?stepNo ?poseLabel
+SELECT ?poseNumber ?asanaName ?repeatedPoseNumber ?repeatedAsanaName
 WHERE {
-  ?step :isStandingOnTwoFeet true ;
-        :stepNumber ?stepNo ;
-        :hasPose ?pose .
-  ?pose rdfs:label ?poseLabel .
+  ?pose rdf:type :Pose ;
+        :belongsToVariant :BaseSN ;
+        :poseNumber ?poseNumber ;
+        :hasAsana ?asana ;
+        :repeatsPose ?repeatedPose .
+
+  ?asana rdfs:label ?asanaName .
+
+  ?repeatedPose :poseNumber ?repeatedPoseNumber ;
+                :hasAsana ?repeatedAsana .
+
+  ?repeatedAsana rdfs:label ?repeatedAsanaName .
 }
-ORDER BY ?stepNo
+ORDER BY ?poseNumber
               </pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
-              <a href="images/query_ss/q3a.png" target="_blank">
-                <img src="images/query_ss/q3a.png" alt="Result for C3(a)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(b) Standing on at least one foot</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-
-SELECT ?step ?stepNo ?poseLabel
-WHERE {
-  ?step :isStandingOnAtLeastOneFoot true ;
-        :stepNumber ?stepNo ;
-        :hasPose ?pose .
-  ?pose rdfs:label ?poseLabel .
-}
-ORDER BY ?stepNo
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q3b.png" target="_blank">
-                <img src="images/query_ss/q3b.png" alt="Result for C3(b)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(c) Standing on two feet in Base SN only</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-
-SELECT ?stepNo ?poseLabel
-WHERE {
-  ?step :belongsToVariant :BaseSN ;
-        :isStandingOnTwoFeet true ;
-        :stepNumber ?stepNo ;
-        :hasPose ?pose .
-  ?pose rdfs:label ?poseLabel .
-}
-ORDER BY ?stepNo
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q3c.png" target="_blank">
-                <img src="images/query_ss/q3c.png" alt="Result for C3(c)">
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="query-block">
-          <h3>C4: Which poses are repeated in Surya Namaskar?</h3>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(a) Repeated steps in Base SN</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-
-SELECT ?step1 ?n1 ?step2 ?n2
-WHERE {
-  ?step1 :belongsToVariant :BaseSN ;
-         :repeatsStep ?step2 ;
-         :stepNumber ?n1 .
-  ?step2 :stepNumber ?n2 .
-  FILTER(?n1 &lt; ?n2)
-}
-ORDER BY ?n1
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q4a.png" target="_blank">
-                <img src="images/query_ss/q4a.png" alt="Result for C4(a)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(b) Repeated poses with labels</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-
-SELECT ?n1 ?poseLabel1 ?n2 ?poseLabel2
-WHERE {
-  ?step1 :belongsToVariant :BaseSN ;
-         :repeatsStep ?step2 ;
-         :stepNumber ?n1 ;
-         :hasPose ?pose1 .
-  ?step2 :stepNumber ?n2 ;
-         :hasPose ?pose2 .
-  ?pose1 rdfs:label ?poseLabel1 .
-  ?pose2 rdfs:label ?poseLabel2 .
-  FILTER(?n1 &lt; ?n2)
-}
-ORDER BY ?n1
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q4b.png" target="_blank">
-                <img src="images/query_ss/q4b.png" alt="Result for C4(b)">
+              <a href="images/queries_ss/4.png" target="_blank">
+                <img src="images/queries_ss/4.png" alt="Result for C4">
               </a>
             </div>
           </div>
@@ -380,74 +258,49 @@ ORDER BY ?n1
 
         <div class="query-block">
           <h3>C5: Which poses have inverse relationships?</h3>
-
           <div class="query-answer-row">
             <div class="query-box">
-              <h4>(a) Inverse steps in Base SN</h4>
               <pre>
 PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-
-SELECT ?step1 ?n1 ?step2 ?n2
-WHERE {
-  ?step1 :belongsToVariant :BaseSN ;
-         :hasInverseStep ?step2 ;
-         :stepNumber ?n1 .
-  ?step2 :stepNumber ?n2 .
-  FILTER(?n1 &lt; ?n2)
-}
-ORDER BY ?n1
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q5a.png" target="_blank">
-                <img src="images/query_ss/q5a.png" alt="Result for C5(a)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(b) Inverse poses with labels</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 
-SELECT ?n1 ?poseLabel1 ?n2 ?poseLabel2
+SELECT ?poseNumber ?asanaName ?inversePoseNumber ?inverseAsanaName
 WHERE {
-  ?step1 :belongsToVariant :BaseSN ;
-         :hasInverseStep ?step2 ;
-         :stepNumber ?n1 ;
-         :hasPose ?pose1 .
-  ?step2 :stepNumber ?n2 ;
-         :hasPose ?pose2 .
-  ?pose1 rdfs:label ?poseLabel1 .
-  ?pose2 rdfs:label ?poseLabel2 .
-  FILTER(?n1 &lt; ?n2)
+  ?pose rdf:type :Pose ;
+        :belongsToVariant :BaseSN ;
+        :poseNumber ?poseNumber ;
+        :hasAsana ?asana ;
+        :hasInversePose ?inversePose .
+
+  ?asana rdfs:label ?asanaName .
+
+  ?inversePose :poseNumber ?inversePoseNumber ;
+               :hasAsana ?inverseAsana .
+
+  ?inverseAsana rdfs:label ?inverseAsanaName .
 }
-ORDER BY ?n1
+ORDER BY ?poseNumber
               </pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
-              <a href="images/query_ss/q5b.png" target="_blank">
-                <img src="images/query_ss/q5b.png" alt="Result for C5(b)">
+              <a href="images/queries_ss/5.png" target="_blank">
+                <img src="images/queries_ss/5.png" alt="Result for C5">
               </a>
             </div>
           </div>
         </div>
 
         <div class="query-block">
-          <h3>C6: How many Surya Namaskar variants are there?</h3>
-
+          <h3>C6: How many variants exist?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <h4>(a) Count variants</h4>
               <pre>
 PREFIX : &lt;http://example.org/suryanamaskar#&gt;
 PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 
-SELECT (COUNT(?variant) AS ?variantCount)
+SELECT (COUNT(?variant) AS ?numberOfVariants)
 WHERE {
   ?variant rdf:type :Variant .
 }
@@ -455,183 +308,92 @@ WHERE {
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
-              <a href="images/query_ss/q6a.png" target="_blank">
-                <img src="images/query_ss/q6a.png" alt="Result for C6(a)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(b) List variants</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-
-SELECT ?variant ?label
-WHERE {
-  ?variant rdf:type :Variant ;
-           rdfs:label ?label .
-}
-ORDER BY ?label
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q6b.png" target="_blank">
-                <img src="images/query_ss/q6b.png" alt="Result for C6(b)">
+              <a href="images/queries_ss/6.png" target="_blank">
+                <img src="images/queries_ss/6.png" alt="Result for C6">
               </a>
             </div>
           </div>
         </div>
 
         <div class="query-block">
-          <h3>C7: Which poses are common across variants?</h3>
-
+          <h3>C7: What are the different variants of Surya Namaskar represented in the ontology?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <h4>(a) Poses appearing in more than one variant</h4>
               <pre>
 PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+
+SELECT ?variant
+WHERE {
+  ?variant rdf:type :Variant .
+}
+ORDER BY ?variant
+              </pre>
+            </div>
+            <div class="answer-box">
+              <h4>Answer</h4>
+              <a href="images/queries_ss/7.png" target="_blank">
+                <img src="images/queries_ss/7.png" alt="Result for C7">
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="query-block">
+          <h3>C8: Which asanas are shared across multiple variants of Surya Namaskar?</h3>
+          <div class="query-answer-row">
+            <div class="query-box">
+              <pre>
+PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 
-SELECT ?poseLabel (COUNT(DISTINCT ?variant) AS ?variantCount)
+SELECT ?asanaName
 WHERE {
-  ?step :belongsToVariant ?variant ;
-        :hasPose ?pose .
-  ?pose rdfs:label ?poseLabel .
+  ?pose rdf:type :Pose ;
+        :hasAsana ?asana ;
+        :belongsToVariant ?variant .
+
+  ?asana rdfs:label ?asanaName .
 }
-GROUP BY ?poseLabel
+GROUP BY ?asana ?asanaName
 HAVING (COUNT(DISTINCT ?variant) &gt; 1)
-ORDER BY DESC(?variantCount) ?poseLabel
+ORDER BY ?asanaName
               </pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
-              <a href="images/query_ss/q7a.png" target="_blank">
-                <img src="images/query_ss/q7a.png" alt="Result for C7(a)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(b) Show variants for each pose</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-
-SELECT ?poseLabel ?variantLabel
-WHERE {
-  ?step :belongsToVariant ?variant ;
-        :hasPose ?pose .
-  ?pose rdfs:label ?poseLabel .
-  ?variant rdfs:label ?variantLabel .
-}
-ORDER BY ?poseLabel ?variantLabel
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q7b_1.png" target="_blank">
-                <img src="images/query_ss/q7b_1.png" alt="Result for C7(b) part 1">
-              </a>
-
-              <h4 style="margin-top: 18px;"></h4>
-              <a href="images/query_ss/q7b_2.png" target="_blank">
-                <img src="images/query_ss/q7b_2.png" alt="Result for C7(b) part 2">
-              </a>
-
-              <h4 style="margin-top: 18px;"></h4>
-              <a href="images/query_ss/q7b_3.png" target="_blank">
-                <img src="images/query_ss/q7b_3.png" alt="Result for C7(b) part 3">
+              <a href="images/queries_ss/8.png" target="_blank">
+                <img src="images/queries_ss/8.png" alt="Result for C8">
               </a>
             </div>
           </div>
         </div>
 
         <div class="query-block">
-          <h3>C8: What is the sequence order of poses?</h3>
-
+          <h3>C9: What is the sequence order of poses in BaseSN?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <h4>(a) Next pose (example: Step 4)</h4>
               <pre>
 PREFIX : &lt;http://example.org/suryanamaskar#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 
-SELECT ?currentNo ?currentPoseLabel ?nextNo ?nextPoseLabel
+SELECT ?poseNumber ?asanaName
 WHERE {
-  :BaseSN_Step_04 :stepNumber ?currentNo ;
-                  :hasPose ?currentPose ;
-                  :hasNextStep ?nextStep .
-  ?currentPose rdfs:label ?currentPoseLabel .
-  ?nextStep :stepNumber ?nextNo ;
-            :hasPose ?nextPose .
-  ?nextPose rdfs:label ?nextPoseLabel .
+  ?pose rdf:type :Pose ;
+        :belongsToVariant :BaseSN ;
+        :poseNumber ?poseNumber ;
+        :hasAsana ?asana .
+  ?asana rdfs:label ?asanaName .
 }
+ORDER BY ?poseNumber
               </pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
-              <a href="images/query_ss/q8a.png" target="_blank">
-                <img src="images/query_ss/q8a.png" alt="Result for C8(a)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(b) Previous pose (example: Step 4)</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-
-SELECT ?prevNo ?prevPoseLabel ?currentNo ?currentPoseLabel
-WHERE {
-  :BaseSN_Step_04 :stepNumber ?currentNo ;
-                  :hasPose ?currentPose ;
-                  :hasPreviousStep ?prevStep .
-  ?currentPose rdfs:label ?currentPoseLabel .
-  ?prevStep :stepNumber ?prevNo ;
-            :hasPose ?prevPose .
-  ?prevPose rdfs:label ?prevPoseLabel .
-}
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q8b.png" target="_blank">
-                <img src="images/query_ss/q8b.png" alt="Result for C8(b)">
-              </a>
-            </div>
-          </div>
-
-          <div class="query-answer-row">
-            <div class="query-box">
-              <h4>(c) Full sequence order in Base SN</h4>
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
-
-SELECT ?currentNo ?currentPoseLabel ?nextNo ?nextPoseLabel
-WHERE {
-  ?step :belongsToVariant :BaseSN ;
-        :stepNumber ?currentNo ;
-        :hasPose ?currentPose ;
-        :hasNextStep ?nextStep .
-  ?currentPose rdfs:label ?currentPoseLabel .
-  ?nextStep :stepNumber ?nextNo ;
-            :hasPose ?nextPose .
-  ?nextPose rdfs:label ?nextPoseLabel .
-}
-ORDER BY ?currentNo
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/query_ss/q8c.png" target="_blank">
-                <img src="images/query_ss/q8c.png" alt="Result for C8(c)">
+              <a href="images/queries_ss/9.png" target="_blank">
+                <img src="images/queries_ss/9.png" alt="Result for C9">
               </a>
             </div>
           </div>
@@ -651,26 +413,27 @@ ORDER BY ?currentNo
           <img src="images/webvowl.png" alt="WebVOWL View">
         </div>
       </section>
+
       <section id="contributors">
         <h2>Contributors</h2>
         <div class="contributors-box">
-        <p>
-          Mansi Dodiya<sup>1</sup>, Kishan Kumar<sup>1</sup>, 
-          Biplav Srivastava<sup>2</sup>, Hari Prabhat Gupta<sup>1</sup>
-        </p>
-        <p>
-          <sup>1</sup>
-           <a href="https://www.iitbhu.ac.in/" target="_blank">
-            IIT (BHU), India
-          </a>
-          &nbsp;|&nbsp;
-          <sup>2</sup>
-           <a href="https://sc.edu/" target="_blank">
-            University of South Carolina, USA
-          </a>
-        </p>
-      </div>
-    </section>
+          <p>
+            Mansi Dodiya<sup>1</sup>, Kishan Kumar<sup>1</sup>,
+            Biplav Srivastava<sup>2</sup>, Hari Prabhat Gupta<sup>1</sup>
+          </p>
+          <p>
+            <sup>1</sup>
+            <a href="https://www.iitbhu.ac.in/" target="_blank">
+              IIT (BHU), India
+            </a>
+            &nbsp;|&nbsp;
+            <sup>2</sup>
+            <a href="https://sc.edu/" target="_blank">
+              University of South Carolina, USA
+            </a>
+          </p>
+        </div>
+      </section>
     </main>
   </div>
 </body>
