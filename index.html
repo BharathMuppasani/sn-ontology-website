@@ -154,13 +154,6 @@
           <li>C7: What are the different variants represented in the ontology?</li>
           <li>C8: Which asanas are shared across multiple variants?</li>
           <li>C9: What is the sequence order of poses in Base Surya Namaskar?</li>
-          <li>C10: What body parts are involved in each Base SN pose?</li>
-          <li>C11: What posture rules are linked to each Base SN pose?</li>
-          <li>C12: What constraints are linked to each Base SN pose?</li>
-          <li>C13: What possible errors are linked to each Base SN pose?</li>
-          <li>C14: What correction instructions are linked to each error?</li>
-          <li>C15: For each Base SN pose, what are the possible errors and their corrections?</li>
-          <li>C16: What mantra and chakra are associated with each Base SN pose?</li>
         </ul>
       </section>
 
@@ -408,176 +401,6 @@ ORDER BY ?poseNumber
             </div>
           </div>
         </div>
-
-        <div class="query-block">
-          <h3>C10: What body parts are involved in each Base SN pose?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-
-SELECT ?pose ?bodyPart
-WHERE {
-  ?pose rdf:type :Pose ;
-        :belongsToVariant :BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        :involvesBodyPart ?bodyPart .
-}
-ORDER BY ?pose ?bodyPart
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <p>Add screenshot if needed.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="query-block">
-          <h3>C11: What posture rules are linked to each Base SN pose?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-
-SELECT ?pose ?rule
-WHERE {
-  ?pose rdf:type :Pose ;
-        :belongsToVariant :BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        :hasRule ?rule .
-}
-ORDER BY ?pose ?rule
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <p>Add screenshot if needed.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="query-block">
-          <h3>C12: What constraints are linked to each Base SN pose?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-
-SELECT ?pose ?constraint
-WHERE {
-  ?pose rdf:type :Pose ;
-        :belongsToVariant :BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        :hasConstraint ?constraint .
-}
-ORDER BY ?pose ?constraint
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <p>Add screenshot if needed.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="query-block">
-          <h3>C13: What possible errors are linked to each Base SN pose?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-
-SELECT ?pose ?error
-WHERE {
-  ?pose rdf:type :Pose ;
-        :belongsToVariant :BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        :hasPossibleError ?error .
-}
-ORDER BY ?pose ?error
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <p>Add screenshot if needed.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="query-block">
-          <h3>C14: What correction instructions are linked to each error?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-
-SELECT ?error ?correction
-WHERE {
-  ?error rdf:type :PoseError ;
-         :hasCorrection ?correction .
-}
-ORDER BY ?error ?correction
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <p>Add screenshot if needed.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="query-block">
-          <h3>C15: For each Base SN pose, what are the possible errors and their corrections?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-
-SELECT ?pose ?error ?correction
-WHERE {
-  ?pose rdf:type :Pose ;
-        :belongsToVariant :BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        :hasPossibleError ?error .
-  ?error :hasCorrection ?correction .
-}
-ORDER BY ?pose ?error ?correction
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <p>Add screenshot if needed.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="query-block">
-          <h3>C16: What mantra and chakra are associated with each Base SN pose?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-              <pre>
-PREFIX : &lt;http://example.org/suryanamaskar#&gt;
-PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
-
-SELECT ?pose ?poseNumber ?mantra ?chakra
-WHERE {
-  ?pose rdf:type :Pose ;
-        :belongsToVariant :BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        :poseNumber ?poseNumber ;
-        :hasMantra ?mantra ;
-        :hasChakra ?chakra .
-}
-ORDER BY ?poseNumber
-              </pre>
-            </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <p>Add screenshot if needed.</p>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section id="visuals">
@@ -590,17 +413,9 @@ ORDER BY ?poseNumber
 
         <div class="visual-block">
           <h3>WebVOWL Visualization</h3>
-          <iframe
-            src="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/combined.owl"
-            width="100%"
-            height="700"
-            style="border:1px solid #ccc; border-radius:10px; background:#fff;">
-          </iframe>
-          <p style="margin-top: 10px;">
-            <a class="btn" href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/combined.owl" target="_blank">
-              Open Interactive WebVOWL in New Tab
-            </a>
-          </p>
+          <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/combined.owl" target="_blank">
+            <img src="images/webvowl.png" alt="WebVOWL View">
+          </a>
         </div>
       </section>
 
