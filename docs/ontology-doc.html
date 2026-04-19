@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Surya Namaskar Ontology</title>
+    <title>Surya Namaskar Master Ontology</title>
     <style>
         #pylode {
             position: fixed;
@@ -305,18 +305,18 @@ td {
     <script id="schema.org" type="application/ld+json">
 [
   {
-    "@id": "http://example.org/suryanamaskar",
+    "@id": "http://example.org/suryanamaskar/master",
     "@type": [
       "https://schema.org/DefinedTermSet"
     ],
     "https://schema.org/description": [
       {
-        "@value": "Ontology for four Surya Namaskar variants with detailed sequence information and a pose correction layer for the Base SN followed at IIT BHU."
+        "@value": "Master ontology is merging the shared core, Base SN, and Variant 01-03 ontologies."
       }
     ],
     "https://schema.org/name": [
       {
-        "@value": "Surya Namaskar Ontology"
+        "@value": "Surya Namaskar Master Ontology"
       }
     ]
   }
@@ -326,7 +326,7 @@ td {
   <body>
     <div id="content">
       <div class="section" id="metadata">
-        <h1>Surya Namaskar Ontology</h1>
+        <h1>Surya Namaskar Master Ontology</h1>
         <h2>Metadata</h2>
         <dl>
           <div>
@@ -334,20 +334,20 @@ td {
               <strong>IRI</strong>
             </dt>
             <dd>
-              <code>http://example.org/suryanamaskar</code>
+              <code>http://example.org/suryanamaskar/master</code>
             </dd>
           </div>
           <div>
             <dt>
               <a class="hover_property" href="http://purl.org/dc/terms/title" title="A name given to the resource. Defined in DCMI Metadata Terms">Title</a>
             </dt>
-            <dd><p>Surya Namaskar Ontology</p></dd>
+            <dd><p>Surya Namaskar Master Ontology</p></dd>
           </div>
           <div>
             <dt>
               <a class="hover_property" href="http://purl.org/dc/terms/description" title="An account of the resource. Defined in DCMI Metadata Terms">Description</a>
             </dt>
-            <dd><p>Ontology for four Surya Namaskar variants with detailed sequence information and a pose correction layer for the Base SN followed at IIT BHU.</p></dd>
+            <dd><p>Master ontology is merging the shared core, Base SN, and Variant 01-03 ontologies.</p></dd>
           </div>
         </dl>
       </div>
@@ -359,98 +359,18 @@ td {
         </p>
         <div class="webvowl-box">
         <iframe
-          src="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/mergedsnonto
+          src="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/master.owl"
           title="WebVOWL Ontology Visualization">
         </iframe>
         </div>
       <p class="webvowl-note">
-      <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/mergedsnonto" target="_blank">
+      <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/master.owl" target="_blank">
         Open Interactive WebVOWL in a new tab
       </a>
       </p>
     </div>
       <div class="section" id="classes">
         <h2>Classes</h2>
-        <div class="property entity" id="PoseError">
-          <h3>Pose Error
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#PoseError</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <ul>
-                  <li>
-                    <span>
-                      <a href="#errorDescription">error description</a>
-                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasCorrection">has correction</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#hasPossibleError">has possible error</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="PostureRule">
-          <h3>Posture Rule
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#PostureRule</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#ruleDescription">rule description</a>
-                  <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#hasRule">has rule</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
         <div class="property entity" id="Asana">
           <h3>Asana
             <sup class="sup-c" title="OWL/RDFS Class">c</sup>
@@ -459,7 +379,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#Asana</code>
+                <code>http://example.org/suryanamaskar/core#Asana</code>
               </td>
             </tr>
             <tr>
@@ -470,19 +390,19 @@ td {
                 <ul>
                   <li>
                     <span>
-                      <a href="#hasAlternateName">has alternate name</a>
-                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#sameAsanaAs">same asana as</a>
+                      <a href="http://example.org/suryanamaskar/core#sameAsanaAs">same asana as</a>
                       <sup class="sup-op" title="OWL Object Property">op</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#hasCYPPage">has CYP page</a>
+                      <a href="http://example.org/suryanamaskar/core#hasAlternateName">has alternate name</a>
+                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasCYPPage">has CYP page</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
@@ -497,76 +417,17 @@ td {
                 <ul>
                   <li>
                     <span>
-                      <a href="#sameAsanaAs">same asana as</a>
+                      <a href="http://example.org/suryanamaskar/core#hasAsana">has asana</a>
                       <sup class="sup-op" title="OWL Object Property">op</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#hasAsana">has asana</a>
+                      <a href="http://example.org/suryanamaskar/core#sameAsanaAs">same asana as</a>
                       <sup class="sup-op" title="OWL Object Property">op</sup>
                     </span>
                   </li>
                 </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="CorrectionInstruction">
-          <h3>Correction Instruction
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#CorrectionInstruction</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#correctionText">correction text</a>
-                  <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#hasCorrection">has correction</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="Variant">
-          <h3>Variant
-            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#Variant</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#belongsToVariant">belongs to variant</a>
-                  <sup class="sup-op" title="OWL Object Property">op</sup>
-                </span>
               </td>
             </tr>
           </table>
@@ -579,7 +440,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#BodyPart</code>
+                <code>http://example.org/suryanamaskar/core#BodyPart</code>
               </td>
             </tr>
             <tr>
@@ -588,7 +449,42 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#involvesBodyPart">involves body part</a>
+                  <a href="http://example.org/suryanamaskar/core#involvesBodyPart">involves body part</a>
+                  <sup class="sup-op" title="OWL Object Property">op</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="CorrectionInstruction">
+          <h3>Correction Instruction
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#CorrectionInstruction</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#correctionText">correction text</a>
+                  <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#hasCorrection">has correction</a>
                   <sup class="sup-op" title="OWL Object Property">op</sup>
                 </span>
               </td>
@@ -603,7 +499,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#Pose</code>
+                <code>http://example.org/suryanamaskar/core#Pose</code>
               </td>
             </tr>
             <tr>
@@ -614,91 +510,91 @@ td {
                 <ul>
                   <li>
                     <span>
-                      <a href="#hasMantra">has mantra</a>
+                      <a href="http://example.org/suryanamaskar/core#belongsToVariant">belongs to variant</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasAsana">has asana</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasConstraint">has constraint</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasInversePose">has inverse pose</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasNextPose">has next pose</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasPossibleError">has possible error</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasPreviousPose">has previous pose</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasRule">has rule</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#involvesBodyPart">involves body part</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#repeatsPose">repeats pose</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasChakra">has chakra</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#hasLaterality">has laterality</a>
+                      <a href="http://example.org/suryanamaskar/core#hasLaterality">has laterality</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#hasConstraint">has constraint</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasInversePose">has inverse pose</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasNextPose">has next pose</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#involvesBodyPart">involves body part</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasRule">has rule</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#repeatsPose">repeats pose</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasSupportType">has support type</a>
+                      <a href="http://example.org/suryanamaskar/core#hasMantra">has mantra</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#poseNumber">pose number</a>
+                      <a href="http://example.org/suryanamaskar/core#hasSupportType">has support type</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#belongsToVariant">belongs to variant</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasPossibleError">has possible error</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasPreviousPose">has previous pose</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasAsana">has asana</a>
-                      <sup class="sup-op" title="OWL Object Property">op</sup>
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      <a href="#hasChakra">has chakra</a>
+                      <a href="http://example.org/suryanamaskar/core#poseNumber">pose number</a>
                       <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                     </span>
                   </li>
@@ -713,25 +609,25 @@ td {
                 <ul>
                   <li>
                     <span>
-                      <a href="#hasInversePose">has inverse pose</a>
+                      <a href="http://example.org/suryanamaskar/core#hasInversePose">has inverse pose</a>
                       <sup class="sup-op" title="OWL Object Property">op</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#hasNextPose">has next pose</a>
+                      <a href="http://example.org/suryanamaskar/core#hasNextPose">has next pose</a>
                       <sup class="sup-op" title="OWL Object Property">op</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#repeatsPose">repeats pose</a>
+                      <a href="http://example.org/suryanamaskar/core#hasPreviousPose">has previous pose</a>
                       <sup class="sup-op" title="OWL Object Property">op</sup>
                     </span>
                   </li>
                   <li>
                     <span>
-                      <a href="#hasPreviousPose">has previous pose</a>
+                      <a href="http://example.org/suryanamaskar/core#repeatsPose">repeats pose</a>
                       <sup class="sup-op" title="OWL Object Property">op</sup>
                     </span>
                   </li>
@@ -748,7 +644,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#PoseConstraint</code>
+                <code>http://example.org/suryanamaskar/core#PoseConstraint</code>
               </td>
             </tr>
             <tr>
@@ -757,7 +653,7 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#constraintDescription">constraint description</a>
+                  <a href="http://example.org/suryanamaskar/core#constraintDescription">constraint description</a>
                   <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
                 </span>
               </td>
@@ -768,7 +664,111 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#hasConstraint">has constraint</a>
+                  <a href="http://example.org/suryanamaskar/core#hasConstraint">has constraint</a>
+                  <sup class="sup-op" title="OWL Object Property">op</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="PoseError">
+          <h3>Pose Error
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#PoseError</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
+              </th>
+              <td>
+                <ul>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#hasCorrection">has correction</a>
+                      <sup class="sup-op" title="OWL Object Property">op</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <a href="http://example.org/suryanamaskar/core#errorDescription">error description</a>
+                      <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                    </span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#hasPossibleError">has possible error</a>
+                  <sup class="sup-op" title="OWL Object Property">op</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="PostureRule">
+          <h3>Posture Rule
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#PostureRule</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inDomainOf" title="Inverse of rdfs:domain. Defined in Ontology Documentation Profile">In Domain Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#ruleDescription">rule description</a>
+                  <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#hasRule">has rule</a>
+                  <sup class="sup-op" title="OWL Object Property">op</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="Variant">
+          <h3>Variant
+            <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#Variant</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="https://w3id.org/profile/ontdoc/inRangeOf" title="Inverse of rdfs:range. Defined in Ontology Documentation Profile">In Range Of</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#belongsToVariant">belongs to variant</a>
                   <sup class="sup-op" title="OWL Object Property">op</sup>
                 </span>
               </td>
@@ -778,252 +778,7 @@ td {
       </div>
       <div class="section" id="objectproperties">
         <h2>Object Properties</h2>
-        <div class="property entity" id="hasConstraint">
-          <h3>has constraint
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasConstraint</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#PoseConstraint">Pose Constraint</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasInversePose">
-          <h3>has inverse pose
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasInversePose</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasNextPose">
-          <h3>has next pose
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasNextPose</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="involvesBodyPart">
-          <h3>involves body part
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#involvesBodyPart</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#BodyPart">Body Part</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasRule">
-          <h3>has rule
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasRule</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#PostureRule">Posture Rule</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="repeatsPose">
-          <h3>repeats pose
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#repeatsPose</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="sameAsanaAs">
-          <h3>same asana as
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#sameAsanaAs</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Asana">Asana</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Asana">Asana</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="belongsToVariant">
+        <div class="property entity" id="belongstovariant">
           <h3>belongs to variant
             <sup class="sup-op" title="OWL Object Property">op</sup>
           </h3>
@@ -1031,7 +786,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#belongsToVariant</code>
+                <code>http://example.org/suryanamaskar/core#belongsToVariant</code>
               </td>
             </tr>
             <tr>
@@ -1040,7 +795,7 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#Pose">Pose</a>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
               </td>
@@ -1051,119 +806,14 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#Variant">Variant</a>
+                  <a href="http://example.org/suryanamaskar/core#Variant">Variant</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
               </td>
             </tr>
           </table>
         </div>
-        <div class="property entity" id="hasCorrection">
-          <h3>has correction
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasCorrection</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#PoseError">Pose Error</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#CorrectionInstruction">Correction Instruction</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasPossibleError">
-          <h3>has possible error
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasPossibleError</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#PoseError">Pose Error</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasPreviousPose">
-          <h3>has previous pose
-            <sup class="sup-op" title="OWL Object Property">op</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasPreviousPose</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasAsana">
+        <div class="property entity" id="hasasana">
           <h3>has asana
             <sup class="sup-op" title="OWL Object Property">op</sup>
           </h3>
@@ -1171,7 +821,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#hasAsana</code>
+                <code>http://example.org/suryanamaskar/core#hasAsana</code>
               </td>
             </tr>
             <tr>
@@ -1180,7 +830,7 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#Pose">Pose</a>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
               </td>
@@ -1191,7 +841,357 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#Asana">Asana</a>
+                  <a href="http://example.org/suryanamaskar/core#Asana">Asana</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasconstraint">
+          <h3>has constraint
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasConstraint</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#PoseConstraint">Pose Constraint</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hascorrection">
+          <h3>has correction
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasCorrection</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#PoseError">Pose Error</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#CorrectionInstruction">Correction Instruction</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasinversepose">
+          <h3>has inverse pose
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasInversePose</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasnextpose">
+          <h3>has next pose
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasNextPose</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="haspossibleerror">
+          <h3>has possible error
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasPossibleError</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#PoseError">Pose Error</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="haspreviouspose">
+          <h3>has previous pose
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasPreviousPose</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasrule">
+          <h3>has rule
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasRule</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#PostureRule">Posture Rule</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="involvesbodypart">
+          <h3>involves body part
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#involvesBodyPart</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#BodyPart">Body Part</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="repeatspose">
+          <h3>repeats pose
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#repeatsPose</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="sameasanaas">
+          <h3>same asana as
+            <sup class="sup-op" title="OWL Object Property">op</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#sameAsanaAs</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Asana">Asana</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Asana">Asana</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
               </td>
@@ -1201,135 +1201,7 @@ td {
       </div>
       <div class="section" id="datatypeproperties">
         <h2>Datatype Properties</h2>
-        <div class="property entity" id="hasMantra">
-          <h3>has mantra
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasMantra</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasLaterality">
-          <h3>has laterality
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasLaterality</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasAlternateName">
-          <h3>has alternate name
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasAlternateName</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Asana">Asana</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="errorDescription">
-          <h3>error description
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#errorDescription</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#PoseError">Pose Error</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="constraintDescription">
+        <div class="property entity" id="constraintdescription">
           <h3>constraint description
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
           </h3>
@@ -1337,7 +1209,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#constraintDescription</code>
+                <code>http://example.org/suryanamaskar/core#constraintDescription</code>
               </td>
             </tr>
             <tr>
@@ -1346,7 +1218,7 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#PoseConstraint">Pose Constraint</a>
+                  <a href="http://example.org/suryanamaskar/core#PoseConstraint">Pose Constraint</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
               </td>
@@ -1361,7 +1233,231 @@ td {
             </tr>
           </table>
         </div>
-        <div class="property entity" id="hasSupportType">
+        <div class="property entity" id="correctiontext">
+          <h3>correction text
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#correctionText</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#CorrectionInstruction">Correction Instruction</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="errordescription">
+          <h3>error description
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#errorDescription</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#PoseError">Pose Error</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasalternatename">
+          <h3>has alternate name
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasAlternateName</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Asana">Asana</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasCYPpage">
+          <h3>has CYP page
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasCYPPage</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Asana">Asana</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="haschakra">
+          <h3>has chakra
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasChakra</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="haslaterality">
+          <h3>has laterality
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasLaterality</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hasmantra">
+          <h3>has mantra
+            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
+          </h3>
+          <table>
+            <tr>
+              <th>IRI</th>
+              <td>
+                <code>http://example.org/suryanamaskar/core#hasMantra</code>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
+              </th>
+              <td>
+                <span>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
+                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
+              </th>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="property entity" id="hassupporttype">
           <h3>has support type
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
           </h3>
@@ -1369,7 +1465,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#hasSupportType</code>
+                <code>http://example.org/suryanamaskar/core#hasSupportType</code>
               </td>
             </tr>
             <tr>
@@ -1378,7 +1474,7 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#Pose">Pose</a>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
               </td>
@@ -1393,39 +1489,7 @@ td {
             </tr>
           </table>
         </div>
-        <div class="property entity" id="ruleDescription">
-          <h3>rule description
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#ruleDescription</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#PostureRule">Posture Rule</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="poseNumber">
+        <div class="property entity" id="posenumber">
           <h3>pose number
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
           </h3>
@@ -1433,7 +1497,7 @@ td {
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#poseNumber</code>
+                <code>http://example.org/suryanamaskar/core#poseNumber</code>
               </td>
             </tr>
             <tr>
@@ -1442,7 +1506,7 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#Pose">Pose</a>
+                  <a href="http://example.org/suryanamaskar/core#Pose">Pose</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
               </td>
@@ -1457,15 +1521,15 @@ td {
             </tr>
           </table>
         </div>
-        <div class="property entity" id="hasCYPPage">
-          <h3>has CYP page
+        <div class="property entity" id="ruledescription">
+          <h3>rule description
             <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
           </h3>
           <table>
             <tr>
               <th>IRI</th>
               <td>
-                <code>http://example.org/suryanamaskar#hasCYPPage</code>
+                <code>http://example.org/suryanamaskar/core#ruleDescription</code>
               </td>
             </tr>
             <tr>
@@ -1474,71 +1538,7 @@ td {
               </th>
               <td>
                 <span>
-                  <a href="#Asana">Asana</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="correctionText">
-          <h3>correction text
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#correctionText</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#CorrectionInstruction">Correction Instruction</a>
-                  <sup class="sup-c" title="OWL/RDFS Class">c</sup>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#range" title="A range of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Range</a>
-              </th>
-              <td>
-                <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="property entity" id="hasChakra">
-          <h3>has chakra
-            <sup class="sup-dp" title="OWL Datatype Property">dp</sup>
-          </h3>
-          <table>
-            <tr>
-              <th>IRI</th>
-              <td>
-                <code>http://example.org/suryanamaskar#hasChakra</code>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <a class="hover_property" href="http://www.w3.org/2000/01/rdf-schema#domain" title="A domain of the subject property. Defined in The RDF Schema vocabulary (RDFS)">Domain</a>
-              </th>
-              <td>
-                <span>
-                  <a href="#Pose">Pose</a>
+                  <a href="http://example.org/suryanamaskar/core#PostureRule">Posture Rule</a>
                   <sup class="sup-c" title="OWL/RDFS Class">c</sup>
                 </span>
               </td>
@@ -1612,9 +1612,9 @@ td {
       <div id="namespaces">
         <h2>Namespaces</h2>
         <dl>
-          <dt id=":">:</dt>
+          <dt id="core">core</dt>
           <dd>
-            <code>http://example.org/suryanamaskar#</code>
+            <code>http://example.org/suryanamaskar/core#</code>
           </dd>
           <dt id="dc">dc</dt>
           <dd>
@@ -1622,7 +1622,7 @@ td {
           </dd>
           <dt id="ns1">ns1</dt>
           <dd>
-            <code>http://example.org/</code>
+            <code>http://example.org/suryanamaskar/</code>
           </dd>
           <dt id="owl">owl</dt>
           <dd>
@@ -1695,14 +1695,24 @@ td {
         </li>
         <li>
           <h4>
-            <a href="#webvowl">Interactive WebVOWL View</a>
-          </h4>
-        </li>
-        <li>
-          <h4>
             <a href="#classes">Classes</a>
           </h4>
           <ul class="second">
+            <li>
+              <a href="#Asana">Asana</a>
+            </li>
+            <li>
+              <a href="#BodyPart">Body Part</a>
+            </li>
+            <li>
+              <a href="#CorrectionInstruction">Correction Instruction</a>
+            </li>
+            <li>
+              <a href="#Pose">Pose</a>
+            </li>
+            <li>
+              <a href="#PoseConstraint">Pose Constraint</a>
+            </li>
             <li>
               <a href="#PoseError">Pose Error</a>
             </li>
@@ -1710,22 +1720,7 @@ td {
               <a href="#PostureRule">Posture Rule</a>
             </li>
             <li>
-              <a href="#Asana">Asana</a>
-            </li>
-            <li>
-              <a href="#CorrectionInstruction">Correction Instruction</a>
-            </li>
-            <li>
               <a href="#Variant">Variant</a>
-            </li>
-            <li>
-              <a href="#BodyPart">Body Part</a>
-            </li>
-            <li>
-              <a href="#Pose">Pose</a>
-            </li>
-            <li>
-              <a href="#PoseConstraint">Pose Constraint</a>
             </li>
           </ul>
         </li>
@@ -1735,40 +1730,40 @@ td {
           </h4>
           <ul class="second">
             <li>
-              <a href="#hasConstraint">has constraint</a>
+              <a href="#belongstovariant">belongs to variant</a>
             </li>
             <li>
-              <a href="#hasInversePose">has inverse pose</a>
+              <a href="#hasasana">has asana</a>
             </li>
             <li>
-              <a href="#hasNextPose">has next pose</a>
+              <a href="#hasconstraint">has constraint</a>
             </li>
             <li>
-              <a href="#involvesBodyPart">involves body part</a>
+              <a href="#hascorrection">has correction</a>
             </li>
             <li>
-              <a href="#hasRule">has rule</a>
+              <a href="#hasinversepose">has inverse pose</a>
             </li>
             <li>
-              <a href="#repeatsPose">repeats pose</a>
+              <a href="#hasnextpose">has next pose</a>
             </li>
             <li>
-              <a href="#sameAsanaAs">same asana as</a>
+              <a href="#haspossibleerror">has possible error</a>
             </li>
             <li>
-              <a href="#belongsToVariant">belongs to variant</a>
+              <a href="#haspreviouspose">has previous pose</a>
             </li>
             <li>
-              <a href="#hasCorrection">has correction</a>
+              <a href="#hasrule">has rule</a>
             </li>
             <li>
-              <a href="#hasPossibleError">has possible error</a>
+              <a href="#involvesbodypart">involves body part</a>
             </li>
             <li>
-              <a href="#hasPreviousPose">has previous pose</a>
+              <a href="#repeatspose">repeats pose</a>
             </li>
             <li>
-              <a href="#hasAsana">has asana</a>
+              <a href="#sameasanaas">same asana as</a>
             </li>
           </ul>
         </li>
@@ -1778,37 +1773,37 @@ td {
           </h4>
           <ul class="second">
             <li>
-              <a href="#hasMantra">has mantra</a>
+              <a href="#constraintdescription">constraint description</a>
             </li>
             <li>
-              <a href="#hasLaterality">has laterality</a>
+              <a href="#correctiontext">correction text</a>
             </li>
             <li>
-              <a href="#hasAlternateName">has alternate name</a>
+              <a href="#errordescription">error description</a>
             </li>
             <li>
-              <a href="#errorDescription">error description</a>
+              <a href="#hasalternatename">has alternate name</a>
             </li>
             <li>
-              <a href="#constraintDescription">constraint description</a>
+              <a href="#hasCYPpage">has CYP page</a>
             </li>
             <li>
-              <a href="#hasSupportType">has support type</a>
+              <a href="#haschakra">has chakra</a>
             </li>
             <li>
-              <a href="#ruleDescription">rule description</a>
+              <a href="#haslaterality">has laterality</a>
             </li>
             <li>
-              <a href="#poseNumber">pose number</a>
+              <a href="#hasmantra">has mantra</a>
             </li>
             <li>
-              <a href="#hasCYPPage">has CYP page</a>
+              <a href="#hassupporttype">has support type</a>
             </li>
             <li>
-              <a href="#correctionText">correction text</a>
+              <a href="#posenumber">pose number</a>
             </li>
             <li>
-              <a href="#hasChakra">has chakra</a>
+              <a href="#ruledescription">rule description</a>
             </li>
           </ul>
         </li>
@@ -1837,7 +1832,7 @@ td {
           </h4>
           <ul class="second">
             <li>
-              <a href="#"></a>
+              <a href="#core">core</a>
             </li>
             <li>
               <a href="#dc">dc</a>
