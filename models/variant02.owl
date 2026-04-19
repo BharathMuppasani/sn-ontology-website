@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:core="http://example.org/suryanamaskar/core#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
+  <owl:Ontology rdf:about="http://example.org/suryanamaskar/variant02">
+    <owl:imports rdf:resource="http://example.org/suryanamaskar/core"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Variant 02 Ontology</rdfs:label>
+    <dc:title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Variant 02 Bihar School of Yoga Ontology</dc:title>
+    <dc:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Variant 02-specific individuals and assertions extracted from the original combined Surya Namaskar ontology; imports the shared core ontology.</dc:description>
+  </owl:Ontology>
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose03">
+    <core:hasNextPose>
+      <core:Pose rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose04">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose09"/>
+        <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">OneLegForward</core:hasSupportType>
+        <core:hasInversePose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose09"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshwaSanchalanasana"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <rdfs:label>Variant02_Pose04</rdfs:label>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</core:poseNumber>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose03"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose05"/>
+        <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Right</core:hasLaterality>
+      </core:Pose>
+    </core:hasNextPose>
+    <core:belongsToVariant>
+      <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga">
+        <rdfs:label>Variant02_BiharSchoolOfYoga</rdfs:label>
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Variant"/>
+        <rdfs:comment>12 pose Bihar School of Yoga Surya Namaskar.</rdfs:comment>
+      </owl:NamedIndividual>
+    </core:belongsToVariant>
+    <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</core:poseNumber>
+    <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+    <core:hasPreviousPose>
+      <core:Pose rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose02">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose01"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose03"/>
+        <rdfs:label>Variant02_Pose02</rdfs:label>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose11"/>
+        <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandingTwoFeet</core:hasSupportType>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</core:poseNumber>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#HastaUtthanasana"/>
+        <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+      </core:Pose>
+    </core:hasPreviousPose>
+    <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+    <core:repeatsPose>
+      <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose10">
+        <rdfs:label>Variant02_Pose10</rdfs:label>
+        <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose11"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose09"/>
+        <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</core:poseNumber>
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose03"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+      </owl:NamedIndividual>
+    </core:repeatsPose>
+    <rdfs:label>Variant02_Pose03</rdfs:label>
+    <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandingBentTwoFeet</core:hasSupportType>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose07">
+    <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+    <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</core:poseNumber>
+    <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Bhujangasana"/>
+    <core:hasPreviousPose>
+      <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose06">
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose07"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose05"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshtangaNamaskara"/>
+        <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EightPointSupport</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</core:poseNumber>
+        <rdfs:label>Variant02_Pose06</rdfs:label>
+      </owl:NamedIndividual>
+    </core:hasPreviousPose>
+    <rdfs:label>Variant02_Pose07</rdfs:label>
+    <core:hasNextPose>
+      <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose08">
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose07"/>
+        <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HandsAndFeet</core:hasSupportType>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose09"/>
+        <rdfs:label>Variant02_Pose08</rdfs:label>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose05"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</core:poseNumber>
+        <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Parvatasana"/>
+      </owl:NamedIndividual>
+    </core:hasNextPose>
+    <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prone</core:hasSupportType>
+    <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+  </owl:NamedIndividual>
+  <core:Pose rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose09">
+    <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose10"/>
+    <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose04"/>
+    <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshwaSanchalanasana"/>
+    <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Left</core:hasLaterality>
+    <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">OneLegForward</core:hasSupportType>
+    <core:hasInversePose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose04"/>
+    <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose08"/>
+    <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</core:poseNumber>
+    <rdfs:label>Variant02_Pose09</rdfs:label>
+  </core:Pose>
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose01">
+    <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandingTwoFeet</core:hasSupportType>
+    <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+    <rdfs:label>Variant02_Pose01</rdfs:label>
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+    <core:repeatsPose>
+      <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose12">
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose11"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Pranamasana"/>
+        <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandingTwoFeet</core:hasSupportType>
+        <rdfs:label>Variant02_Pose12</rdfs:label>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</core:poseNumber>
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose01"/>
+      </owl:NamedIndividual>
+    </core:repeatsPose>
+    <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose02"/>
+    <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Pranamasana"/>
+    <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+    <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</core:poseNumber>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose11">
+    <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose02"/>
+    <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#HastaUtthanasana"/>
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+    <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose12"/>
+    <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose10"/>
+    <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</core:poseNumber>
+    <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+    <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandingTwoFeet</core:hasSupportType>
+    <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+    <rdfs:label>Variant02_Pose11</rdfs:label>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose05">
+    <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose08"/>
+    <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose04"/>
+    <rdfs:label>Variant02_Pose05</rdfs:label>
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+    <core:hasSupportType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HandsAndFeet</core:hasSupportType>
+    <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose06"/>
+    <core:hasLaterality rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Symmetric</core:hasLaterality>
+    <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Parvatasana"/>
+    <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</core:poseNumber>
+    <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+  </owl:NamedIndividual>
+</rdf:RDF>
