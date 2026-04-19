@@ -99,7 +99,7 @@
         <div class="file-box">
           <h3>pyLODE Documentation</h3>
           <p>Generated ontology documentation for classes, properties, and metadata.</p>
-          <a class="btn" href="docs/ontology-doc.html" target="_blank">View Documentation</a>
+          <a class="btn" href="docs/ontologydoc.html" target="_blank">View Documentation</a>
         </div>
 
         <div class="file-box">
@@ -114,7 +114,14 @@
 
         <div class="metadata-box">
           <p><strong>Title:</strong> Surya Namaskar Ontology</p>
-          <p><strong>Namespace:</strong> http://example.org/suryanamaskar#</p>
+          <p><strong>Namespaces:</strong></p>
+          <ul>
+            <li><strong>core:</strong> http://example.org/suryanamaskar/core#</li>
+            <li><strong>base:</strong> http://example.org/suryanamaskar/base-sn#</li>
+            <li><strong>v1:</strong> http://example.org/suryanamaskar/variant01#</li>
+            <li><strong>v2:</strong> http://example.org/suryanamaskar/variant02#</li>
+            <li><strong>v3:</strong> http://example.org/suryanamaskar/variant03#</li>
+          </ul>
           <p><strong>Format:</strong> OWL (RDF/XML)</p>
           <p><strong>Description:</strong> Ontology representing Surya Namaskar asanas, pose occurrences, variants, and a pose correction layer for the Base Surya Namaskar followed at IIT BHU.</p>
 
@@ -164,22 +171,20 @@
           <h3>C1: What are the poses in Base Surya Namaskar?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?pose
 WHERE {
   ?pose rdf:type core:Pose ;
         core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU .
 }
-ORDER BY ?pose
-              </pre>
+ORDER BY ?pose</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -194,21 +199,19 @@ ORDER BY ?pose
           <h3>C2: How many poses are in Base Surya Namaskar?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT (COUNT(?pose) AS ?count)
 WHERE {
   ?pose rdf:type core:Pose ;
         core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU .
-}
-              </pre>
+}</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -223,14 +226,13 @@ WHERE {
           <h3>C3: Which poses are performed standing on two feet in Base Surya Namaskar?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?pose
 WHERE {
@@ -238,8 +240,7 @@ WHERE {
         core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
         core:hasSupportType "StandingTwoFeet" .
 }
-ORDER BY ?pose
-              </pre>
+ORDER BY ?pose</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -254,14 +255,13 @@ ORDER BY ?pose
           <h3>C4: Which poses are repeated in Base Surya Namaskar?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?pose ?repeatedPose
 WHERE {
@@ -272,8 +272,7 @@ WHERE {
   ?repeatedPose rdf:type core:Pose ;
                 core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU .
 }
-ORDER BY ?pose
-              </pre>
+ORDER BY ?pose</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -288,15 +287,13 @@ ORDER BY ?pose
           <h3>C5: Which poses have inverse relationships in Base Surya Namaskar?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
-
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?pose ?inversePose
 WHERE {
@@ -307,9 +304,7 @@ WHERE {
   ?inversePose rdf:type core:Pose ;
                core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU .
 }
-ORDER BY ?pose
-
-              </pre>
+ORDER BY ?pose</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -324,21 +319,18 @@ ORDER BY ?pose
           <h3>C6: How many variants exist?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT (COUNT(?variant) AS ?count)
 WHERE {
   ?variant rdf:type core:Variant .
-}
-
-              </pre>
+}</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -353,21 +345,19 @@ WHERE {
           <h3>C7: What are the different variants represented in the ontology?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?variant
 WHERE {
   ?variant rdf:type core:Variant .
 }
-ORDER BY ?variant
-              </pre>
+ORDER BY ?variant</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -382,14 +372,13 @@ ORDER BY ?variant
           <h3>C8: Which asanas are shared across multiple variants?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?asana (COUNT(DISTINCT ?variant) AS ?variantCount)
 WHERE {
@@ -397,9 +386,8 @@ WHERE {
         core:belongsToVariant ?variant .
 }
 GROUP BY ?asana
-HAVING (COUNT(DISTINCT ?variant) > 1)
-ORDER BY DESC(?variantCount)
-              </pre>
+HAVING (COUNT(DISTINCT ?variant) &gt; 1)
+ORDER BY DESC(?variantCount)</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -414,14 +402,13 @@ ORDER BY DESC(?variantCount)
           <h3>C9: What is the sequence order of poses in Base Surya Namaskar?</h3>
           <div class="query-answer-row">
             <div class="query-box">
-              <pre>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX core: <http://example.org/suryanamaskar/core#>
-PREFIX base: <http://example.org/suryanamaskar/base-sn#>
-PREFIX v1: <http://example.org/suryanamaskar/variant01#>
-PREFIX v2: <http://example.org/suryanamaskar/variant02#>
-PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?pose ?nextPose
 WHERE {
@@ -429,8 +416,7 @@ WHERE {
         core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
         core:hasNextPose ?nextPose .
 }
-ORDER BY ?pose
-              </pre>
+ORDER BY ?pose</code></pre>
             </div>
             <div class="answer-box">
               <h4>Answer</h4>
@@ -452,7 +438,7 @@ ORDER BY ?pose
 
         <div class="visual-block">
           <h3>WebVOWL Visualization</h3>
-          <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/master.owl" target="_blank">
+          <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/merged_sn_ontology.owl" target="_blank">
             <img src="images/webvowl.png" alt="WebVOWL View">
           </a>
         </div>
