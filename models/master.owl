@@ -1,0 +1,2663 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.org/suryanamaskar/master#"
+     xml:base="http://example.org/suryanamaskar/master"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:core="http://example.org/suryanamaskar/core#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://example.org/suryanamaskar/master">
+        <dc:description>Base SN variant ontology containing Base SN variant individual, pose occurrences, sequence relations, and Base SN-specific correction resources.</dc:description>
+        <dc:description>Core ontology for Surya Namaskar variants, containing shared classes, properties, asana individuals, and body-part individuals.</dc:description>
+        <dc:description>Master ontology importing the shared core, Base SN, and Variant 01-03 ontologies.</dc:description>
+        <dc:description>Variant 01 ontology containing the Krishnamacharya Vinyasa variant individual, 13 pose occurrences, and their sequence-specific relations and values.</dc:description>
+        <dc:description>Variant 03 ontology containing Swami Vivekananda Kendra variant individual, pose occurrences, and sequence relations.</dc:description>
+        <dc:description>Variant 02-specific individuals and assertions extracted from the original combined Surya Namaskar ontology; imports the shared core ontology.</dc:description>
+        <dc:title>Surya Namaskar Base Sequence Ontology</dc:title>
+        <dc:title>Surya Namaskar Core Ontology</dc:title>
+        <dc:title>Surya Namaskar Master Ontology</dc:title>
+        <dc:title>Surya Namaskar Variant 01 Krishnamacharya Vinyasa Ontology</dc:title>
+        <dc:title>Surya Namaskar Variant 03 Ontology</dc:title>
+        <dc:title>Variant 02 Bihar School of Yoga Ontology</dc:title>
+        <rdfs:label>Surya Namaskar Base Sequence Ontology</rdfs:label>
+        <rdfs:label>Surya Namaskar Core Ontology</rdfs:label>
+        <rdfs:label>Surya Namaskar Master Ontology</rdfs:label>
+        <rdfs:label>Surya Namaskar Variant 01 Ontology</rdfs:label>
+        <rdfs:label>Surya Namaskar Variant 03 Ontology</rdfs:label>
+        <rdfs:label>Variant 02 Ontology</rdfs:label>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/description -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/description"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/title -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/title"/>
+    
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#comment -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#label -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#label"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#belongsToVariant -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#belongsToVariant">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#Variant"/>
+        <rdfs:label>belongs to variant</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasAsana -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#hasAsana">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <rdfs:label>has asana</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasConstraint -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#hasConstraint">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <rdfs:label>has constraint</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasCorrection -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#hasCorrection">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <rdfs:label>has correction</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasInversePose -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#hasInversePose">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:label>has inverse pose</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasNextPose -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#hasNextPose">
+        <owl:inverseOf rdf:resource="http://example.org/suryanamaskar/core#hasPreviousPose"/>
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:label>has next pose</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasPossibleError -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#hasPossibleError">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <rdfs:label>has possible error</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasPreviousPose -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#hasPreviousPose">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:label>has previous pose</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasRule -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#hasRule">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <rdfs:label>has rule</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#involvesBodyPart -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#involvesBodyPart">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>involves body part</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#repeatsPose -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#repeatsPose">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:label>repeats pose</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#sameAsanaAs -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/suryanamaskar/core#sameAsanaAs">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <rdfs:range rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <rdfs:label>same asana as</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#constraintDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#constraintDescription">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>constraint description</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#correctionText -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#correctionText">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>correction text</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#errorDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#errorDescription">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>error description</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasAlternateName -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#hasAlternateName">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>has alternate name</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasCYPPage -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#hasCYPPage">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>has CYP page</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasChakra -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#hasChakra">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>has chakra</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasLaterality -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#hasLaterality">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>has laterality</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasMantra -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#hasMantra">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>has mantra</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#hasSupportType -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#hasSupportType">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>has support type</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#poseNumber -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#poseNumber">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>pose number</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#ruleDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/suryanamaskar/core#ruleDescription">
+        <rdfs:domain rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>rule description</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Asana -->
+
+    <owl:Class rdf:about="http://example.org/suryanamaskar/core#Asana">
+        <rdfs:label>Asana</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#BodyPart -->
+
+    <owl:Class rdf:about="http://example.org/suryanamaskar/core#BodyPart">
+        <rdfs:label>Body Part</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#CorrectionInstruction -->
+
+    <owl:Class rdf:about="http://example.org/suryanamaskar/core#CorrectionInstruction">
+        <rdfs:label>Correction Instruction</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Pose -->
+
+    <owl:Class rdf:about="http://example.org/suryanamaskar/core#Pose">
+        <rdfs:label>Pose</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#PoseConstraint -->
+
+    <owl:Class rdf:about="http://example.org/suryanamaskar/core#PoseConstraint">
+        <rdfs:label>Pose Constraint</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#PoseError -->
+
+    <owl:Class rdf:about="http://example.org/suryanamaskar/core#PoseError">
+        <rdfs:label>Pose Error</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#PostureRule -->
+
+    <owl:Class rdf:about="http://example.org/suryanamaskar/core#PostureRule">
+        <rdfs:label>Posture Rule</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Variant -->
+
+    <owl:Class rdf:about="http://example.org/suryanamaskar/core#Variant">
+        <rdfs:label>Variant</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#AlignFrontKneeInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#AlignFrontKneeInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Align the front knee above or near the ankle.</core:correctionText>
+        <rdfs:label>AlignFrontKneeInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#AlignPalmsAtChestInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#AlignPalmsAtChestInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Align the palms at the chest.</core:correctionText>
+        <rdfs:label>AlignPalmsAtChestInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ArmAndToeSupportConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ArmAndToeSupportConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Full body support on arms and toes.</core:constraintDescription>
+        <rdfs:label>ArmAndToeSupportConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ArmsRaisedOverheadRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ArmsRaisedOverheadRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Raise the arms overhead.</core:ruleDescription>
+        <rdfs:label>ArmsRaisedOverheadRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BackExtensionWithPelvisGroundedConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BackExtensionWithPelvisGroundedConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Backward spinal extension with the pelvis grounded.</core:constraintDescription>
+        <rdfs:label>BackExtensionWithPelvisGroundedConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BackLegExtendedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BackLegExtendedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the back leg extended.</core:ruleDescription>
+        <rdfs:label>BackLegExtendedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BalanceWeightEvenlyInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BalanceWeightEvenlyInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Balance weight evenly on both feet.</core:correctionText>
+        <rdfs:label>BalanceWeightEvenlyInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose01 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose01">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Pranamasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#SymmetricalStandingConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose02"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#CollapsedChestError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#PalmsMisalignedError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#RoundedShouldersError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#UnevenWeightError"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ChestOpenRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#PalmsTogetherRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ShouldersRelaxedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#UprightPostureRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chest"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Feet"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Neck"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Palms"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Shoulder"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose12"/>
+        <core:hasChakra>Anahata</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hraam/Om Mitraya Namah</core:hasMantra>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</core:poseNumber>
+        <rdfs:label>BaseSN_Pose01</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose02 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose02">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#HastaUtthanasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#MildSpinalExtensionConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose03"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#BentArmsError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#LowerBackOverarchingError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#NeckStrainError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#RaisedShouldersError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose01"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ArmsRaisedOverheadRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ChestOpenRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ControlledBackbendRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Arms"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chest"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hip"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Neck"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Shoulder"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose11"/>
+        <core:hasChakra>Vishuddhi</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hreem/Om Ravaye Namah</core:hasMantra>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</core:poseNumber>
+        <rdfs:label>BaseSN_Pose02</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose03 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose03">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#HipHingeConstraint"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#StableLegSupportConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose04"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#ExcessiveKneeBendError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#RoundedBackError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#WeightOnHeelsOnlyError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose02"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ForwardBendFromHipsRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#HeadRelaxedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#SpineElongatedRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Ankle"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Feet"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hip"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Knee"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Neck"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose10"/>
+        <core:hasChakra>Swadhisthana</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hroom/Om Suryaya Namah</core:hasMantra>
+        <core:hasSupportType>StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</core:poseNumber>
+        <rdfs:label>BaseSN_Pose03</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose04 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose04">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshwaSanchalanasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#OneLegLungeSupportConstraint"/>
+        <core:hasInversePose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose09"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose05"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#CollapsedChestError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#KneeBeyondAnkleError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#WeakBackLegError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose03"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#BackLegExtendedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ChestLiftedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#FrontKneeAlignedRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Ankle"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chest"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hands"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hip"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Knee"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose09"/>
+        <core:hasChakra>Ajna</core:hasChakra>
+        <core:hasLaterality>Right</core:hasLaterality>
+        <core:hasMantra>Om Hraim/Om Bhanave Namah</core:hasMantra>
+        <core:hasSupportType>OneLegForward</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</core:poseNumber>
+        <rdfs:label>BaseSN_Pose04</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose05 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose05">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#ChaturangaDandasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#ArmAndToeSupportConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose06"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#ElbowsFlaredError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#RaisedHipsError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#SaggingHipsError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose04"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#BodyStraightLineRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#CoreEngagedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ElbowsControlledRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Core"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Elbow"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Legs"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Shoulder"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Wrist"/>
+        <core:hasChakra>Vishuddhi</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hraum/Om Khagaya Namah</core:hasMantra>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</core:poseNumber>
+        <rdfs:label>BaseSN_Pose05</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose06 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose06">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshtangaNamaskara"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#EightPointSupportConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose07"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#ChestNotLoweredError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#ElbowsWideError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#HipsDroppedFullyError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose05"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ControlledLoweringRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#EightPointContactRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chest"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chin"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Elbow"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Feet"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hands"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Knee"/>
+        <core:hasChakra>Manipura</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hrah/Om Pushne Namah</core:hasMantra>
+        <core:hasSupportType>EightPointSupport</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</core:poseNumber>
+        <rdfs:label>BaseSN_Pose06</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose07 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose07">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Bhujangasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#BackExtensionWithPelvisGroundedConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose08"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#CompressedLowerBackError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#OverextensionError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#ShoulderTensionError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose06"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ChestLiftedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ShouldersRelaxedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#SpinalExtensionRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Arms"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chest"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Neck"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Shoulder"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:hasChakra>Swadhisthana</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hraam/Om Hiranyagarbhaya Namah</core:hasMantra>
+        <core:hasSupportType>Prone</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</core:poseNumber>
+        <rdfs:label>BaseSN_Pose07</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose08 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose08">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Parvatasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#HandsAndFeetSupportConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose09"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#RoundedBackError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#UnstableLegsError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#WristOverloadError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose07"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#HipsRaisedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#SpineElongatedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#WeightDistributedRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Ankle"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Arms"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hip"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Knee"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Shoulder"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:hasChakra>Vishuddhi</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hreem/Om Marichaye Namah</core:hasMantra>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</core:poseNumber>
+        <rdfs:label>BaseSN_Pose08</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose09 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose09">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshwaSanchalanasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#MirroredLungeConstraint"/>
+        <core:hasInversePose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose04"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose10"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#CollapsedChestError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#KneeBeyondAnkleError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#WeakBackLegError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose08"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#BackLegExtendedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ChestLiftedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#FrontKneeAlignedRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Ankle"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chest"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hands"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hip"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Knee"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose04"/>
+        <core:hasChakra>Ajna</core:hasChakra>
+        <core:hasLaterality>Left</core:hasLaterality>
+        <core:hasMantra>Om Hroom/Om Adityaya Namah</core:hasMantra>
+        <core:hasSupportType>OneLegForward</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</core:poseNumber>
+        <rdfs:label>BaseSN_Pose09</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose10 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose10">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#ForwardBendConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose11"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#ExcessiveKneeBendError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#RoundedBackError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose09"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ForwardBendFromHipsRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#HeadRelaxedRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#SpineElongatedRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Feet"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Hip"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Knee"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose03"/>
+        <core:hasChakra>Swadhisthana</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hraim/Om Savitre Namah</core:hasMantra>
+        <core:hasSupportType>StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</core:poseNumber>
+        <rdfs:label>BaseSN_Pose10</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose11 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose11">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#HastaUtthanasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#UprightBackbendConstraint"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose12"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#CompressedLowerBackError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#ShoulderTensionError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose10"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ArmsRaisedOverheadRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ChestOpenRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ControlledBackbendRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Arms"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chest"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Neck"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose02"/>
+        <core:hasChakra>Vishuddhi</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hraum/Om Arkaya Namah</core:hasMantra>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</core:poseNumber>
+        <rdfs:label>BaseSN_Pose11</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_Pose12 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_Pose12">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Pranamasana"/>
+        <core:hasConstraint rdf:resource="http://example.org/suryanamaskar/base-sn#SymmetricalEndingConstraint"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#CollapsedPostureError"/>
+        <core:hasPossibleError rdf:resource="http://example.org/suryanamaskar/base-sn#PoorBalanceError"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose11"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#CalmAlignmentRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#ChestOpenRule"/>
+        <core:hasRule rdf:resource="http://example.org/suryanamaskar/base-sn#StableStandingRule"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Chest"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Feet"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Shoulder"/>
+        <core:involvesBodyPart rdf:resource="http://example.org/suryanamaskar/core#Spine"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/base-sn#BaseSN_Pose01"/>
+        <core:hasChakra>Anahata</core:hasChakra>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasMantra>Om Hrah/Om Bhaskaraya Namah</core:hasMantra>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</core:poseNumber>
+        <rdfs:label>BaseSN_Pose12</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Variant"/>
+        <rdfs:comment>Base 12 pose Surya Namaskar sequence used at IIT BHU, based on the Sivananda Yoga Vedanta Centre tradition.</rdfs:comment>
+        <rdfs:label>BaseSN_SivanandaYogaVedantaCentre</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BendFromHipsInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BendFromHipsInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Bend forward from the hips.</core:correctionText>
+        <rdfs:label>BendFromHipsInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BentArmsError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BentArmsError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#KeepArmsStraightInstruction"/>
+        <core:errorDescription>Arms are not fully extended.</core:errorDescription>
+        <rdfs:label>BentArmsError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#BodyStraightLineRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#BodyStraightLineRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the body in one straight line.</core:ruleDescription>
+        <rdfs:label>BodyStraightLineRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#CalmAlignmentRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#CalmAlignmentRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Return to calm and centered alignment.</core:ruleDescription>
+        <rdfs:label>CalmAlignmentRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#CenterBodyInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#CenterBodyInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Center the body and return to neutral alignment.</core:correctionText>
+        <rdfs:label>CenterBodyInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ChestLiftedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ChestLiftedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Lift the chest forward and upward.</core:ruleDescription>
+        <rdfs:label>ChestLiftedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ChestNotLoweredError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ChestNotLoweredError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LowerChestProperlyInstruction"/>
+        <core:errorDescription>Chest is not lowered correctly.</core:errorDescription>
+        <rdfs:label>ChestNotLoweredError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ChestOpenRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ChestOpenRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the chest open.</core:ruleDescription>
+        <rdfs:label>ChestOpenRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#CollapsedChestError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#CollapsedChestError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LiftChestForwardInstruction"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LiftChestForwardUpwardInstruction"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LiftChestInstruction"/>
+        <core:errorDescription>Chest is collapsed.</core:errorDescription>
+        <rdfs:label>CollapsedChestError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#CollapsedPostureError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#CollapsedPostureError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#CenterBodyInstruction"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LiftChestInstruction"/>
+        <core:errorDescription>Overall posture is collapsed.</core:errorDescription>
+        <rdfs:label>CollapsedPostureError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#CompressedLowerBackError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#CompressedLowerBackError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LengthenSpineInstruction"/>
+        <core:errorDescription>Lower back is compressed.</core:errorDescription>
+        <rdfs:label>CompressedLowerBackError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ControlledBackbendRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ControlledBackbendRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the backbend controlled.</core:ruleDescription>
+        <rdfs:label>ControlledBackbendRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ControlledLoweringRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ControlledLoweringRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Lower the body with control.</core:ruleDescription>
+        <rdfs:label>ControlledLoweringRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#CoreEngagedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#CoreEngagedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the core engaged.</core:ruleDescription>
+        <rdfs:label>CoreEngagedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#DistributeWeightEvenlyInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#DistributeWeightEvenlyInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Distribute weight evenly.</core:correctionText>
+        <rdfs:label>DistributeWeightEvenlyInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#EightPointContactRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#EightPointContactRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Maintain eight point contact.</core:ruleDescription>
+        <rdfs:label>EightPointContactRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#EightPointSupportConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#EightPointSupportConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Support through eight body contact points.</core:constraintDescription>
+        <rdfs:label>EightPointSupportConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ElbowsControlledRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ElbowsControlledRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the elbows close and controlled.</core:ruleDescription>
+        <rdfs:label>ElbowsControlledRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ElbowsFlaredError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ElbowsFlaredError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#TuckElbowsInstruction"/>
+        <core:errorDescription>Elbows are moving outward.</core:errorDescription>
+        <rdfs:label>ElbowsFlaredError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ElbowsWideError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ElbowsWideError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#KeepElbowsCloseInstruction"/>
+        <core:errorDescription>Elbows are too wide.</core:errorDescription>
+        <rdfs:label>ElbowsWideError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#EngageCoreInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#EngageCoreInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Engage the core.</core:correctionText>
+        <rdfs:label>EngageCoreInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ExcessiveKneeBendError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ExcessiveKneeBendError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#SoftenKneesInstruction"/>
+        <core:errorDescription>Knees are bent too much.</core:errorDescription>
+        <rdfs:label>ExcessiveKneeBendError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ExtendBackLegInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ExtendBackLegInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Extend the back leg fully.</core:correctionText>
+        <rdfs:label>ExtendBackLegInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ForwardBendConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ForwardBendConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Controlled standing forward bend.</core:constraintDescription>
+        <rdfs:label>ForwardBendConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ForwardBendFromHipsRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ForwardBendFromHipsRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Bend forward from the hips.</core:ruleDescription>
+        <rdfs:label>ForwardBendFromHipsRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#FrontKneeAlignedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#FrontKneeAlignedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the front knee aligned above or near the ankle.</core:ruleDescription>
+        <rdfs:label>FrontKneeAlignedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#GentleBackbendInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#GentleBackbendInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Keep the backbend gentle and controlled.</core:correctionText>
+        <rdfs:label>GentleBackbendInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#HandsAndFeetSupportConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#HandsAndFeetSupportConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Hands and feet support in an inverted V shape.</core:constraintDescription>
+        <rdfs:label>HandsAndFeetSupportConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#HeadRelaxedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#HeadRelaxedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Relax the head and neck downward.</core:ruleDescription>
+        <rdfs:label>HeadRelaxedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#HipHingeConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#HipHingeConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Forward fold with a hip hinge movement.</core:constraintDescription>
+        <rdfs:label>HipHingeConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#HipsDroppedFullyError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#HipsDroppedFullyError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#MaintainHipPositionInstruction"/>
+        <core:errorDescription>Hips are dropped fully to the floor.</core:errorDescription>
+        <rdfs:label>HipsDroppedFullyError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#HipsRaisedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#HipsRaisedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Raise the hips upward.</core:ruleDescription>
+        <rdfs:label>HipsRaisedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#KeepArmsStraightInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#KeepArmsStraightInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Keep the arms straight.</core:correctionText>
+        <rdfs:label>KeepArmsStraightInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#KeepBodyAlignedInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#KeepBodyAlignedInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Keep the body aligned in one straight line.</core:correctionText>
+        <rdfs:label>KeepBodyAlignedInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#KeepElbowsCloseInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#KeepElbowsCloseInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Keep the elbows close.</core:correctionText>
+        <rdfs:label>KeepElbowsCloseInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#KneeBeyondAnkleError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#KneeBeyondAnkleError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#AlignFrontKneeInstruction"/>
+        <core:errorDescription>Front knee moves too far beyond the ankle.</core:errorDescription>
+        <rdfs:label>KneeBeyondAnkleError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#LengthenSpineInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#LengthenSpineInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Lengthen the spine.</core:correctionText>
+        <rdfs:label>LengthenSpineInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#LiftChestForwardInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#LiftChestForwardInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Lift the chest forward.</core:correctionText>
+        <rdfs:label>LiftChestForwardInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#LiftChestForwardUpwardInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#LiftChestForwardUpwardInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Lift the chest forward and upward.</core:correctionText>
+        <rdfs:label>LiftChestForwardUpwardInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#LiftChestInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#LiftChestInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Lift the chest.</core:correctionText>
+        <rdfs:label>LiftChestInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#LiftUpwardFirstInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#LiftUpwardFirstInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Lift upward before entering the backbend.</core:correctionText>
+        <rdfs:label>LiftUpwardFirstInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#LowerBackOverarchingError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#LowerBackOverarchingError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#GentleBackbendInstruction"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LengthenSpineInstruction"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LiftUpwardFirstInstruction"/>
+        <core:errorDescription>Lower back is bent too much.</core:errorDescription>
+        <rdfs:label>LowerBackOverarchingError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#LowerChestProperlyInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#LowerChestProperlyInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Lower the chest properly.</core:correctionText>
+        <rdfs:label>LowerChestProperlyInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#MaintainHipPositionInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#MaintainHipPositionInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Keep the hips slightly raised.</core:correctionText>
+        <rdfs:label>MaintainHipPositionInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#MildSpinalExtensionConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#MildSpinalExtensionConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Mild spinal extension with stable lower body.</core:constraintDescription>
+        <rdfs:label>MildSpinalExtensionConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#MirroredLungeConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#MirroredLungeConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Same lunge structure on the opposite side.</core:constraintDescription>
+        <rdfs:label>MirroredLungeConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#NeckStrainError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#NeckStrainError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LengthenSpineInstruction"/>
+        <core:errorDescription>Neck is strained.</core:errorDescription>
+        <rdfs:label>NeckStrainError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#OneLegLungeSupportConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#OneLegLungeSupportConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Lunge support with one leg forward and hands grounded.</core:constraintDescription>
+        <rdfs:label>OneLegLungeSupportConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#OverextensionError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#OverextensionError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#GentleBackbendInstruction"/>
+        <core:errorDescription>Backbend is forced too much.</core:errorDescription>
+        <rdfs:label>OverextensionError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#PalmsMisalignedError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#PalmsMisalignedError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#AlignPalmsAtChestInstruction"/>
+        <core:errorDescription>Palms are not aligned properly.</core:errorDescription>
+        <rdfs:label>PalmsMisalignedError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#PalmsTogetherRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#PalmsTogetherRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the palms together at the chest.</core:ruleDescription>
+        <rdfs:label>PalmsTogetherRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#PoorBalanceError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#PoorBalanceError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#CenterBodyInstruction"/>
+        <core:errorDescription>Standing balance is unstable.</core:errorDescription>
+        <rdfs:label>PoorBalanceError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#PushHipsUpwardInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#PushHipsUpwardInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Push the hips upward.</core:correctionText>
+        <rdfs:label>PushHipsUpwardInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#RaisedHipsError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#RaisedHipsError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#KeepBodyAlignedInstruction"/>
+        <core:errorDescription>Hips are raised too high.</core:errorDescription>
+        <rdfs:label>RaisedHipsError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#RaisedShouldersError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#RaisedShouldersError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#RelaxShouldersInstruction"/>
+        <core:errorDescription>Shoulders are lifted too much.</core:errorDescription>
+        <rdfs:label>RaisedShouldersError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#RelaxShouldersInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#RelaxShouldersInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Relax the shoulders.</core:correctionText>
+        <rdfs:label>RelaxShouldersInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#RoundedBackError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#RoundedBackError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#BendFromHipsInstruction"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#LengthenSpineInstruction"/>
+        <core:errorDescription>Back is rounded.</core:errorDescription>
+        <rdfs:label>RoundedBackError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#RoundedShouldersError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#RoundedShouldersError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#RelaxShouldersInstruction"/>
+        <core:errorDescription>Shoulders are rounded forward.</core:errorDescription>
+        <rdfs:label>RoundedShouldersError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#SaggingHipsError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#SaggingHipsError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#EngageCoreInstruction"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#KeepBodyAlignedInstruction"/>
+        <core:errorDescription>Hips are sagging downward.</core:errorDescription>
+        <rdfs:label>SaggingHipsError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ShoulderTensionError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ShoulderTensionError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#RelaxShouldersInstruction"/>
+        <core:errorDescription>Shoulders are tense.</core:errorDescription>
+        <rdfs:label>ShoulderTensionError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#ShouldersRelaxedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#ShouldersRelaxedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the shoulders relaxed.</core:ruleDescription>
+        <rdfs:label>ShouldersRelaxedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#SoftenKneesInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#SoftenKneesInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Soften the knees as needed.</core:correctionText>
+        <rdfs:label>SoftenKneesInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#SpinalExtensionRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#SpinalExtensionRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Extend the spine with control.</core:ruleDescription>
+        <rdfs:label>SpinalExtensionRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#SpineElongatedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#SpineElongatedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Keep the spine elongated.</core:ruleDescription>
+        <rdfs:label>SpineElongatedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#StabilizeLegsInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#StabilizeLegsInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Stabilize and align the legs.</core:correctionText>
+        <rdfs:label>StabilizeLegsInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#StableLegSupportConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#StableLegSupportConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Stable support through both legs.</core:constraintDescription>
+        <rdfs:label>StableLegSupportConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#StableStandingRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#StableStandingRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Maintain stable standing alignment.</core:ruleDescription>
+        <rdfs:label>StableStandingRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#SymmetricalEndingConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#SymmetricalEndingConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Symmetrical standing ending posture.</core:constraintDescription>
+        <rdfs:label>SymmetricalEndingConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#SymmetricalStandingConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#SymmetricalStandingConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Symmetrical standing with balanced weight on both feet.</core:constraintDescription>
+        <rdfs:label>SymmetricalStandingConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#TuckElbowsInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#TuckElbowsInstruction">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#CorrectionInstruction"/>
+        <core:correctionText>Keep the elbows close to the body.</core:correctionText>
+        <rdfs:label>TuckElbowsInstruction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#UnevenWeightError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#UnevenWeightError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#BalanceWeightEvenlyInstruction"/>
+        <core:errorDescription>Weight is not balanced on both feet.</core:errorDescription>
+        <rdfs:label>UnevenWeightError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#UnstableLegsError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#UnstableLegsError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#StabilizeLegsInstruction"/>
+        <core:errorDescription>Legs are unstable or poorly aligned.</core:errorDescription>
+        <rdfs:label>UnstableLegsError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#UprightBackbendConstraint -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#UprightBackbendConstraint">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseConstraint"/>
+        <core:constraintDescription>Upright posture with a gentle backbend.</core:constraintDescription>
+        <rdfs:label>UprightBackbendConstraint</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#UprightPostureRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#UprightPostureRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Maintain an upright posture.</core:ruleDescription>
+        <rdfs:label>UprightPostureRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#WeakBackLegError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#WeakBackLegError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#ExtendBackLegInstruction"/>
+        <core:errorDescription>Back leg is not extended or engaged properly.</core:errorDescription>
+        <rdfs:label>WeakBackLegError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#WeightDistributedRule -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#WeightDistributedRule">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PostureRule"/>
+        <core:ruleDescription>Distribute weight evenly between hands and feet.</core:ruleDescription>
+        <rdfs:label>WeightDistributedRule</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#WeightOnHeelsOnlyError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#WeightOnHeelsOnlyError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#DistributeWeightEvenlyInstruction"/>
+        <core:errorDescription>Weight is shifted to the heels only.</core:errorDescription>
+        <rdfs:label>WeightOnHeelsOnlyError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/base-sn#WristOverloadError -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/base-sn#WristOverloadError">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#PoseError"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#DistributeWeightEvenlyInstruction"/>
+        <core:hasCorrection rdf:resource="http://example.org/suryanamaskar/base-sn#PushHipsUpwardInstruction"/>
+        <core:errorDescription>Too much weight is placed on the wrists.</core:errorDescription>
+        <rdfs:label>WristOverloadError</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#AdhoMukhaSvanasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#AdhoMukhaSvanasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:sameAsanaAs rdf:resource="http://example.org/suryanamaskar/core#Parvatasana"/>
+        <core:hasAlternateName>Adho mukha svanasana</core:hasAlternateName>
+        <core:hasAlternateName>Adhomukha swanasana</core:hasAlternateName>
+        <rdfs:label>Adho Mukha Svanasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Ankle -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ankle">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Ankle</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Arms -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Arms">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Arms</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#AshtangaNamaskara -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#AshtangaNamaskara">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasAlternateName>Ashtanga namaskara</core:hasAlternateName>
+        <core:hasAlternateName>Salute with eight parts or points</core:hasAlternateName>
+        <rdfs:label>Ashtanga Namaskara</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#AshwaSanchalanasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#AshwaSanchalanasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasAlternateName>Ashwa Sanchalan-asana</core:hasAlternateName>
+        <core:hasAlternateName>Ashwasanchalanasana</core:hasAlternateName>
+        <core:hasAlternateName>Equestrian pose</core:hasAlternateName>
+        <rdfs:label>Ashwa Sanchalanasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Bhujangasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Bhujangasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasAlternateName>Bhujang-asana</core:hasAlternateName>
+        <core:hasAlternateName>Cobra pose</core:hasAlternateName>
+        <core:hasCYPPage>33</core:hasCYPPage>
+        <rdfs:label>Bhujangasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#ChaturangaDandasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#ChaturangaDandasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:sameAsanaAs rdf:resource="http://example.org/suryanamaskar/core#Phalakasana"/>
+        <core:hasAlternateName>Chaturanga Dandasan</core:hasAlternateName>
+        <rdfs:label>Chaturanga Dandasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Chest -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Chest">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Chest</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Chin -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Chin">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Chin</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Core -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Core">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Core</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#DandaSamarpana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#DandaSamarpana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <rdfs:label>Danda Samarpana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Elbow -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Elbow">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Elbow</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Feet -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Feet">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Feet</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Hands -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Hands">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Hands</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#HastaUtthanasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#HastaUtthanasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasAlternateName>Hasta Utthan-asana</core:hasAlternateName>
+        <core:hasAlternateName>Hastha uthanasana</core:hasAlternateName>
+        <core:hasAlternateName>Raised arms pose</core:hasAlternateName>
+        <rdfs:label>Hasta Utthanasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Hip -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Hip">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Hip</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Knee -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Knee">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Knee</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Legs -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Legs">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Legs</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Neck -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Neck">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Neck</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Padahastasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Padahastasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:sameAsanaAs rdf:resource="http://example.org/suryanamaskar/core#Uttanasana"/>
+        <core:hasAlternateName>Hand to foot pose</core:hasAlternateName>
+        <core:hasAlternateName>Pada hastasana</core:hasAlternateName>
+        <core:hasAlternateName>Padahast-asana</core:hasAlternateName>
+        <core:hasAlternateName>Padahasta-sana</core:hasAlternateName>
+        <core:hasAlternateName>Padahathasana</core:hasAlternateName>
+        <core:hasCYPPage>22</core:hasCYPPage>
+        <rdfs:label>Padahastasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Palms -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Palms">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Palms</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Parvatasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Parvatasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:sameAsanaAs rdf:resource="http://example.org/suryanamaskar/core#AdhoMukhaSvanasana"/>
+        <core:hasAlternateName>Mountain pose</core:hasAlternateName>
+        <core:hasAlternateName>Parvat-asana</core:hasAlternateName>
+        <rdfs:label>Parvatasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Phalakasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Phalakasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:sameAsanaAs rdf:resource="http://example.org/suryanamaskar/core#ChaturangaDandasana"/>
+        <core:hasAlternateName>Plank pose</core:hasAlternateName>
+        <rdfs:label>Phalakasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Pranamasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Pranamasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasAlternateName>Pranam-asana</core:hasAlternateName>
+        <core:hasAlternateName>Prayer pose</core:hasAlternateName>
+        <rdfs:label>Pranamasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Samasthiti -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Samasthiti">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <rdfs:label>Samasthiti</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Shashankasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Shashankasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>29</core:hasCYPPage>
+        <rdfs:label>Shashankasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#ShashtangaNamaskara -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#ShashtangaNamaskara">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasAlternateName>Shashtanga namaskara</core:hasAlternateName>
+        <rdfs:label>Shashtanga Namaskara</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Shoulder -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Shoulder">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Shoulder</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Spine -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Spine">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Spine</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Tadasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Tadasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>20</core:hasCYPPage>
+        <rdfs:label>Tadasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#UrdhwaMukhaSvanasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#UrdhwaMukhaSvanasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <rdfs:label>Urdhwa Mukha Svanasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Utkatasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Utkatasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasAlternateName>Hip stretch pose</core:hasAlternateName>
+        <rdfs:label>Utkatasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Uttanasana -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Uttanasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:sameAsanaAs rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+        <rdfs:label>Uttanasana</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/core#Wrist -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Wrist">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#BodyPart"/>
+        <rdfs:label>Wrist</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Variant"/>
+        <rdfs:comment>13 pose Krishnamacharya Vinyasa Surya Namaskar.</rdfs:comment>
+        <rdfs:label>Variant01_KrishnamacharyaVinyasa</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose01 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose01">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Samasthiti"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose02"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose13"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</core:poseNumber>
+        <rdfs:label>Variant01_Pose01</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose02 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose02">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Tadasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose03"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose01"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose12"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</core:poseNumber>
+        <rdfs:label>Variant01_Pose02</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose03 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose03">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Uttanasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose04"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose02"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose11"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</core:poseNumber>
+        <rdfs:label>Variant01_Pose03</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose04 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose04">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Utkatasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose05"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose03"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose10"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</core:poseNumber>
+        <rdfs:label>Variant01_Pose04</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose05 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose05">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#ChaturangaDandasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose06"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose04"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose07"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</core:poseNumber>
+        <rdfs:label>Variant01_Pose05</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose06 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose06">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#DandaSamarpana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose07"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose05"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</core:poseNumber>
+        <rdfs:label>Variant01_Pose06</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose07 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose07">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#ChaturangaDandasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose08"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose06"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose05"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</core:poseNumber>
+        <rdfs:label>Variant01_Pose07</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose08 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose08">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#UrdhwaMukhaSvanasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose09"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose07"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>Prone</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</core:poseNumber>
+        <rdfs:label>Variant01_Pose08</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose09 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose09">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AdhoMukhaSvanasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose10"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose08"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</core:poseNumber>
+        <rdfs:label>Variant01_Pose09</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose10 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose10">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Utkatasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose11"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose09"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose04"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</core:poseNumber>
+        <rdfs:label>Variant01_Pose10</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose11 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose11">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Uttanasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose12"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose10"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose03"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</core:poseNumber>
+        <rdfs:label>Variant01_Pose11</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose12 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose12">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Tadasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose13"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose11"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose02"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</core:poseNumber>
+        <rdfs:label>Variant01_Pose12</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant01#Variant01_Pose13 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant01#Variant01_Pose13">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_KrishnamacharyaVinyasa"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Samasthiti"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose12"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant01#Variant01_Pose01"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</core:poseNumber>
+        <rdfs:label>Variant01_Pose13</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Variant"/>
+        <rdfs:comment>12 pose Bihar School of Yoga Surya Namaskar.</rdfs:comment>
+        <rdfs:label>Variant02_BiharSchoolOfYoga</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose01 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose01">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Pranamasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose02"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose12"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</core:poseNumber>
+        <rdfs:label>Variant02_Pose01</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose02 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose02">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#HastaUtthanasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose03"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose01"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose11"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</core:poseNumber>
+        <rdfs:label>Variant02_Pose02</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose03 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose03">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose04"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose02"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose10"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</core:poseNumber>
+        <rdfs:label>Variant02_Pose03</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose04 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose04">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshwaSanchalanasana"/>
+        <core:hasInversePose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose09"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose05"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose03"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose09"/>
+        <core:hasLaterality>Right</core:hasLaterality>
+        <core:hasSupportType>OneLegForward</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</core:poseNumber>
+        <rdfs:label>Variant02_Pose04</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose05 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose05">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Parvatasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose06"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose04"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose08"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</core:poseNumber>
+        <rdfs:label>Variant02_Pose05</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose06 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose06">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshtangaNamaskara"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose07"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose05"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>EightPointSupport</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</core:poseNumber>
+        <rdfs:label>Variant02_Pose06</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose07 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose07">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Bhujangasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose08"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose06"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>Prone</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</core:poseNumber>
+        <rdfs:label>Variant02_Pose07</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose08 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose08">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Parvatasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose09"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose07"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose05"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</core:poseNumber>
+        <rdfs:label>Variant02_Pose08</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose09 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose09">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshwaSanchalanasana"/>
+        <core:hasInversePose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose04"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose10"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose08"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose04"/>
+        <core:hasLaterality>Left</core:hasLaterality>
+        <core:hasSupportType>OneLegForward</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</core:poseNumber>
+        <rdfs:label>Variant02_Pose09</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose10 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose10">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose11"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose09"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose03"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</core:poseNumber>
+        <rdfs:label>Variant02_Pose10</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose11 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose11">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#HastaUtthanasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose12"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose10"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose02"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</core:poseNumber>
+        <rdfs:label>Variant02_Pose11</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant02#Variant02_Pose12 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant02#Variant02_Pose12">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_BiharSchoolOfYoga"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Pranamasana"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose11"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant02#Variant02_Pose01"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</core:poseNumber>
+        <rdfs:label>Variant02_Pose12</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose01 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose01">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#HastaUtthanasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose02"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</core:poseNumber>
+        <rdfs:label>Variant03_Pose01</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose02 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose02">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose03"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose01"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose11"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</core:poseNumber>
+        <rdfs:label>Variant03_Pose02</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose03 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose03">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshwaSanchalanasana"/>
+        <core:hasInversePose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose10"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose04"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose02"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose10"/>
+        <core:hasLaterality>Right</core:hasLaterality>
+        <core:hasSupportType>OneLegForward</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</core:poseNumber>
+        <rdfs:label>Variant03_Pose03</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose04 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose04">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Phalakasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose05"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose03"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</core:poseNumber>
+        <rdfs:label>Variant03_Pose04</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose05 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose05">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Shashankasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose06"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose04"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose09"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>Kneeling</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</core:poseNumber>
+        <rdfs:label>Variant03_Pose05</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose06 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose06">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#ShashtangaNamaskara"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose07"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose05"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>SixPointSupport</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</core:poseNumber>
+        <rdfs:label>Variant03_Pose06</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose07 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose07">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Bhujangasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose08"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose06"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>Prone</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</core:poseNumber>
+        <rdfs:label>Variant03_Pose07</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose08 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose08">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Parvatasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose09"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose07"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>HandsAndFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</core:poseNumber>
+        <rdfs:label>Variant03_Pose08</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose09 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose09">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Shashankasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose10"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose08"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose05"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>Kneeling</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</core:poseNumber>
+        <rdfs:label>Variant03_Pose09</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose10 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose10">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#AshwaSanchalanasana"/>
+        <core:hasInversePose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose03"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose11"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose09"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose03"/>
+        <core:hasLaterality>Left</core:hasLaterality>
+        <core:hasSupportType>OneLegForward</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</core:poseNumber>
+        <rdfs:label>Variant03_Pose10</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose11 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose11">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+        <core:hasNextPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose12"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose10"/>
+        <core:repeatsPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose02"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingBentTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</core:poseNumber>
+        <rdfs:label>Variant03_Pose11</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_Pose12 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_Pose12">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Pose"/>
+        <core:belongsToVariant rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra"/>
+        <core:hasAsana rdf:resource="http://example.org/suryanamaskar/core#Pranamasana"/>
+        <core:hasPreviousPose rdf:resource="http://example.org/suryanamaskar/variant03#Variant03_Pose11"/>
+        <core:hasLaterality>Symmetric</core:hasLaterality>
+        <core:hasSupportType>StandingTwoFeet</core:hasSupportType>
+        <core:poseNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</core:poseNumber>
+        <rdfs:label>Variant03_Pose12</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/variant03#Variant03_SwamiVivekanandaKendra">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Variant"/>
+        <rdfs:comment>12 pose Swami Vivekananda Kendra Surya Namaskar.</rdfs:comment>
+        <rdfs:label>Variant03_SwamiVivekanandaKendra</rdfs:label>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+
