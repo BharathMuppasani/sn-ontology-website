@@ -4,174 +4,245 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Surya Namaskar Ontology</title>
+  <meta name="description" content="Semantic Modeling of Surya Namaskar Yoga Poses and Variants">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  
+  <!-- Removed styling blobs -->
+
   <div class="container">
     <aside class="sidebar">
-      <h2>Surya Namaskar Ontology</h2>
-      <nav>
-        <a href="#about">About</a>
+      <div class="sidebar-brand">
+        <h2>Surya Namaskar<br/>Ontology</h2>
+      </div>
+      <nav id="nav">
+        <a href="#about" class="active">About</a>
         <a href="#ontology">Ontology Overview</a>
         <a href="#files">Project Files</a>
         <a href="#metadata">Ontology Metadata</a>
         <a href="#usecases">Use Cases</a>
-        <a href="#cq">Competency Questions</a>
-        <a href="#sparql">SPARQL Queries</a>
+        <a href="#sparql">Competency Questions & SPARQL</a>
         <a href="#visuals">Visual Resources</a>
         <a href="#contributors">Contributors</a>
       </nav>
     </aside>
 
     <main class="content">
-      <section id="about">
+      
+      <!-- ABOUT -->
+      <section id="about" class="visible">
         <h1>Surya Namaskar Ontology</h1>
-        <p class="subtitle">Semantic Modeling | OWL | SPARQL | Knowledge Representation</p>
-        <p>
-          This ontology models Surya Namaskar as asanas, numbered pose occurrences,
-          and sequence variants. It supports structured querying of sequence order,
-          repeated poses, inverse relationships, support type, mantra, chakra,
-          and shared asanas across variants.
-        </p>
-        <p>
-          The ontology also includes a pose correction layer for the Base Surya Namaskar
-          followed at IIT BHU. This layer models body parts, posture rules, pose
-          constraints, possible errors, and correction instructions.
-        </p>
+        <p class="subtitle" style="color: var(--accent-color); font-weight: 600; margin-bottom: 24px;">Semantic Modeling | <span class="keyword-highlight">OWL</span> | <span class="keyword-highlight">SPARQL</span> | Knowledge Representation</p>
+        <div class="glass-panel">
+          <p>
+            This ontology models <span class="keyword-highlight">Surya Namaskar</span> as asanas, numbered pose occurrences,
+            and sequence variants. It supports structured querying of sequence order,
+            repeated poses, inverse relationships, support type, mantra, chakra,
+            and shared asanas across variants.
+          </p>
+          <p>
+            The ontology also includes a <span class="keyword-highlight">pose correction layer</span> for the Base Surya Namaskar
+            followed at IIT BHU. This layer models body parts, posture rules, pose
+            constraints, possible errors, and correction instructions.
+          </p>
+        </div>
       </section>
 
+      <!-- ONTOLOGY OVERVIEW -->
       <section id="ontology">
         <h2>Ontology Overview</h2>
-
+        
         <h3>Classes</h3>
-        <ul>
-          <li><strong>Pose</strong> – Represents one numbered occurrence of an asana within a Surya Namaskar variant sequence.</li>
-          <li><strong>Asana</strong> – Represents a yoga asana identity independent of sequence position.</li>
-          <li><strong>Variant</strong> – Represents a Surya Namaskar tradition or sequence variant.</li>
-          <li><strong>BodyPart</strong> – Represents a body part involved in a pose.</li>
-          <li><strong>PostureRule</strong> – Represents an alignment or posture rule for a pose.</li>
-          <li><strong>PoseConstraint</strong> – Represents a pose-specific constraint.</li>
-          <li><strong>PoseError</strong> – Represents a possible error while performing a pose.</li>
-          <li><strong>CorrectionInstruction</strong> – Represents a correction instruction linked to a pose error.</li>
-        </ul>
+        <div class="cards-grid">
+          <div class="ontology-card border-blue">
+            <h4>Pose</h4>
+            <p>Represents one numbered occurrence of an asana within a variant sequence.</p>
+          </div>
+          <div class="ontology-card border-blue">
+            <h4>Asana</h4>
+            <p>Represents a yoga asana identity independent of sequence position.</p>
+          </div>
+          <div class="ontology-card border-blue">
+            <h4>Variant</h4>
+            <p>Represents a <span class="keyword-highlight">Surya Namaskar tradition</span> or sequence variant.</p>
+          </div>
+          <div class="ontology-card border-blue">
+            <h4>BodyPart</h4>
+            <p>Represents a body part involved in a pose.</p>
+          </div>
+          <div class="ontology-card border-blue">
+            <h4>PostureRule</h4>
+            <p>Represents an alignment or posture rule for a pose.</p>
+          </div>
+          <div class="ontology-card border-blue">
+            <h4>PoseConstraint</h4>
+            <p>Represents a pose-specific constraint.</p>
+          </div>
+          <div class="ontology-card border-blue">
+            <h4>PoseError</h4>
+            <p>Represents a possible error while performing a pose.</p>
+          </div>
+          <div class="ontology-card border-blue">
+            <h4>CorrectionInstruction</h4>
+            <p>Represents a correction instruction linked to an error.</p>
+          </div>
+        </div>
 
         <h3>Object Properties</h3>
-        <ul>
-          <li><strong>hasAsana</strong> – Links a pose occurrence to the asana performed at that position.</li>
-          <li><strong>belongsToVariant</strong> – Links a pose to its Surya Namaskar variant.</li>
-          <li><strong>hasNextPose</strong> – Links a pose to the next pose in the sequence.</li>
-          <li><strong>hasPreviousPose</strong> – Links a pose to the previous pose in the sequence.</li>
-          <li><strong>repeatsPose</strong> – Links repeated or mirrored pose occurrences.</li>
-          <li><strong>hasInversePose</strong> – Links inverse or opposite pose occurrences.</li>
-          <li><strong>sameAsanaAs</strong> – Links equivalent or normalized asana identities.</li>
-          <li><strong>involvesBodyPart</strong> – Links a pose to the body parts involved in it.</li>
-          <li><strong>hasRule</strong> – Links a pose to posture rules.</li>
-          <li><strong>hasConstraint</strong> – Links a pose to pose constraints.</li>
-          <li><strong>hasPossibleError</strong> – Links a pose to possible errors.</li>
-          <li><strong>hasCorrection</strong> – Links a pose error to a correction instruction.</li>
-        </ul>
+        <div class="cards-grid">
+          <div class="ontology-card border-green">
+            <h4>hasAsana</h4>
+            <p>Links a pose occurrence to the asana performed.</p>
+          </div>
+          <div class="ontology-card border-green">
+            <h4>belongsToVariant</h4>
+            <p>Links a pose to its Surya Namaskar variant.</p>
+          </div>
+          <div class="ontology-card border-green">
+            <h4>hasNextPose / hasPreviousPose</h4>
+            <p>Links sequential poses to determine ordering.</p>
+          </div>
+          <div class="ontology-card border-green">
+            <h4>repeatsPose / hasInversePose</h4>
+            <p>Links identical or structurally opposite poses respectively.</p>
+          </div>
+          <div class="ontology-card border-green">
+            <h4>sameAsanaAs</h4>
+            <p>Links equivalent or normalized asana identities.</p>
+          </div>
+          <div class="ontology-card border-green">
+            <h4>involvesBodyPart</h4>
+            <p>Links a pose to the specific body parts involved.</p>
+          </div>
+          <div class="ontology-card border-green">
+            <h4>hasRule / hasConstraint</h4>
+            <p>Links poses to explicit technical & postural rules.</p>
+          </div>
+        </div>
 
         <h3>Datatype Properties</h3>
-        <ul>
-          <li><strong>poseNumber</strong> – Position of a pose in a variant sequence.</li>
-          <li><strong>hasMantra</strong> – Mantra associated with a pose.</li>
-          <li><strong>hasChakra</strong> – Chakra associated with a pose.</li>
-          <li><strong>hasSupportType</strong> – Support or body-position type for a pose.</li>
-          <li><strong>hasLaterality</strong> – Indicates laterality such as right, left, or symmetric.</li>
-          <li><strong>hasCYPPage</strong> – CYP reference page for an asana.</li>
-          <li><strong>hasAlternateName</strong> – Alternate name of an asana.</li>
-          <li><strong>ruleDescription</strong> – Text description of a posture rule.</li>
-          <li><strong>constraintDescription</strong> – Text description of a pose constraint.</li>
-          <li><strong>errorDescription</strong> – Text description of a pose error.</li>
-          <li><strong>correctionText</strong> – Text of a correction instruction.</li>
-        </ul>
+        <div class="cards-grid">
+          <div class="ontology-card border-orange">
+            <h4>Attributes</h4>
+            <p>poseNumber, hasMantra, hasChakra, hasSupportType, hasLaterality</p>
+          </div>
+          <div class="ontology-card border-orange">
+            <h4>Descriptions</h4>
+            <p>ruleDescription, constraintDescription, errorDescription, correctionText</p>
+          </div>
+        </div>
       </section>
 
+      <!-- FILES -->
       <section id="files">
         <h2>Project Files</h2>
-
-        <div class="file-box">
-          <h3>Ontology File</h3>
-          <p>Main OWL ontology file for Surya Namaskar.</p>
-          <a class="btn" href="models/master.owl" download>Download OWL</a>
-        </div>
-
-        <div class="file-box">
-          <h3>pyLODE Documentation</h3>
-          <p>Generated ontology documentation for classes, properties, and metadata.</p>
-          <a class="btn" href="docs/ontologydoc.html" target="_blank">View Documentation</a>
-        </div>
-
-        <div class="file-box">
-          <h3>GitHub Repository</h3>
-          <p>Source code, ontology files, images, and project structure.</p>
-          <a class="btn" href="https://github.com/mansidodiya01/sn-ontology-website" target="_blank">View on GitHub</a>
+        <div class="files-grid">
+          <div class="glass-panel" style="margin-bottom:0;">
+            <h3>Ontology File</h3>
+            <p>Main OWL ontology file for Surya Namaskar.</p>
+            <a class="btn" href="models/master.owl" download>Download OWL</a>
+          </div>
+          <div class="glass-panel" style="margin-bottom:0;">
+            <h3>pyLODE Documentation</h3>
+            <p>Generated ontology documentation for classes, properties, and metadata.</p>
+            <a class="btn btn-outline" href="docs/ontologydoc.html" target="_blank">View Docs</a>
+          </div>
+          <div class="glass-panel" style="margin-bottom:0;">
+            <h3>GitHub Repository</h3>
+            <p>Source code, ontology files, images, and project structure.</p>
+            <a class="btn btn-outline" href="https://github.com/mansidodiya01/sn-ontology-website" target="_blank">View Repo</a>
+          </div>
         </div>
       </section>
 
+      <!-- METADATA -->
       <section id="metadata">
         <h2>Ontology Metadata</h2>
+        
+        <div class="metadata-grid">
+          <div class="meta-card">
+            <span>Title</span>
+            <strong>Surya Namaskar Ontology</strong>
+          </div>
+          <div class="meta-card">
+            <span>Format</span>
+            <strong>OWL (RDF/XML)</strong>
+          </div>
+        </div>
 
-        <div class="metadata-box">
-          <p><strong>Title:</strong> Surya Namaskar Ontology</p>
-          <p><strong>Namespaces:</strong></p>
+        <div class="namespace-list" style="margin-bottom: 24px;">
+          <p>Registered Namespaces</p>
           <ul>
-            <li><strong>core:</strong> http://example.org/suryanamaskar/core#</li>
-            <li><strong>base:</strong> http://example.org/suryanamaskar/base-sn#</li>
-            <li><strong>v1:</strong> http://example.org/suryanamaskar/variant01#</li>
-            <li><strong>v2:</strong> http://example.org/suryanamaskar/variant02#</li>
-            <li><strong>v3:</strong> http://example.org/suryanamaskar/variant03#</li>
+            <li><code>core:</code> http://example.org/suryanamaskar/core#</li>
+            <li><code>base:</code> http://example.org/suryanamaskar/base-sn#</li>
+            <li><code>v1:  </code> http://example.org/suryanamaskar/variant01#</li>
+            <li><code>v2:  </code> http://example.org/suryanamaskar/variant02#</li>
+            <li><code>v3:  </code> http://example.org/suryanamaskar/variant03#</li>
           </ul>
-          <p><strong>Format:</strong> OWL (RDF/XML)</p>
-          <p><strong>Description:</strong> Ontology representing Surya Namaskar asanas, pose occurrences, variants, and a pose correction layer for the Base Surya Namaskar followed at IIT BHU.</p>
+        </div>
 
-          <h3>Variants Represented</h3>
-          <ul>
-            <li><strong>BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU</strong></li>
-            <li><strong>Variant01_KrishnamacharyaVinyasa</strong></li>
-            <li><strong>Variant02_BiharSchoolOfYoga</strong></li>
-            <li><strong>Variant03_SwamiVivekanandaKendra</strong></li>
-          </ul>
+        <div class="glass-panel" style="padding: 24px;">
+          <h3 style="margin-top: 0;">Variants Represented</h3>
+          <div class="variant-tags">
+            <span class="tag">BaseSN_UsedatIITBHU</span>
+            <span class="tag">Variant01_KrishnamacharyaVinyasa</span>
+            <span class="tag">Variant02_BiharSchoolOfYoga</span>
+            <span class="tag">Variant03_SwamiVivekanandaKendra</span>
+          </div>
         </div>
       </section>
 
+      <!-- USE CASES -->
       <section id="usecases">
         <h2>Use Cases</h2>
-        <ul>
-          <li>Compare Surya Namaskar variants.</li>
-          <li>Identify repeated poses and inverse pose relationships.</li>
-          <li>Retrieve the ordered sequence of poses in Base Surya Namaskar.</li>
-          <li>Query poses based on standing posture and support type.</li>
-          <li>Retrieve mantra and chakra associated with Base SN poses.</li>
-          <li>Identify asanas shared across multiple variants.</li>
-          <li>Retrieve body parts involved in Base SN poses.</li>
-          <li>Retrieve posture rules, constraints, possible errors, and corrections for Base SN poses.</li>
-        </ul>
+        
+        <div class="usecase-grid">
+          <div class="usecase-card">
+            <div class="usecase-icon">⚖️</div>
+            <p>Compare <span class="keyword-highlight">Surya Namaskar variants</span> across traditions.</p>
+          </div>
+          <div class="usecase-card">
+            <div class="usecase-icon">🔁</div>
+            <p>Identify repeated poses and inverse pose relationships.</p>
+          </div>
+          <div class="usecase-card">
+            <div class="usecase-icon">🔢</div>
+            <p>Retrieve the ordered sequence of poses in <span class="keyword-highlight">Base Surya Namaskar</span>.</p>
+          </div>
+          <div class="usecase-card">
+            <div class="usecase-icon">🧘</div>
+            <p>Query poses based on standing posture and specific support types.</p>
+          </div>
+          <div class="usecase-card">
+            <div class="usecase-icon">📿</div>
+            <p>Retrieve mantra and chakra metadata associated with <span class="keyword-highlight">Base SN poses</span>.</p>
+          </div>
+          <div class="usecase-card">
+            <div class="usecase-icon">🔗</div>
+            <p>Identify primary asanas shared across multiple variants.</p>
+          </div>
+          <div class="usecase-card">
+            <div class="usecase-icon">🔍</div>
+            <p>Retrieve posture rules, constraints, common errors, and physical corrections.</p>
+          </div>
+        </div>
       </section>
 
-      <section id="cq">
-        <h2>Competency Questions</h2>
-        <ul>
-          <li>C1: What are the poses in Base Surya Namaskar?</li>
-          <li>C2: How many poses are in Base Surya Namaskar?</li>
-          <li>C3: Which poses are performed standing on two feet in Base Surya Namaskar?</li>
-          <li>C4: Which poses are repeated in Base Surya Namaskar?</li>
-          <li>C5: Which poses have inverse relationships in Base Surya Namaskar?</li>
-          <li>C6: How many variants exist?</li>
-          <li>C7: What are the different variants represented in the ontology?</li>
-          <li>C8: Which asanas are shared across multiple variants?</li>
-          <li>C9: What is the sequence order of poses in Base Surya Namaskar?</li>
-        </ul>
-      </section>
-
+      <!-- COMPETENCY QUESTIONS & SPARQL QUERIES -->
       <section id="sparql">
-        <h2>SPARQL Queries</h2>
+        <h2>Competency Questions & SPARQL Queries</h2>
+        <p>Interactive exploration of Competency Questions and their corresponding SPARQL queries. Click to expand and view the evaluated results.</p>
 
+        <!-- C1 -->
         <div class="query-block">
-          <h3>C1: What are the poses in Base Surya Namaskar?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C1: What are the poses in Base Surya Namaskar?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -182,24 +253,42 @@ PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 SELECT ?pose
 WHERE {
   ?pose rdf:type core:Pose ;
-        core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU .
+     core:belongsToVariant base:BaseSN .
 }
 ORDER BY ?pose</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/1.png" target="_blank">
-                <img src="images/queries_ss/1.png" alt="Result for C1">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?pose (base-sn namespace)</th></tr></thead>
+                <tbody>
+                  <tr><td>BaseSN_Pose01</td></tr>
+                  <tr><td>BaseSN_Pose02</td></tr>
+                  <tr><td>BaseSN_Pose03</td></tr>
+                  <tr><td>BaseSN_Pose04</td></tr>
+                  <tr><td>BaseSN_Pose05</td></tr>
+                  <tr><td>BaseSN_Pose06</td></tr>
+                  <tr><td>BaseSN_Pose07</td></tr>
+                  <tr><td>BaseSN_Pose08</td></tr>
+                  <tr><td>BaseSN_Pose09</td></tr>
+                  <tr><td>BaseSN_Pose10</td></tr>
+                  <tr><td>BaseSN_Pose11</td></tr>
+                  <tr><td>BaseSN_Pose12</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
+        <!-- C2 -->
         <div class="query-block">
-          <h3>C2: How many poses are in Base Surya Namaskar?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C2: How many poses are in Base Surya Namaskar?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -210,23 +299,30 @@ PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 SELECT (COUNT(?pose) AS ?count)
 WHERE {
   ?pose rdf:type core:Pose ;
-        core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU .
+     core:belongsToVariant base:BaseSN .
 }</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/2.png" target="_blank">
-                <img src="images/queries_ss/2.png" alt="Result for C2">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?count</th></tr></thead>
+                <tbody>
+                  <tr><td>12</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
+        <!-- C3 -->
         <div class="query-block">
-          <h3>C3: Which poses are performed standing on two feet in Base Surya Namaskar?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C3: Which poses are performed standing on two feet in Base Surya Namaskar?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -237,25 +333,34 @@ PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 SELECT ?pose
 WHERE {
   ?pose rdf:type core:Pose ;
-        core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        core:hasSupportType "StandingTwoFeet" .
-}
-ORDER BY ?pose</code></pre>
+     core:belongsToVariant base:BaseSN ;
+     core:hasSupportType "StandingTwoFeet" .
+}</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/3.png" target="_blank">
-                <img src="images/queries_ss/3.png" alt="Result for C3">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?pose</th></tr></thead>
+                <tbody>
+                  <tr><td>BaseSN_Pose01</td></tr>
+                  <tr><td>BaseSN_Pose02</td></tr>
+                  <tr><td>BaseSN_Pose11</td></tr>
+                  <tr><td>BaseSN_Pose12</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
+        <!-- C4 -->
         <div class="query-block">
-          <h3>C4: Which poses are repeated in Base Surya Namaskar?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C4: Which poses are repeated in Base Surya Namaskar?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -265,29 +370,33 @@ PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?pose ?repeatedPose
 WHERE {
-  ?pose rdf:type core:Pose ;
-        core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        core:repeatsPose ?repeatedPose .
-
-  ?repeatedPose rdf:type core:Pose ;
-                core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU .
-}
-ORDER BY ?pose</code></pre>
+  ?pose core:repeatsPose ?repeatedPose .
+}</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/4.png" target="_blank">
-                <img src="images/queries_ss/4.png" alt="Result for C4">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?pose</th><th>?repeatedPose</th></tr></thead>
+                <tbody>
+                  <tr><td>BaseSN_Pose01</td><td>BaseSN_Pose12</td></tr>
+                  <tr><td>BaseSN_Pose02</td><td>BaseSN_Pose11</td></tr>
+                  <tr><td>BaseSN_Pose03</td><td>BaseSN_Pose10</td></tr>
+                  <tr><td>BaseSN_Pose04</td><td>BaseSN_Pose09</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
+        <!-- C5 -->
         <div class="query-block">
-          <h3>C5: Which poses have inverse relationships in Base Surya Namaskar?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C5: Which poses have inverse relationships in Base Surya Namaskar?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -297,29 +406,31 @@ PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?pose ?inversePose
 WHERE {
-  ?pose rdf:type core:Pose ;
-        core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        core:hasInversePose ?inversePose .
-
-  ?inversePose rdf:type core:Pose ;
-               core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU .
-}
-ORDER BY ?pose</code></pre>
+  ?pose core:hasInversePose ?inversePose .
+}</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/5.png" target="_blank">
-                <img src="images/queries_ss/5.png" alt="Result for C5">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?pose</th><th>?inversePose</th></tr></thead>
+                <tbody>
+                  <tr><td>BaseSN_Pose04</td><td>BaseSN_Pose09</td></tr>
+                  <tr><td>BaseSN_Pose09</td><td>BaseSN_Pose04</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
+        <!-- C6 -->
         <div class="query-block">
-          <h3>C6: How many variants exist?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C6: How many variants exist?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -332,20 +443,27 @@ WHERE {
   ?variant rdf:type core:Variant .
 }</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/6.png" target="_blank">
-                <img src="images/queries_ss/6.png" alt="Result for C6">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?count</th></tr></thead>
+                <tbody>
+                  <tr><td>4</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
+        <!-- C7 -->
         <div class="query-block">
-          <h3>C7: What are the different variants represented in the ontology?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C7: What are the different variants represented in the ontology?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -356,23 +474,32 @@ PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 SELECT ?variant
 WHERE {
   ?variant rdf:type core:Variant .
-}
-ORDER BY ?variant</code></pre>
+}</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/7.png" target="_blank">
-                <img src="images/queries_ss/7.png" alt="Result for C7">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?variant</th></tr></thead>
+                <tbody>
+                  <tr><td>BaseSN_UsedatIITBHU</td></tr>
+                  <tr><td>Variant01_KrishnamacharyaVinyasa</td></tr>
+                  <tr><td>Variant02_BiharSchoolOfYoga</td></tr>
+                  <tr><td>Variant03_SwamiVivekanandaKendra</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
+        <!-- C8 -->
         <div class="query-block">
-          <h3>C8: Which asanas are shared across multiple variants?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C8: Which asanas are shared across multiple variants?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -380,29 +507,42 @@ PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
 PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
 PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
-SELECT ?asana (COUNT(DISTINCT ?variant) AS ?variantCount)
+SELECT ?asana (COUNT(DISTINCT ?variant) AS ?varCount)
 WHERE {
   ?pose core:hasAsana ?asana ;
         core:belongsToVariant ?variant .
 }
 GROUP BY ?asana
-HAVING (COUNT(DISTINCT ?variant) &gt; 1)
-ORDER BY DESC(?variantCount)</code></pre>
+HAVING (COUNT(DISTINCT ?variant) > 1)</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/8.png" target="_blank">
-                <img src="images/queries_ss/8.png" alt="Result for C8">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?asana</th><th>?varCount</th></tr></thead>
+                <tbody>
+                  <tr><td>Pranamasana</td><td>3</td></tr>
+                  <tr><td>HastaUtthanasana</td><td>3</td></tr>
+                  <tr><td>Padahastasana</td><td>3</td></tr>
+                  <tr><td>AshwaSanchalanasana</td><td>3</td></tr>
+                  <tr><td>Bhujangasana</td><td>3</td></tr>
+                  <tr><td>Parvatasana</td><td>3</td></tr>
+                  <tr><td>ChaturangaDandasana</td><td>2</td></tr>
+                  <tr><td>AshtangaNamaskara</td><td>2</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
+        <!-- C9 -->
         <div class="query-block">
-          <h3>C9: What is the sequence order of poses in Base Surya Namaskar?</h3>
-          <div class="query-answer-row">
-            <div class="query-box">
-<pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+          <div class="query-header">
+            <h3>C9: What is the sequence order of poses in Base Surya Namaskar?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
 PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
 PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
 PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
@@ -412,53 +552,70 @@ PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
 
 SELECT ?pose ?nextPose
 WHERE {
-  ?pose rdf:type core:Pose ;
-        core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
-        core:hasNextPose ?nextPose .
-}
-ORDER BY ?pose</code></pre>
+  ?pose core:hasNextPose ?nextPose .
+}</code></pre>
             </div>
-            <div class="answer-box">
-              <h4>Answer</h4>
-              <a href="images/queries_ss/9.png" target="_blank">
-                <img src="images/queries_ss/9.png" alt="Result for C9">
-              </a>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+                <thead><tr><th>?pose</th><th>?nextPose</th></tr></thead>
+                <tbody>
+                  <tr><td>BaseSN_Pose01</td><td>BaseSN_Pose02</td></tr>
+                  <tr><td>BaseSN_Pose02</td><td>BaseSN_Pose03</td></tr>
+                  <tr><td>BaseSN_Pose03</td><td>BaseSN_Pose04</td></tr>
+                  <tr><td>BaseSN_Pose04</td><td>BaseSN_Pose05</td></tr>
+                  <tr><td>BaseSN_Pose05</td><td>BaseSN_Pose06</td></tr>
+                  <tr><td>BaseSN_Pose06</td><td>BaseSN_Pose07</td></tr>
+                  <tr><td>BaseSN_Pose07</td><td>BaseSN_Pose08</td></tr>
+                  <tr><td>BaseSN_Pose08</td><td>BaseSN_Pose09</td></tr>
+                  <tr><td>BaseSN_Pose09</td><td>BaseSN_Pose10</td></tr>
+                  <tr><td>BaseSN_Pose10</td><td>BaseSN_Pose11</td></tr>
+                  <tr><td>BaseSN_Pose11</td><td>BaseSN_Pose12</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
+
       </section>
 
+      <!-- VISUAL RESOURCES -->
       <section id="visuals">
         <h2>Visual Resources</h2>
-
-        <div class="visual-block">
-          <h3>Ontology Diagram</h3>
-          <img src="images/ontology_diagram.png" alt="Ontology Diagram">
+        
+        <div class="visual-block" style="margin-bottom: 40px; text-align: center;">
+          <h3 style="text-align: left;">Ontology Diagram</h3>
+          <p style="text-align: left;">High-level mapping of the core ontology concepts and their relationships. Click to expand.</p>
+          <img src="images/ontology_diagram.png" alt="Ontology Diagram" class="expandable-img" style="width: 60% !important; margin: 0 auto; display: block; border-radius: var(--radius-sm); border: 1px solid #d8e2ee; padding: 10px; background: white;">
         </div>
-
+        
         <div class="visual-block">
-          <h3>WebVOWL Visualization</h3>
-          <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/merged_sn_ontology.owl" target="_blank">
-            <img src="images/webvowl.png" alt="WebVOWL View">
+          <h3>Interactive Visualization</h3>
+          <p>Dynamic web-based visualization of the ontology mapping. Click the image to expand the high-resolution view.</p>
+          <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/merged_sn_ontology.owl" target="_blank" class="btn btn-sm" style="margin-bottom: 16px;">
+            Open WebVOWL Tool ↗
           </a>
+          <img src="images/sn-ontology-view.png" alt="Ontology Visualization" class="expandable-img" style="background: #ffffff; width: 100%; border-radius: var(--radius-sm); border: 1px solid #d8e2ee;">
         </div>
       </section>
 
+      <!-- CONTRIBUTORS -->
       <section id="contributors">
         <h2>Contributors</h2>
-        <div class="contributors-box">
-          <p>
-            Mansi Dodiya<sup>1</sup>, Kishan Kumar<sup>1</sup>,
-            Biplav Srivastava<sup>2</sup>, Hari Prabhat Gupta<sup>1</sup>
+        <div class="glass-panel" style="text-align: center;">
+          <h3 style="margin-top: 0; color: var(--accent-color);">Surya Namaskar Ontology Research Team</h3>
+          <p style="font-size: 1.2rem; margin-top: 24px;">
+            <span style="font-weight: 600;">Mansi Dodiya</span><sup>1</sup>, <span style="font-weight: 600;">Kishan Kumar</span><sup>1</sup>,
+            <span style="font-weight: 600;">Biplav Srivastava</span><sup>2</sup>, <span style="font-weight: 600;">Hari Prabhat Gupta</span><sup>1</sup>
           </p>
-          <p>
-            <sup>1</sup>
-            <a href="https://www.iitbhu.ac.in/" target="_blank">
+          <p style="margin-top: 16px;">
+            <span style="color: var(--accent-secondary); font-weight: bold;">1</span>
+            <a href="https://www.iitbhu.ac.in/" target="_blank" style="color: var(--text-primary); text-decoration: underline; font-weight: 500;">
               IIT (BHU), India
             </a>
-            &nbsp;|&nbsp;
-            <sup>2</sup>
-            <a href="https://sc.edu/" target="_blank">
+            <span style="margin: 0 12px; color: #dbe4ef;">|</span>
+            <span style="color: var(--accent-secondary); font-weight: bold;">2</span>
+            <a href="https://sc.edu/" target="_blank" style="color: var(--text-primary); text-decoration: underline; font-weight: 500;">
               University of South Carolina, USA
             </a>
           </p>
@@ -466,5 +623,13 @@ ORDER BY ?pose</code></pre>
       </section>
     </main>
   </div>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img">
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
