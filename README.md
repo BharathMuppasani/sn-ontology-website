@@ -1,90 +1,41 @@
 # Surya Namaskar Ontology
 
-## About  
-This ontology represents Surya Namaskar in a structured way using three main concepts: Asana, Pose, and Variant.  
-Asana represents the yoga posture itself, Pose represents its numbered occurrence in a sequence, and Variant represents a specific Surya Namaskar tradition.  
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fmansidodiya01.github.io%2Fsn-ontology-website%2F&label=Interactive+Website)](https://mansidodiya01.github.io/sn-ontology-website/)
 
-Along with this, the ontology also includes a pose correction layer for the Base Surya Namaskar followed at IIT (BHU). This layer captures body parts involved, posture rules, constraints, possible errors, and their correction instructions.  
+An open-source Semantic Web project that formally models **Surya Namaskar (Sun Salutation)** yoga sequences. This ontology provides a structured, queryable knowledge base using interconnected concepts such as Asanas, Poses, and regional Variants.
 
-The aim is to make Surya Namaskar easy to query, compare across variants, and extend further if needed.
+🌐 **[Explore the Interactive Ontology Website](https://mansidodiya01.github.io/sn-ontology-website/)**
 
-## Key Features  
-Models Surya Namaskar sequences clearly using Pose and Asana separation.  
-Supports multiple variants in a consistent structure.  
-Captures sequence order, repeated poses, and inverse relationships.  
-Includes mantra, chakra, and support type information.  
-Provides a correction layer to improve pose understanding and accuracy.  
-Designed in a way that can be extended later.
+## Overview
 
-## Ontology Structure  
+The ontology systematically separates **Asanas** (the physical yoga postures) from **Poses** (their specific numbered occurrence within a sequence) and maps them across different traditional **Variants**. 
 
-### Classes  
-Pose  
-Asana  
-Variant  
-BodyPart  
-PostureRule  
-PoseConstraint  
-PoseError  
-CorrectionInstruction  
+Additionally, it features an advanced **Pose Correction Layer** specifically designed for the Base Surya Namaskar sequence followed at IIT (BHU). This layer maps body parts, posture rules, constraints, common performance errors, and precise correction instructions to support movement analysis and automated coaching tools.
 
-### Object Properties  
-hasAsana  
-belongsToVariant  
-hasNextPose  
-hasPreviousPose  
-repeatsPose  
-hasInversePose  
-sameAsanaAs  
-involvesBodyPart  
-hasRule  
-hasConstraint  
-hasPossibleError  
-hasCorrection  
+## Key Features
 
-### Datatype Properties  
-poseNumber  
-hasMantra  
-hasChakra  
-hasSupportType  
-hasLaterality  
-hasCYPPage  
-hasAlternateName  
-ruleDescription  
-constraintDescription  
-errorDescription  
-correctionText  
+- **Semantic Separation:** Decouples sequence order (Pose) from the actual posture (Asana).
+- **Variant Mapping:** Consistently structures and maps multiple global Surya Namaskar traditions (e.g., Sivananda Yoga Vedanta Centre, Krishnamacharya Vinyasa, Bihar School of Yoga, Swami Vivekananda Kendra).
+- **Correction Layer:** Encodes posture rules, physical constraints, and automated correction instructions to improve pose accuracy.
+- **Rich Metadata:** Captures nuanced traditional details including associated Mantras, Chakras, Support Types, and Inverse/Repeated relationships.
+- **SPARQL Ready:** Easily queryable to compare variants, identify shared asanas, or extract specific flow transitions.
 
-## Variants Represented  
-BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU  
-Variant01_KrishnamacharyaVinyasa  
-Variant02_BiharSchoolOfYoga  
-Variant03_SwamiVivekanandaKendra  
+## Repository Resources
 
-## Competency Questions  
-C1: What are the poses in Base Surya Namaskar?  
-C2: How many poses are in Base Surya Namaskar?  
-C3: Which poses are performed standing on two feet?  
-C4: Which poses are repeated in the sequence?  
-C5: Which poses have inverse relationships?  
-C6: How many variants exist?  
-C7: What variants are represented in the ontology?  
-C8: Which asanas are shared across variants?  
-C9: What is the sequence order of poses?  
+- **`models/`**: Contains the core ontology files (`.owl`), WebVOWL exports, and schema diagrams representing the ontology hierarchy.
+- **`source/`**: The raw source files and tools utilized in the project's development pipeline.
+- **`docs/`**: Documentation and comprehensive ontology reports (like those generated via pyLODE).
+- **`query_results.txt`**: Example output logs from the SPARQL competency queries.
+- **`images/`**: High-resolution image exports of the ontology structure and relationship diagrams.
+- **`css/` & `js/`**: Styling and interactive scripts powering the visualization website.
+- **`index.html`**: The main entry point for the interactive web portal.
 
-## Use Cases  
-Comparing different Surya Namaskar variants  
-Understanding sequence flow and transitions  
-Identifying repeated and inverse poses  
-Retrieving mantra and chakra details  
-Analyzing posture and support types  
-Supporting pose correction using rules and constraints  
+## Technical Details
+- **Format:** OWL (RDF/XML)
+- **Namespaces:** `http://example.org/suryanamaskar#`
+- **Tooling:** Built and visualized using Protégé, SPARQL, and WebVOWL.
 
-## Technical Details  
-Format: OWL (RDF/XML)  
-Namespace: http://example.org/suryanamaskar#  
-Tools used: Protégé, SPARQL, pyLODE, WebVOWL  
+---
 
-## Author  
-Mansi Dodiya  
-IIT (BHU), Varanasi  
+**Author:** Mansi Dodiya  
+**Institution:** IIT (BHU), Varanasi
