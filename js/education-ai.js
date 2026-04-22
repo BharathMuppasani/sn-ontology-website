@@ -1,0 +1,1540 @@
+(function (global) {
+  'use strict';
+
+  var STORAGE_KEY = 'snEducationGeminiApiKey';
+  var DEFAULT_MODEL = 'gemma-4-31b-it';
+  var FALLBACK_MODEL = 'gemini-2.5-flash-lite';
+  var SUPPORTED_INTENTS = [
+    'base_sequence',
+    'base_mantra_chakra',
+    'base_repeats',
+    'base_inverses',
+    'shared_asanas',
+    'same_asana_equivalences',
+    'cyp_visual_references',
+    'pose_guidance',
+    'variant_pose_counts',
+    'variant_sequence',
+    'asana_variant_coverage',
+    'unsupported'
+  ];
+  var TEMPLATE_LABELS = {
+    base_sequence: 'Base sequence',
+    base_mantra_chakra: 'Mantra and chakra coverage',
+    base_repeats: 'Repeated poses',
+    base_inverses: 'Inverse pose pairs',
+    shared_asanas: 'Shared asanas across variants',
+    same_asana_equivalences: 'sameAsanaAs equivalences',
+    cyp_visual_references: 'CYP visual references',
+    pose_guidance: 'Base pose guidance',
+    variant_pose_counts: 'Variant pose counts',
+    variant_sequence: 'Variant sequence',
+    asana_variant_coverage: 'Asana coverage by variant',
+    unsupported: 'Unsupported question'
+  };
+  var INTENT_TO_QUESTION_ID = {
+    base_sequence: 'base-sequence',
+    base_mantra_chakra: 'base-mantra-chakra',
+    base_repeats: 'base-repeats',
+    base_inverses: 'base-inverses',
+    shared_asanas: 'shared-asanas',
+    same_asana_equivalences: 'same-asana-equivalences',
+    cyp_visual_references: 'cyp-visual-references'
+  };
+  var PLANNER_SCHEMA = {
+    type: 'object',
+    properties: {
+      intent: {
+        type: 'string',
+        enum: SUPPORTED_INTENTS
+      },
+      confidence: {
+        type: 'number',
+        minimum: 0,
+        maximum: 1
+      },
+      normalizedQuestion: {
+        type: 'string'
+      },
+      asanaLabel: {
+        type: ['string', 'null']
+      },
+      variantLabel: {
+        type: ['string', 'null']
+      },
+      poseNumber: {
+        type: ['integer', 'null'],
+        minimum: 1,
+        maximum: 12
+      },
+      wantsVisuals: {
+        type: 'boolean'
+      },
+      rationale: {
+        type: 'string'
+      },
+      unsupportedReason: {
+        type: ['string', 'null']
+      }
+    },
+    required: [
+      'intent',
+      'confidence',
+      'normalizedQuestion',
+      'asanaLabel',
+      'variantLabel',
+      'poseNumber',
+      'wantsVisuals',
+      'rationale',
+      'unsupportedReason'
+    ],
+    additionalProperties: false
+  };
+  var PLANNER_SYSTEM_PROMPT = [
+    'You are a query planner for a Surya Namaskar education workspace backed by an OWL ontology.',
+    'You must map the user question to exactly one supported intent.',
+    'Do not invent schema terms, new relations, or unsupported templates.',
+    'If the question cannot be answered by the supported intents, return intent="unsupported".',
+    'When a specific asana is mentioned, copy the exact ontology label when possible.',
+    'When a specific variant is mentioned, copy the clearest variant label when possible.',
+    'When a question asks about posture guidance, errors, corrections, rules, or constraints for a specific base pose or asana, choose pose_guidance.',
+    'Questions asking how many poses a variant has, or comparing pose counts across variants, should map to variant_pose_counts.',
+    'Questions asking for the ordered poses or sequence of a named variant should map to variant_sequence.',
+    'Questions asking which variants include a specific asana should map to asana_variant_coverage.',
+    'Questions about poses or asanas common, shared, overlapping, or present across variants should map to shared_asanas.',
+    'If a user asks about poses common across variants, answer at the asana identity level because cross-variant overlap is modeled through asana identity rather than one global numbered pose list.',
+    'Return only JSON that matches the schema.'
+  ].join(' ');
+  var EXPLANATION_SYSTEM_PROMPT = [
+    'You write concise educational explanations for a Surya Namaskar ontology workspace.',
+    'Use only the supplied evidence.',
+    'Do not invent pose counts, relations, or visual page references that are not present in the evidence JSON.',
+    'If the evidence is limited, say so briefly instead of speculating.',
+    'Use plain teaching language and return text only.'
+  ].join(' ');
+
+  function compactText(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function normalizeKey(value) {
+    return compactText(value).toLowerCase();
+  }
+
+  function unique(items) {
+    return items.filter(function (item, index) {
+      return items.indexOf(item) === index;
+    });
+  }
+
+  function joinList(items) {
+    var values = items.filter(Boolean);
+
+    if (!values.length) {
+      return '';
+    }
+    if (values.length === 1) {
+      return values[0];
+    }
+    if (values.length === 2) {
+      return values[0] + ' and ' + values[1];
+    }
+    return values.slice(0, -1).join(', ') + ', and ' + values[values.length - 1];
+  }
+
+  function poseSummary(pose) {
+    return 'Pose ' + pose.poseNumber + ' (' + pose.asanaLabel + ')';
+  }
+
+  function escapeSparqlString(value) {
+    return String(value || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  }
+
+  function escapeRegExp(value) {
+    return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function getQuestionById(questionId) {
+    var questions = global.SNEducationData && global.SNEducationData.QUESTIONS
+      ? global.SNEducationData.QUESTIONS
+      : [];
+
+    return questions.find(function (question) {
+      return question.id === questionId;
+    }) || null;
+  }
+
+  function withPrefixes(queryBody) {
+    var prefixBlock = global.SNEducationData && global.SNEducationData.PREFIX_BLOCK
+      ? global.SNEducationData.PREFIX_BLOCK
+      : '';
+
+    return prefixBlock ? prefixBlock + '\n\n' + queryBody.trim() : queryBody.trim();
+  }
+
+  function getBaseVariant(model) {
+    return model && typeof model.getBaseVariant === 'function' ? model.getBaseVariant() : null;
+  }
+
+  function getBasePoses(model) {
+    var baseVariant = getBaseVariant(model);
+    return baseVariant && typeof model.getOrderedPosesForVariant === 'function'
+      ? model.getOrderedPosesForVariant(baseVariant)
+      : [];
+  }
+
+  function getGuidedBasePoses(model) {
+    return getBasePoses(model).filter(function (pose) {
+      var guidance = model.getPoseGuidance(pose);
+      return guidance && (guidance.rules.length || guidance.constraints.length || guidance.errors.length);
+    });
+  }
+
+  function getAsanasWithVisuals(model) {
+    return model && typeof model.getAsanasWithVisuals === 'function'
+      ? model.getAsanasWithVisuals()
+      : [];
+  }
+
+  function getStorage() {
+    try {
+      return global.localStorage || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function saveApiKey(apiKey) {
+    var storage = getStorage();
+    if (!storage) {
+      return;
+    }
+    if (compactText(apiKey)) {
+      storage.setItem(STORAGE_KEY, compactText(apiKey));
+      return;
+    }
+    storage.removeItem(STORAGE_KEY);
+  }
+
+  function loadApiKey() {
+    var storage = getStorage();
+    var storedKey = storage ? compactText(storage.getItem(STORAGE_KEY)) : '';
+    var configuredKey = compactText(
+      global.SNEducationLocalConfig && global.SNEducationLocalConfig.geminiApiKey
+    );
+
+    return storedKey || configuredKey || '';
+  }
+
+  function clearApiKey() {
+    var storage = getStorage();
+    if (storage) {
+      storage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  function resolveAsana(model, rawLabel) {
+    var target = normalizeKey(rawLabel);
+    var exactMatch;
+    var alternateMatch;
+    var containsMatch;
+
+    if (!target || !model || !model.asanas) {
+      return null;
+    }
+
+    exactMatch = model.asanas.find(function (asana) {
+      return normalizeKey(asana.label) === target;
+    });
+    if (exactMatch) {
+      return exactMatch;
+    }
+
+    alternateMatch = model.asanas.find(function (asana) {
+      return (asana.alternateNames || []).some(function (alternateName) {
+        return normalizeKey(alternateName) === target;
+      });
+    });
+    if (alternateMatch) {
+      return alternateMatch;
+    }
+
+    containsMatch = model.asanas.find(function (asana) {
+      return normalizeKey(asana.label).indexOf(target) !== -1 ||
+        target.indexOf(normalizeKey(asana.label)) !== -1;
+    });
+
+    return containsMatch || null;
+  }
+
+  function expandAliasTexts(value) {
+    var text = compactText(value);
+    var normalizedText = compactText(text.replace(/[_#]+/g, ' '));
+
+    return unique([text, normalizedText].filter(Boolean));
+  }
+
+  function getVariantAliases(variant) {
+    var aliases = [];
+    var combinedText;
+    var variantNumberMatch;
+
+    if (!variant) {
+      return [];
+    }
+
+    aliases = aliases
+      .concat(expandAliasTexts(variant.id))
+      .concat(expandAliasTexts(variant.label))
+      .concat(expandAliasTexts(variant.displayLabel));
+
+    combinedText = normalizeKey([
+      variant.id,
+      variant.label,
+      variant.displayLabel
+    ].join(' '));
+
+    variantNumberMatch = /variant\s*0*([1-9]\d*)/.exec(combinedText);
+    if (variantNumberMatch) {
+      aliases.push(
+        'variant ' + variantNumberMatch[1],
+        'variant0' + variantNumberMatch[1],
+        'variant0' + variantNumberMatch[1],
+        'variant' + variantNumberMatch[1],
+        'v' + variantNumberMatch[1]
+      );
+    }
+
+    if (combinedText.indexOf('basesn') !== -1 || combinedText.indexOf('base sn') !== -1) {
+      aliases.push(
+        'base',
+        'base sn',
+        'base surya namaskar',
+        'sivananda',
+        'iit bhu',
+        'sivananda yoga vedanta centre'
+      );
+    }
+
+    return unique(aliases.map(function (alias) {
+      return normalizeKey(alias);
+    }).filter(Boolean));
+  }
+
+  function textContainsAlias(text, alias) {
+    if (!text || !alias) {
+      return false;
+    }
+
+    if (alias.length <= 3 || /^v\d+$/.test(alias) || /^variant\s*0*\d+$/.test(alias)) {
+      return new RegExp('(^|[^a-z0-9])' + escapeRegExp(alias) + '([^a-z0-9]|$)').test(text);
+    }
+
+    return text.indexOf(alias) !== -1;
+  }
+
+  function resolveVariant(model, rawLabel) {
+    var target = normalizeKey(rawLabel);
+    var exactMatch;
+    var aliasMatch;
+    var containsMatch;
+
+    if (!target || !model || !model.variants) {
+      return null;
+    }
+
+    exactMatch = model.variants.find(function (variant) {
+      return normalizeKey(variant.label) === target ||
+        normalizeKey(variant.displayLabel) === target;
+    });
+    if (exactMatch) {
+      return exactMatch;
+    }
+
+    aliasMatch = model.variants.find(function (variant) {
+      return getVariantAliases(variant).some(function (alias) {
+        return alias === target;
+      });
+    });
+    if (aliasMatch) {
+      return aliasMatch;
+    }
+
+    containsMatch = model.variants.find(function (variant) {
+      return getVariantAliases(variant).some(function (alias) {
+        return alias.length > 3 && (alias.indexOf(target) !== -1 || target.indexOf(alias) !== -1);
+      });
+    });
+
+    return containsMatch || null;
+  }
+
+  function resolveVariantsFromQuestion(model, questionText) {
+    var text = normalizeKey(questionText);
+
+    if (!text || !model || !model.variants) {
+      return [];
+    }
+
+    return model.variants.filter(function (variant) {
+      return getVariantAliases(variant).some(function (alias) {
+        return textContainsAlias(text, alias);
+      });
+    });
+  }
+
+  function resolveAsanaFromQuestion(model, questionText) {
+    var text = normalizeKey(questionText);
+    var candidates = [];
+
+    if (!text || !model || !model.asanas) {
+      return null;
+    }
+
+    model.asanas.forEach(function (asana) {
+      var aliases = [asana.label].concat(asana.alternateNames || []);
+
+      aliases.forEach(function (alias) {
+        var normalizedAlias = normalizeKey(alias);
+        if (!normalizedAlias) {
+          return;
+        }
+        if (textContainsAlias(text, normalizedAlias)) {
+          candidates.push({
+            asana: asana,
+            matchLength: normalizedAlias.length
+          });
+        }
+      });
+    });
+
+    candidates.sort(function (left, right) {
+      return right.matchLength - left.matchLength || left.asana.label.localeCompare(right.asana.label);
+    });
+
+    return candidates.length ? candidates[0].asana : null;
+  }
+
+  function findBasePoseByNumber(model, poseNumber) {
+    return getBasePoses(model).find(function (pose) {
+      return Number(pose.poseNumber) === Number(poseNumber);
+    }) || null;
+  }
+
+  function findBasePoseByAsana(model, asanaLabel) {
+    var resolvedAsana = resolveAsana(model, asanaLabel);
+    var exactPose;
+    var fuzzyPose;
+
+    if (!asanaLabel) {
+      return null;
+    }
+
+    if (resolvedAsana) {
+      exactPose = getBasePoses(model).find(function (pose) {
+        return pose.asanaUri === resolvedAsana.uri;
+      });
+      if (exactPose) {
+        return exactPose;
+      }
+    }
+
+    fuzzyPose = getBasePoses(model).find(function (pose) {
+      return normalizeKey(pose.asanaLabel) === normalizeKey(asanaLabel) ||
+        normalizeKey(pose.asanaLabel).indexOf(normalizeKey(asanaLabel)) !== -1 ||
+        normalizeKey(asanaLabel).indexOf(normalizeKey(pose.asanaLabel)) !== -1;
+    });
+
+    return fuzzyPose || null;
+  }
+
+  function serializeContextList(items, mapFn) {
+    return items.map(mapFn).filter(Boolean).join('\n');
+  }
+
+  function buildVariantContext(model) {
+    var variants = model && model.variants ? model.variants : [];
+
+    return serializeContextList(variants, function (variant) {
+      var poses = model.getOrderedPosesForVariant ? model.getOrderedPosesForVariant(variant) : [];
+      var distinctAsanas = unique(poses.map(function (pose) {
+        return pose.asanaLabel;
+      }).filter(Boolean));
+
+      return '- ' + variant.displayLabel + ': ' + poses.length + ' poses, ' + distinctAsanas.length + ' distinct asanas';
+    }) || '- None';
+  }
+
+  function buildSharedAsanaContext(model) {
+    var entries = model && typeof model.getSharedAsanas === 'function'
+      ? model.getSharedAsanas(2).slice(0, 12)
+      : [];
+
+    return serializeContextList(entries, function (entry) {
+      return '- ' + entry.asana.label + ': ' + entry.variants.map(function (variant) {
+        return variant.displayLabel;
+      }).join(', ');
+    }) || '- None';
+  }
+
+  function buildOntologyContext(model) {
+    var basePoses = getBasePoses(model);
+    var guidedPoses = getGuidedBasePoses(model);
+    var visualAsanas = getAsanasWithVisuals(model);
+    var asanaLabels = (model.asanas || []).map(function (asana) {
+      return asana.label;
+    }).slice().sort(function (left, right) {
+      return left.localeCompare(right);
+    });
+
+    return [
+      'Base variant: Base Surya Namaskar (default instructional sequence in this workspace).',
+      'Base poses:',
+      serializeContextList(basePoses, function (pose) {
+        return '- Pose ' + pose.poseNumber + ': ' + pose.asanaLabel;
+      }),
+      'Base poses with explicit guidance entities:',
+      serializeContextList(guidedPoses, function (pose) {
+        return '- Pose ' + pose.poseNumber + ': ' + pose.asanaLabel;
+      }) || '- None',
+      'Variants in the loaded ontology:',
+      buildVariantContext(model),
+      'Examples of asanas shared across variants:',
+      buildSharedAsanaContext(model),
+      'Asanas with linked CYP pages:',
+      serializeContextList(visualAsanas, function (asana) {
+        return '- ' + asana.label + ': page ' + asana.cypPage;
+      }) || '- None',
+      'Known asana labels:',
+      asanaLabels.join(', ')
+    ].join('\n');
+  }
+
+  function buildPlannerPrompt(model, questionText) {
+    return [
+      'Supported intents:',
+      '- base_sequence: ordered sequence of poses in Base Surya Namaskar.',
+      '- base_mantra_chakra: which Base Surya Namaskar poses have mantra and chakra annotations.',
+      '- base_repeats: repeated poses on the return path in Base Surya Namaskar.',
+      '- base_inverses: inverse left/right pose pairs in Base Surya Namaskar.',
+      '- shared_asanas: asanas or poses common/shared across two or more variants; broad cross-variant overlap questions should map here and be answered at the asana identity level.',
+      '- same_asana_equivalences: explicit sameAsanaAs links.',
+      '- cyp_visual_references: linked CYP page visuals, optionally for a specific asana.',
+      '- pose_guidance: guidance, rules, constraints, errors, corrections, or body parts for a specific Base Surya Namaskar pose or asana.',
+      '- variant_pose_counts: how many poses each variant has, including comparisons across all or named variants.',
+      '- variant_sequence: the ordered pose sequence for one or more named variants.',
+      '- asana_variant_coverage: which variants include a specific asana, and at which pose numbers it appears.',
+      '- unsupported: anything else.',
+      'Ontology context:',
+      buildOntologyContext(model),
+      'User question:',
+      compactText(questionText),
+      'Return JSON only.'
+    ].join('\n\n');
+  }
+
+  function buildExplanationPrompt(questionText, session, execution) {
+    var evidence = {
+      question: questionText,
+      template: session.templateLabel,
+      intent: session.plan.intent,
+      sparql: session.sparql,
+      facts: execution.answer.facts || [],
+      table: execution.answer.table || null,
+      sections: execution.answer.sections || [],
+      visuals: (execution.answer.visuals || []).map(function (visual) {
+        return {
+          asanaLabel: visual.asanaLabel,
+          page: visual.page,
+          caption: visual.caption
+        };
+      })
+    };
+
+    return [
+      'Student question:',
+      compactText(questionText),
+      'Evidence JSON:',
+      JSON.stringify(evidence, null, 2),
+      'Write a grounded educational explanation in one or two short paragraphs.',
+      'Mention linked CYP visuals only if they are present in the evidence.'
+    ].join('\n\n');
+  }
+
+  function extractGeminiText(payload) {
+    var candidates = payload && payload.candidates ? payload.candidates : [];
+    var texts = [];
+
+    candidates.forEach(function (candidate) {
+      var parts = candidate && candidate.content && candidate.content.parts
+        ? candidate.content.parts
+        : [];
+
+      parts.forEach(function (part) {
+        if (typeof part.text === 'string') {
+          texts.push(part.text);
+        }
+      });
+    });
+
+    return compactText(texts.join('\n'));
+  }
+
+  function requestGemini(apiKey, modelName, body) {
+    return fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/' +
+      encodeURIComponent(modelName || DEFAULT_MODEL) +
+      ':generateContent',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': compactText(apiKey)
+        },
+        body: JSON.stringify(body)
+      }
+    ).then(function (response) {
+      return response.json().catch(function () {
+        return {};
+      }).then(function (payload) {
+        var message;
+
+        if (!response.ok) {
+          message = payload && payload.error && payload.error.message
+            ? payload.error.message
+            : 'Gemini request failed (' + response.status + ').';
+          throw new Error(message);
+        }
+
+        return payload;
+      });
+    });
+  }
+
+  function requestStructuredPlan(options) {
+    return requestGemini(options.apiKey, options.modelName, {
+      systemInstruction: {
+        parts: [
+          { text: PLANNER_SYSTEM_PROMPT }
+        ]
+      },
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            { text: buildPlannerPrompt(options.model, options.questionText) }
+          ]
+        }
+      ],
+      generationConfig: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: PLANNER_SCHEMA,
+        temperature: 0,
+        candidateCount: 1
+      }
+    }).then(function (payload) {
+      var text = extractGeminiText(payload);
+      var parsed;
+
+      if (!text) {
+        throw new Error('Gemini returned an empty planning response.');
+      }
+
+      try {
+        parsed = JSON.parse(text);
+      } catch (error) {
+        throw new Error('Gemini returned invalid planner JSON.');
+      }
+
+      return parsed;
+    });
+  }
+
+  function requestExplanation(options) {
+    return requestGemini(options.apiKey, options.modelName, {
+      systemInstruction: {
+        parts: [
+          { text: EXPLANATION_SYSTEM_PROMPT }
+        ]
+      },
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            { text: buildExplanationPrompt(options.questionText, options.session, options.execution) }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.2,
+        candidateCount: 1
+      }
+    }).then(function (payload) {
+      var text = extractGeminiText(payload);
+
+      if (!text) {
+        throw new Error('Gemini returned an empty explanation.');
+      }
+
+      return text;
+    });
+  }
+
+  function sanitizePlan(rawPlan) {
+    var plan = rawPlan || {};
+    var intent = SUPPORTED_INTENTS.indexOf(plan.intent) !== -1 ? plan.intent : 'unsupported';
+    var poseNumber = plan.poseNumber === null || plan.poseNumber === undefined || plan.poseNumber === ''
+      ? null
+      : Number(plan.poseNumber);
+
+    return {
+      intent: intent,
+      confidence: Math.max(0, Math.min(1, Number(plan.confidence) || 0)),
+      normalizedQuestion: compactText(plan.normalizedQuestion),
+      asanaLabel: compactText(plan.asanaLabel) || null,
+      variantLabel: compactText(plan.variantLabel) || null,
+      poseNumber: Number.isFinite(poseNumber) ? poseNumber : null,
+      wantsVisuals: Boolean(plan.wantsVisuals),
+      rationale: compactText(plan.rationale),
+      unsupportedReason: compactText(plan.unsupportedReason) || null
+    };
+  }
+
+  function looksLikeSharedAcrossVariantsQuestion(questionText) {
+    var text = normalizeKey(questionText);
+
+    return text.indexOf('variant') !== -1 &&
+      /(common|shared|overlap|overlapping|across|present in multiple|present across|same across)/.test(text) &&
+      /(pose|poses|asana|asanas)/.test(text);
+  }
+
+  function looksLikeVariantPoseCountQuestion(questionText) {
+    var text = normalizeKey(questionText);
+
+    return /(variant|variants|base surya namaskar|krishnamacharya|bihar school of yoga|swami vivekananda kendra|sivananda)/.test(text) &&
+      /(how many|number of|count|counts|compare|comparison|more|fewer|least|most|total)/.test(text) &&
+      /\bpose\b|\bposes\b/.test(text);
+  }
+
+  function looksLikeVariantSequenceQuestion(questionText) {
+    var text = normalizeKey(questionText);
+
+    return /(variant|variants|base surya namaskar|krishnamacharya|bihar school of yoga|swami vivekananda kendra|sivananda)/.test(text) &&
+      /(sequence|ordered|order|pose list|list the poses|poses in|poses of)/.test(text);
+  }
+
+  function looksLikeAsanaVariantCoverageQuestion(questionText) {
+    var text = normalizeKey(questionText);
+
+    return /(variant|variants)/.test(text) &&
+      /(which|what|where|include|includes|included|appear|appears|present|contains|contain)/.test(text);
+  }
+
+  function setResolvedVariantsOnPlan(model, questionText, resolvedPlan) {
+    var explicitVariant = resolvedPlan.variantLabel ? resolveVariant(model, resolvedPlan.variantLabel) : null;
+    var mentionedVariants = resolveVariantsFromQuestion(model, questionText);
+    var variants = explicitVariant
+      ? [explicitVariant].concat(mentionedVariants.filter(function (variant) {
+        return variant.uri !== explicitVariant.uri;
+      }))
+      : mentionedVariants;
+
+    resolvedPlan.variantUris = variants.map(function (variant) {
+      return variant.uri;
+    });
+    resolvedPlan.variantLabels = variants.map(function (variant) {
+      return variant.displayLabel;
+    });
+
+    if (!resolvedPlan.variantLabel && variants.length === 1) {
+      resolvedPlan.variantLabel = variants[0].displayLabel;
+    }
+  }
+
+  function resolvePlanAgainstModel(model, questionText, plan) {
+    var resolvedPlan = sanitizePlan(plan);
+    var resolvedAsana;
+    var resolvedPose;
+    var inferredAsana;
+
+    setResolvedVariantsOnPlan(model, questionText, resolvedPlan);
+
+    if (resolvedPlan.intent === 'unsupported' && looksLikeSharedAcrossVariantsQuestion(questionText)) {
+      resolvedPlan.intent = 'shared_asanas';
+      resolvedPlan.confidence = Math.max(resolvedPlan.confidence, 0.6);
+      resolvedPlan.asanaLabel = null;
+      resolvedPlan.poseNumber = null;
+      resolvedPlan.unsupportedReason = null;
+      resolvedPlan.rationale = 'The question asks for what is common across variants, which maps to the shared_asanas template. Cross-variant overlap is answered at the asana identity level.';
+    }
+
+    if (resolvedPlan.asanaLabel) {
+      resolvedAsana = resolveAsana(model, resolvedPlan.asanaLabel);
+      if (resolvedAsana) {
+        resolvedPlan.asanaLabel = resolvedAsana.label;
+      }
+    } else {
+      inferredAsana = resolveAsanaFromQuestion(model, questionText);
+      if (inferredAsana) {
+        resolvedPlan.asanaLabel = inferredAsana.label;
+      }
+    }
+
+    if (looksLikeVariantPoseCountQuestion(questionText)) {
+      resolvedPlan.intent = 'variant_pose_counts';
+      resolvedPlan.confidence = Math.max(resolvedPlan.confidence, 0.72);
+      resolvedPlan.poseNumber = null;
+      resolvedPlan.unsupportedReason = null;
+      resolvedPlan.rationale = 'The question asks about the number of poses across variants, which maps to a variant pose count comparison.';
+    } else if (looksLikeVariantSequenceQuestion(questionText) && resolvedPlan.variantUris.length) {
+      resolvedPlan.intent = 'variant_sequence';
+      resolvedPlan.confidence = Math.max(resolvedPlan.confidence, 0.7);
+      resolvedPlan.poseNumber = null;
+      resolvedPlan.unsupportedReason = null;
+      resolvedPlan.rationale = 'The question asks for an ordered pose sequence for one or more named variants.';
+    } else if (looksLikeAsanaVariantCoverageQuestion(questionText) && resolvedPlan.asanaLabel) {
+      resolvedPlan.intent = 'asana_variant_coverage';
+      resolvedPlan.confidence = Math.max(resolvedPlan.confidence, 0.68);
+      resolvedPlan.poseNumber = null;
+      resolvedPlan.unsupportedReason = null;
+      resolvedPlan.rationale = 'The question asks which variants include a specific asana.';
+    }
+
+    if (resolvedPlan.intent === 'pose_guidance') {
+      resolvedPose = resolvedPlan.poseNumber
+        ? findBasePoseByNumber(model, resolvedPlan.poseNumber)
+        : null;
+
+      if (!resolvedPose && resolvedPlan.asanaLabel) {
+        resolvedPose = findBasePoseByAsana(model, resolvedPlan.asanaLabel);
+      }
+
+      if (!resolvedPose && resolvedPlan.asanaLabel) {
+        resolvedAsana = resolveAsana(model, resolvedPlan.asanaLabel);
+        if (resolvedAsana) {
+          resolvedPlan.asanaLabel = resolvedAsana.label;
+        }
+      }
+
+      if (resolvedPose) {
+        resolvedPlan.poseNumber = resolvedPose.poseNumber;
+        resolvedPlan.asanaLabel = resolvedPose.asanaLabel;
+      } else {
+        throw new Error(
+          'The ontology planner could not resolve a Base Surya Namaskar pose from: "' +
+          compactText(questionText) + '".'
+        );
+      }
+    }
+
+    if (resolvedPlan.intent === 'variant_pose_counts' && !resolvedPlan.variantUris.length) {
+      resolvedPlan.variantUris = (model.variants || []).map(function (variant) {
+        return variant.uri;
+      });
+      resolvedPlan.variantLabels = (model.variants || []).map(function (variant) {
+        return variant.displayLabel;
+      });
+    }
+
+    if (resolvedPlan.intent === 'variant_sequence' && !resolvedPlan.variantUris.length) {
+      throw new Error(
+        'The ontology planner could not resolve which variant sequence to use from: "' +
+        compactText(questionText) + '".'
+      );
+    }
+
+    if (resolvedPlan.intent === 'asana_variant_coverage' && !resolvedPlan.asanaLabel) {
+      throw new Error(
+        'The ontology planner could not resolve which asana to compare across variants from: "' +
+        compactText(questionText) + '".'
+      );
+    }
+
+    return resolvedPlan;
+  }
+
+  function buildVariantValuesClause(variantUris) {
+    if (!variantUris || !variantUris.length) {
+      return '';
+    }
+
+    return '  VALUES ?variant { ' + variantUris.map(function (uri) {
+      return '<' + uri + '>';
+    }).join(' ') + ' }\n';
+  }
+
+  function buildVisualReferenceSparql(asanaLabel) {
+    var filter = asanaLabel
+      ? '\n  FILTER (LCASE(STR(?asanaLabel)) = "' + escapeSparqlString(normalizeKey(asanaLabel)) + '")'
+      : '';
+
+    return withPrefixes(
+      'SELECT ?asanaLabel ?cypPage\n' +
+      'WHERE {\n' +
+      '  ?asana rdf:type core:Asana ;\n' +
+      '         rdfs:label ?asanaLabel ;\n' +
+      '         core:hasCYPPage ?cypPage .' +
+      filter + '\n' +
+      '}\n' +
+      'ORDER BY ?cypPage ?asanaLabel'
+    );
+  }
+
+  function buildPoseGuidanceSparql(pose) {
+    return withPrefixes(
+      'SELECT ?poseNumber ?asanaLabel ?ruleDescription ?constraintDescription ?errorDescription ?correctionText\n' +
+      'WHERE {\n' +
+      '  BIND(base:' + pose.id + ' AS ?pose)\n' +
+      '  ?pose core:poseNumber ?poseNumber ;\n' +
+      '        core:hasAsana ?asana .\n' +
+      '  ?asana rdfs:label ?asanaLabel .\n' +
+      '  OPTIONAL { ?pose core:hasRule ?rule . ?rule core:ruleDescription ?ruleDescription . }\n' +
+      '  OPTIONAL { ?pose core:hasConstraint ?constraint . ?constraint core:constraintDescription ?constraintDescription . }\n' +
+      '  OPTIONAL {\n' +
+      '    ?pose core:hasPossibleError ?error .\n' +
+      '    ?error core:errorDescription ?errorDescription .\n' +
+      '    OPTIONAL {\n' +
+      '      ?error core:hasCorrection ?correction .\n' +
+      '      ?correction core:correctionText ?correctionText .\n' +
+      '    }\n' +
+      '  }\n' +
+      '}\n' +
+      'ORDER BY ?poseNumber ?ruleDescription ?errorDescription ?correctionText'
+    );
+  }
+
+  function buildVariantPoseCountSparql(plan) {
+    return withPrefixes(
+      'SELECT ?variantLabel (COUNT(DISTINCT ?pose) AS ?poseCount) (COUNT(DISTINCT ?asana) AS ?distinctAsanaCount)\n' +
+      'WHERE {\n' +
+      buildVariantValuesClause(plan.variantUris) +
+      '  ?pose rdf:type core:Pose ;\n' +
+      '        core:belongsToVariant ?variant ;\n' +
+      '        core:hasAsana ?asana .\n' +
+      '  ?variant rdfs:label ?variantLabel .\n' +
+      '}\n' +
+      'GROUP BY ?variantLabel\n' +
+      'ORDER BY DESC(?poseCount) ?variantLabel'
+    );
+  }
+
+  function buildVariantSequenceSparql(plan) {
+    return withPrefixes(
+      'SELECT ?variantLabel ?poseNumber ?asanaLabel ?laterality ?supportType ?chakra ?mantra\n' +
+      'WHERE {\n' +
+      buildVariantValuesClause(plan.variantUris) +
+      '  ?pose rdf:type core:Pose ;\n' +
+      '        core:belongsToVariant ?variant ;\n' +
+      '        core:poseNumber ?poseNumber ;\n' +
+      '        core:hasAsana ?asana .\n' +
+      '  ?variant rdfs:label ?variantLabel .\n' +
+      '  ?asana rdfs:label ?asanaLabel .\n' +
+      '  OPTIONAL { ?pose core:hasLaterality ?laterality . }\n' +
+      '  OPTIONAL { ?pose core:hasSupportType ?supportType . }\n' +
+      '  OPTIONAL { ?pose core:hasChakra ?chakra . }\n' +
+      '  OPTIONAL { ?pose core:hasMantra ?mantra . }\n' +
+      '}\n' +
+      'ORDER BY ?variantLabel ?poseNumber'
+    );
+  }
+
+  function buildAsanaVariantCoverageSparql(plan) {
+    return withPrefixes(
+      'SELECT ?variantLabel ?poseNumber ?laterality ?supportType\n' +
+      'WHERE {\n' +
+      '  ?pose rdf:type core:Pose ;\n' +
+      '        core:belongsToVariant ?variant ;\n' +
+      '        core:poseNumber ?poseNumber ;\n' +
+      '        core:hasAsana ?asana .\n' +
+      '  ?variant rdfs:label ?variantLabel .\n' +
+      '  ?asana rdfs:label ?asanaLabel .\n' +
+      '  FILTER (LCASE(STR(?asanaLabel)) = "' + escapeSparqlString(normalizeKey(plan.asanaLabel)) + '")\n' +
+      '  OPTIONAL { ?pose core:hasLaterality ?laterality . }\n' +
+      '  OPTIONAL { ?pose core:hasSupportType ?supportType . }\n' +
+      '}\n' +
+      'ORDER BY ?variantLabel ?poseNumber'
+    );
+  }
+
+  function buildSparqlFromPlan(model, plan) {
+    var predefinedQuestion;
+    var pose;
+
+    if (INTENT_TO_QUESTION_ID[plan.intent]) {
+      predefinedQuestion = getQuestionById(INTENT_TO_QUESTION_ID[plan.intent]);
+      return predefinedQuestion ? predefinedQuestion.sparql : '';
+    }
+
+    if (plan.intent === 'cyp_visual_references') {
+      return buildVisualReferenceSparql(plan.asanaLabel);
+    }
+
+    if (plan.intent === 'pose_guidance') {
+      pose = findBasePoseByNumber(model, plan.poseNumber) || findBasePoseByAsana(model, plan.asanaLabel);
+      if (!pose) {
+        throw new Error('Unable to locate the requested base pose for guidance.');
+      }
+      return buildPoseGuidanceSparql(pose);
+    }
+
+    if (plan.intent === 'variant_pose_counts') {
+      return buildVariantPoseCountSparql(plan);
+    }
+
+    if (plan.intent === 'variant_sequence') {
+      return buildVariantSequenceSparql(plan);
+    }
+
+    if (plan.intent === 'asana_variant_coverage') {
+      return buildAsanaVariantCoverageSparql(plan);
+    }
+
+    return '';
+  }
+
+  function cloneAnswer(answer) {
+    return JSON.parse(JSON.stringify(answer || {}));
+  }
+
+  function executeDefaultQuestion(model, questionId, questionText, sparql, templateLabel) {
+    var question = getQuestionById(questionId);
+    var answer;
+
+    if (!question || typeof question.run !== 'function') {
+      throw new Error('Missing question template for ' + questionId + '.');
+    }
+
+    answer = cloneAnswer(question.run(model));
+    answer.prompt = compactText(questionText) || question.prompt;
+
+    if (questionId === 'shared-asanas' && /\bpose\b|\bposes\b/i.test(questionText)) {
+      answer.narrative += ' This cross-variant comparison is answered at the asana identity level, because numbered poses are specific to each variant sequence.';
+    }
+
+    return {
+      prompt: compactText(questionText) || question.prompt,
+      badgeLabel: 'AI',
+      sparql: sparql || question.sparql || '',
+      templateLabel: templateLabel,
+      answer: answer
+    };
+  }
+
+  function buildPoseGuidanceAnswer(model, questionText, sparql, templateLabel, plan) {
+    var pose = findBasePoseByNumber(model, plan.poseNumber) || findBasePoseByAsana(model, plan.asanaLabel);
+    var guidance = pose ? model.getPoseGuidance(pose) : null;
+    var errorItems;
+    var rows;
+
+    if (!guidance) {
+      throw new Error('No pose guidance data is available for that Base Surya Namaskar pose.');
+    }
+
+    errorItems = guidance.errors.map(function (error) {
+      var correctionText = error.corrections.map(function (correction) {
+        return correction.text || correction.label;
+      });
+
+      return (error.description || error.label) + (correctionText.length
+        ? ' Correction: ' + joinList(correctionText) + '.'
+        : '');
+    });
+
+    rows = []
+      .concat(guidance.rules.map(function (rule) {
+        return ['Rule', rule.description || rule.label];
+      }))
+      .concat(guidance.constraints.map(function (constraint) {
+        return ['Constraint', constraint.description || constraint.label];
+      }))
+      .concat(guidance.errors.map(function (error) {
+        return ['Error', error.description || error.label];
+      }))
+      .concat(guidance.corrections.map(function (correction) {
+        return ['Correction', correction.text || correction.label];
+      }))
+      .concat(guidance.bodyParts.map(function (bodyPart) {
+        return ['Body part', bodyPart.label];
+      }));
+
+    return {
+      prompt: compactText(questionText),
+      badgeLabel: 'AI',
+      sparql: sparql,
+      templateLabel: templateLabel,
+      answer: {
+        prompt: compactText(questionText),
+        narrative: 'The ontology links Base Pose ' + guidance.pose.poseNumber + ' (' + guidance.pose.asanaLabel +
+          ') to ' + guidance.rules.length + ' rule' + (guidance.rules.length === 1 ? '' : 's') + ', ' +
+          guidance.constraints.length + ' constraint' + (guidance.constraints.length === 1 ? '' : 's') + ', and ' +
+          guidance.errors.length + ' modeled error' + (guidance.errors.length === 1 ? '' : 's') + '.',
+        facts: [
+          { label: 'Pose', value: 'Pose ' + guidance.pose.poseNumber },
+          { label: 'Asana', value: guidance.pose.asanaLabel },
+          { label: 'Rules', value: String(guidance.rules.length) },
+          { label: 'Constraints', value: String(guidance.constraints.length) },
+          { label: 'Errors', value: String(guidance.errors.length) }
+        ],
+        table: rows.length ? {
+          columns: ['Category', 'Detail'],
+          rows: rows
+        } : null,
+        sections: [
+          {
+            title: 'Rules',
+            items: guidance.rules.map(function (rule) {
+              return rule.description || rule.label;
+            })
+          },
+          {
+            title: 'Constraints',
+            items: guidance.constraints.map(function (constraint) {
+              return constraint.description || constraint.label;
+            })
+          },
+          {
+            title: 'Errors And Corrections',
+            items: errorItems
+          },
+          {
+            title: 'Body Parts',
+            items: guidance.bodyParts.map(function (bodyPart) {
+              return bodyPart.label;
+            })
+          }
+        ],
+        visuals: guidance.visuals || []
+      }
+    };
+  }
+
+  function buildVisualReferenceAnswer(model, questionText, sparql, templateLabel, plan) {
+    var question = getQuestionById('cyp-visual-references');
+    var allAsanas;
+    var resolvedAsana;
+    var filteredAsanas;
+
+    if (!plan.asanaLabel || !question) {
+      return executeDefaultQuestion(model, 'cyp-visual-references', questionText, sparql, templateLabel);
+    }
+
+    allAsanas = getAsanasWithVisuals(model);
+    resolvedAsana = resolveAsana(model, plan.asanaLabel);
+    filteredAsanas = allAsanas.filter(function (asana) {
+      return resolvedAsana ? asana.uri === resolvedAsana.uri : normalizeKey(asana.label) === normalizeKey(plan.asanaLabel);
+    });
+
+    return {
+      prompt: compactText(questionText),
+      badgeLabel: 'AI',
+      sparql: sparql,
+      templateLabel: templateLabel,
+      answer: {
+        prompt: compactText(questionText),
+        narrative: filteredAsanas.length
+          ? filteredAsanas[0].label + ' is linked to CYP page ' + filteredAsanas[0].cypPage + ' in the current ontology snapshot.'
+          : 'No linked CYP page is currently recorded for ' + plan.asanaLabel + ' in the ontology snapshot.',
+        facts: [
+          { label: 'Requested asana', value: resolvedAsana ? resolvedAsana.label : plan.asanaLabel },
+          { label: 'Matches', value: String(filteredAsanas.length) }
+        ],
+        table: {
+          columns: ['Asana', 'CYP page', 'Image file'],
+          rows: filteredAsanas.map(function (asana) {
+            return [
+              asana.label,
+              String(asana.cypPage),
+              asana.visual ? asana.visual.src : '-'
+            ];
+          })
+        },
+        sections: filteredAsanas.length ? [] : [
+          {
+            title: 'Current ontology state',
+            items: [
+              'The requested asana does not currently carry a hasCYPPage annotation in the loaded master.owl snapshot.'
+            ]
+          }
+        ],
+        visuals: model.collectVisualsFromAsanas(filteredAsanas)
+      }
+    };
+  }
+
+  function getPlanVariants(model, plan) {
+    var variantUris = plan && plan.variantUris ? plan.variantUris : [];
+    var resolvedVariants = variantUris.map(function (uri) {
+      return model.getVariant(uri);
+    }).filter(Boolean);
+
+    if (resolvedVariants.length) {
+      return resolvedVariants;
+    }
+
+    if (plan && plan.variantLabel) {
+      return [resolveVariant(model, plan.variantLabel)].filter(Boolean);
+    }
+
+    return [];
+  }
+
+  function buildVariantPoseCountAnswer(model, questionText, sparql, templateLabel, plan) {
+    var variants = getPlanVariants(model, plan);
+    var entries;
+    var maxCount;
+    var minCount;
+    var topVariants;
+    var bottomVariants;
+    var allPoses;
+
+    if (!variants.length) {
+      variants = model.variants ? model.variants.slice() : [];
+    }
+
+    entries = variants.map(function (variant) {
+      var poses = model.getOrderedPosesForVariant(variant);
+      var distinctAsanas = unique(poses.map(function (pose) {
+        return pose.asanaLabel;
+      }).filter(Boolean));
+
+      return {
+        variant: variant,
+        poses: poses,
+        poseCount: poses.length,
+        distinctAsanaCount: distinctAsanas.length,
+        firstPose: poses[0] || null,
+        lastPose: poses[poses.length - 1] || null
+      };
+    }).filter(function (entry) {
+      return entry.poseCount > 0;
+    }).sort(function (left, right) {
+      return right.poseCount - left.poseCount ||
+        left.variant.displayLabel.localeCompare(right.variant.displayLabel);
+    });
+
+    if (!entries.length) {
+      throw new Error('No variant pose data is available in the loaded ontology.');
+    }
+
+    maxCount = entries[0].poseCount;
+    minCount = entries[entries.length - 1].poseCount;
+    topVariants = entries.filter(function (entry) {
+      return entry.poseCount === maxCount;
+    }).map(function (entry) {
+      return entry.variant.displayLabel;
+    });
+    bottomVariants = entries.filter(function (entry) {
+      return entry.poseCount === minCount;
+    }).map(function (entry) {
+      return entry.variant.displayLabel;
+    });
+    allPoses = entries.reduce(function (accumulator, entry) {
+      return accumulator.concat(entry.poses);
+    }, []);
+
+    return {
+      prompt: compactText(questionText),
+      badgeLabel: 'AI',
+      sparql: sparql,
+      templateLabel: templateLabel,
+      answer: {
+        prompt: compactText(questionText),
+        narrative: entries.length === 1
+          ? entries[0].variant.displayLabel + ' is modeled with ' + entries[0].poseCount + ' poses and ' +
+            entries[0].distinctAsanaCount + ' distinct asanas.'
+          : 'Across ' + entries.length + ' compared variants, ' +
+            joinList(entries.map(function (entry) {
+              return entry.variant.displayLabel + ' (' + entry.poseCount + ' poses)';
+            })) + '. The highest pose count is ' + maxCount + ' in ' + joinList(topVariants) +
+            ', while the lowest is ' + minCount + ' in ' + joinList(bottomVariants) + '.',
+        facts: [
+          { label: 'Compared variants', value: String(entries.length) },
+          { label: 'Highest pose count', value: String(maxCount) },
+          { label: 'Lowest pose count', value: String(minCount) },
+          { label: 'Pose spread', value: String(maxCount - minCount) }
+        ],
+        table: {
+          columns: ['Variant', 'Pose count', 'Distinct asanas', 'First pose', 'Last pose'],
+          rows: entries.map(function (entry) {
+            return [
+              entry.variant.displayLabel,
+              String(entry.poseCount),
+              String(entry.distinctAsanaCount),
+              entry.firstPose ? entry.firstPose.asanaLabel : '-',
+              entry.lastPose ? entry.lastPose.asanaLabel : '-'
+            ];
+          })
+        },
+        sections: [],
+        visuals: model.collectVisualsFromPoses(allPoses)
+      }
+    };
+  }
+
+  function buildVariantSequenceAnswer(model, questionText, sparql, templateLabel, plan) {
+    var variants = getPlanVariants(model, plan);
+    var entries;
+    var allPoses;
+
+    if (!variants.length) {
+      throw new Error('No variant sequence could be resolved from the question.');
+    }
+
+    entries = variants.map(function (variant) {
+      var poses = model.getOrderedPosesForVariant(variant);
+      var distinctAsanas = unique(poses.map(function (pose) {
+        return pose.asanaLabel;
+      }).filter(Boolean));
+
+      return {
+        variant: variant,
+        poses: poses,
+        distinctAsanas: distinctAsanas
+      };
+    }).filter(function (entry) {
+      return entry.poses.length;
+    });
+
+    if (!entries.length) {
+      throw new Error('The requested variant sequence is empty in the loaded ontology.');
+    }
+
+    allPoses = entries.reduce(function (accumulator, entry) {
+      return accumulator.concat(entry.poses);
+    }, []);
+
+    return {
+      prompt: compactText(questionText),
+      badgeLabel: 'AI',
+      sparql: sparql,
+      templateLabel: templateLabel,
+      answer: {
+        prompt: compactText(questionText),
+        narrative: entries.length === 1
+          ? entries[0].variant.displayLabel + ' is modeled as ' + entries[0].poses.length + ' ordered poses: ' +
+            entries[0].poses.map(poseSummary).join(' -> ') + '.'
+          : 'The ontology returns ordered sequences for ' + joinList(entries.map(function (entry) {
+            return entry.variant.displayLabel + ' (' + entry.poses.length + ' poses)';
+          })) + '.',
+        facts: [
+          { label: 'Variants returned', value: String(entries.length) },
+          { label: 'Total pose rows', value: String(allPoses.length) }
+        ],
+        table: {
+          columns: ['Variant', '#', 'Asana', 'Laterality', 'Support', 'Chakra', 'Mantra'],
+          rows: entries.reduce(function (accumulator, entry) {
+            return accumulator.concat(entry.poses.map(function (pose) {
+              return [
+                entry.variant.displayLabel,
+                String(pose.poseNumber),
+                pose.asanaLabel,
+                pose.laterality || '-',
+                pose.supportType || '-',
+                pose.chakra || '-',
+                pose.mantra || '-'
+              ];
+            }));
+          }, [])
+        },
+        sections: entries.length > 1 ? entries.map(function (entry) {
+          return {
+            title: entry.variant.displayLabel,
+            items: entry.poses.map(poseSummary)
+          };
+        }) : [],
+        visuals: model.collectVisualsFromPoses(allPoses)
+      }
+    };
+  }
+
+  function buildAsanaVariantCoverageAnswer(model, questionText, sparql, templateLabel, plan) {
+    var asana = resolveAsana(model, plan.asanaLabel);
+    var poses;
+    var grouped = {};
+    var rows;
+    var sectionItems;
+
+    if (!asana) {
+      throw new Error('The requested asana could not be resolved for variant coverage.');
+    }
+
+    poses = model.getPosesForAsana(asana);
+    poses.forEach(function (pose) {
+      var variant = model.getVariant(pose.variantUri);
+      var key = variant ? variant.uri : pose.variantUri;
+
+      if (!grouped[key]) {
+        grouped[key] = {
+          variant: variant,
+          poses: []
+        };
+      }
+      grouped[key].poses.push(pose);
+    });
+
+    rows = Object.keys(grouped).map(function (key) {
+      var entry = grouped[key];
+      entry.poses.sort(function (left, right) {
+        return Number(left.poseNumber) - Number(right.poseNumber);
+      });
+      return entry;
+    }).sort(function (left, right) {
+      return left.variant.displayLabel.localeCompare(right.variant.displayLabel);
+    });
+
+    if (!rows.length) {
+      throw new Error('No variant coverage was found for ' + asana.label + '.');
+    }
+
+    sectionItems = rows.map(function (entry) {
+      return entry.variant.displayLabel + ': ' + joinList(entry.poses.map(function (pose) {
+        return 'Pose ' + pose.poseNumber;
+      }));
+    });
+
+    return {
+      prompt: compactText(questionText),
+      badgeLabel: 'AI',
+      sparql: sparql,
+      templateLabel: templateLabel,
+      answer: {
+        prompt: compactText(questionText),
+        narrative: asana.label + ' appears in ' + rows.length + ' variant' + (rows.length === 1 ? '' : 's') +
+          ': ' + joinList(sectionItems) + '.',
+        facts: [
+          { label: 'Asana', value: asana.label },
+          { label: 'Variants', value: String(rows.length) },
+          { label: 'Total occurrences', value: String(poses.length) }
+        ],
+        table: {
+          columns: ['Variant', 'Pose numbers', 'Occurrences'],
+          rows: rows.map(function (entry) {
+            return [
+              entry.variant.displayLabel,
+              entry.poses.map(function (pose) {
+                return String(pose.poseNumber);
+              }).join(', '),
+              String(entry.poses.length)
+            ];
+          })
+        },
+        sections: [
+          {
+            title: 'Variant coverage',
+            items: sectionItems
+          }
+        ],
+        visuals: model.collectVisualsFromAsanas([asana])
+      }
+    };
+  }
+
+  function executePlan(options) {
+    var model = options.model;
+    var session = options.session;
+    var questionText = compactText(options.questionText || (session && session.questionText));
+    var intent = session && session.plan ? session.plan.intent : 'unsupported';
+    var templateLabel = session ? session.templateLabel : TEMPLATE_LABELS.unsupported;
+
+    if (!session || !session.plan) {
+      throw new Error('No custom query plan is available yet.');
+    }
+
+    if (intent === 'unsupported') {
+      throw new Error(session.plan.unsupportedReason || 'The question is outside the supported template set.');
+    }
+
+    if (INTENT_TO_QUESTION_ID[intent] && intent !== 'cyp_visual_references') {
+      return executeDefaultQuestion(model, INTENT_TO_QUESTION_ID[intent], questionText, session.sparql, templateLabel);
+    }
+
+    if (intent === 'cyp_visual_references') {
+      return buildVisualReferenceAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+    }
+
+    if (intent === 'pose_guidance') {
+      return buildPoseGuidanceAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+    }
+
+    if (intent === 'variant_pose_counts') {
+      return buildVariantPoseCountAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+    }
+
+    if (intent === 'variant_sequence') {
+      return buildVariantSequenceAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+    }
+
+    if (intent === 'asana_variant_coverage') {
+      return buildAsanaVariantCoverageAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+    }
+
+    throw new Error('Unsupported intent: ' + intent + '.');
+  }
+
+  function planQuestion(options) {
+    var questionText = compactText(options.questionText);
+    var apiKey = compactText(options.apiKey);
+    var modelName = compactText(options.modelName) || DEFAULT_MODEL;
+
+    if (!questionText) {
+      return Promise.reject(new Error('Enter a natural-language question first.'));
+    }
+
+    if (!apiKey) {
+      return Promise.reject(new Error('Add a Gemini API key before generating a custom query.'));
+    }
+
+    return requestStructuredPlan({
+      apiKey: apiKey,
+      modelName: modelName,
+      model: options.model,
+      questionText: questionText
+    }).then(function (rawPlan) {
+      var plan = resolvePlanAgainstModel(options.model, questionText, rawPlan);
+      var sparql;
+
+      if (plan.intent === 'unsupported') {
+        throw new Error(plan.unsupportedReason || 'Gemini could not map that question to a supported ontology template.');
+      }
+
+      sparql = buildSparqlFromPlan(options.model, plan);
+
+      return {
+        questionText: questionText,
+        modelName: modelName,
+        plan: plan,
+        sparql: sparql,
+        templateLabel: TEMPLATE_LABELS[plan.intent] || 'Ontology template'
+      };
+    });
+  }
+
+  function explainExecution(options) {
+    var apiKey = compactText(options.apiKey);
+
+    if (!apiKey) {
+      return Promise.reject(new Error('Add a Gemini API key before requesting an explanation.'));
+    }
+
+    return requestExplanation({
+      apiKey: apiKey,
+      modelName: compactText(options.modelName) || DEFAULT_MODEL,
+      questionText: options.questionText,
+      session: options.session,
+      execution: options.execution
+    });
+  }
+
+  global.SNEducationAI = {
+    STORAGE_KEY: STORAGE_KEY,
+    DEFAULT_MODEL: DEFAULT_MODEL,
+    FALLBACK_MODEL: FALLBACK_MODEL,
+    TEMPLATE_LABELS: TEMPLATE_LABELS,
+    loadApiKey: loadApiKey,
+    saveApiKey: saveApiKey,
+    clearApiKey: clearApiKey,
+    planQuestion: planQuestion,
+    executePlan: executePlan,
+    explainExecution: explainExecution
+  };
+}(window));
