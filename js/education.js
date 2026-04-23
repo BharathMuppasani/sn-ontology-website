@@ -1,0 +1,1188 @@
+(function (global) {
+  'use strict';
+
+  var SUGGESTED_QUESTION_IDS = [
+    'base-sequence',
+    'base-mantra-chakra',
+    'base-repeats',
+    'base-inverses',
+    'shared-asanas',
+    'same-asana-equivalences',
+    'cyp-visual-references',
+    'base-pose-7-guidance'
+  ];
+
+  function byId(id) {
+    return document.getElementById(id);
+  }
+
+  function clearElement(element) {
+    if (!element) {
+      return;
+    }
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+  }
+
+  function createElement(tagName, className, textContent) {
+    var element = document.createElement(tagName);
+    if (className) {
+      element.className = className;
+    }
+    if (typeof textContent === 'string') {
+      element.textContent = textContent;
+    }
+    return element;
+  }
+
+  function compactText(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function padIndex(value) {
+    var number = Number(value) || 0;
+    return number < 10 ? '0' + number : String(number);
+  }
+
+  function questionMeta(questionId) {
+    if (questionId.indexOf('visual') !== -1) {
+      return 'Visual Grounding';
+    }
+    if (questionId.indexOf('guidance') !== -1) {
+      return 'Pose Guidance';
+    }
+    if (questionId.indexOf('shared') !== -1 || questionId.indexOf('same-') !== -1) {
+      return 'Cross-Variant';
+    }
+    if (questionId.indexOf('mantra') !== -1) {
+      return 'Annotations';
+    }
+    if (questionId.indexOf('repeat') !== -1 || questionId.indexOf('inverse') !== -1 || questionId.indexOf('sequence') !== -1) {
+      return 'Sequence Analysis';
+    }
+    return 'Ontology Query';
+  }
+
+  function getSuggestedQuestions(questions) {
+    var byQuestionId = questions.reduce(function (accumulator, question) {
+      accumulator[question.id] = question;
+      return accumulator;
+    }, {});
+
+    return SUGGESTED_QUESTION_IDS.map(function (questionId) {
+      return byQuestionId[questionId];
+    }).filter(Boolean);
+  }
+
+  function getInitialQuestionId(questions) {
+    var requestedId = compactText(window.location.hash || '').replace(/^#/, '');
+    var match;
+
+    if (!requestedId) {
+      return questions[0] ? questions[0].id : '';
+    }
+
+    match = questions.find(function (question) {
+      return question.id === requestedId;
+    });
+
+    return match ? match.id : (questions[0] ? questions[0].id : '');
+  }
+
+  function setStatus(state, message) {
+    if (state.status) {
+      state.status.textContent = message || '';
+    }
+  }
+
+  function setAIStatus(state, message) {
+    if (state.aiStatus) {
+      state.aiStatus.textContent = message || '';
+    }
+  }
+
+  function setError(state, message) {
+    if (state.error) {
+      state.error.hidden = !message;
+      state.error.textContent = message || '';
+    }
+    if (state.nlError) {
+      state.nlError.hidden = !message;
+      state.nlError.textContent = message || '';
+    }
+  }
+
+  function setButtonDisabled(button, disabled) {
+    if (!button) {
+      return;
+    }
+    button.disabled = Boolean(disabled);
+    button.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+  }
+
+  function setAnswerView(state, view) {
+    var isQueryView = view === 'query';
+
+    state.currentAnswerView = isQueryView ? 'query' : 'answer';
+
+    if (state.answerPanel) {
+      state.answerPanel.setAttribute('data-view', state.currentAnswerView);
+    }
+
+    if (state.answerContent) {
+      state.answerContent.hidden = isQueryView;
+    }
+
+    if (state.queryView) {
+      state.queryView.hidden = !isQueryView;
+    }
+
+    if (state.answerViewToggle) {
+      state.answerViewToggle.setAttribute('aria-pressed', isQueryView ? 'true' : 'false');
+      state.answerViewToggle.textContent = isQueryView ? 'Show Answer' : 'Show SPARQL';
+    }
+  }
+
+  function clearStructuredAnswer(state) {
+    clearElement(state.facts);
+    clearElement(state.sections);
+  }
+
+  function clearAnswerSurface(state, options) {
+    var config = options || {};
+
+    if (state.answerTitle) {
+      state.answerTitle.textContent = config.title || 'Answer Surface';
+    }
+
+    if (state.answerText) {
+      state.answerText.textContent = config.narrative || '';
+    }
+
+    if (state.activeQuestionId) {
+      state.activeQuestionId.textContent = config.badgeLabel || '';
+    }
+
+    if (state.sparql) {
+      state.sparql.textContent = config.sparql || '';
+    }
+
+    if (state.queryNote) {
+      state.queryNote.textContent = config.queryNote || 'Generated query';
+    }
+
+    clearStructuredAnswer(state);
+    setError(state, '');
+
+    if (config.clearVisuals !== false) {
+      renderVisuals(state, []);
+      if (state.visualNote && config.visualNote) {
+        state.visualNote.textContent = config.visualNote;
+      }
+    }
+  }
+
+  function setWorkspaceMode(state, mode) {
+    var activeMode = mode === 'custom' ? 'custom' : 'predefined';
+    var previousMode = state.workspaceMode;
+
+    state.workspaceMode = activeMode;
+
+    if (state.layout) {
+      state.layout.setAttribute('data-mode', activeMode);
+    }
+
+    if (state.customModeButton) {
+      state.customModeButton.setAttribute('aria-pressed', activeMode === 'custom' ? 'true' : 'false');
+    }
+
+    if (state.predefinedModeButton) {
+      state.predefinedModeButton.setAttribute('aria-pressed', activeMode === 'predefined' ? 'true' : 'false');
+    }
+
+    if (state.nlInterface) {
+      state.nlInterface.style.display = activeMode === 'custom' ? 'grid' : 'none';
+    }
+
+    if (state.predefinedInterface) {
+      state.predefinedInterface.style.display = activeMode === 'predefined' ? 'grid' : 'none';
+    }
+
+    if (previousMode === activeMode) {
+      return;
+    }
+
+    if (activeMode === 'custom') {
+      if (state.aiExecution) {
+        renderCustomExecution(state, state.aiExecution, Boolean(state.aiExplained));
+      } else {
+        clearAnswerSurface(state, {
+          title: 'Natural Language Output',
+          badgeLabel: 'AI',
+          sparql: state.aiSession ? state.aiSession.sparql : '',
+          queryNote: state.aiSession ? state.aiSession.templateLabel : 'Generated query',
+          visualNote: 'Linked CYP visuals for the custom query will appear here when the query returns mapped pages.'
+        });
+        setAnswerView(state, 'answer');
+      }
+      return;
+    }
+
+    if (state.model && state.lastPredefinedQuestionId) {
+      renderQuestion(state, state.lastPredefinedQuestionId);
+    }
+  }
+
+  function renderFacts(state, facts) {
+    clearElement(state.facts);
+
+    if (!facts || !facts.length) {
+      return;
+    }
+
+    facts.forEach(function (fact) {
+      var card = createElement('div', 'education-fact-card');
+      var label = createElement('span', '', fact.label);
+      var value = createElement('strong', '', fact.value);
+      card.appendChild(label);
+      card.appendChild(value);
+      state.facts.appendChild(card);
+    });
+  }
+
+  function renderTable(container, table) {
+    var wrapper;
+    var tableElement;
+    var thead;
+    var headerRow;
+    var tbody;
+
+    if (!table || !table.columns || !table.rows) {
+      return;
+    }
+
+    wrapper = createElement('div', 'education-detail-card education-table-wrap');
+    tableElement = createElement('table');
+    thead = createElement('thead');
+    headerRow = createElement('tr');
+    tbody = createElement('tbody');
+
+    table.columns.forEach(function (column) {
+      headerRow.appendChild(createElement('th', '', column));
+    });
+
+    table.rows.forEach(function (row) {
+      var bodyRow = createElement('tr');
+      row.forEach(function (cell) {
+        bodyRow.appendChild(createElement('td', '', String(cell)));
+      });
+      tbody.appendChild(bodyRow);
+    });
+
+    thead.appendChild(headerRow);
+    tableElement.appendChild(thead);
+    tableElement.appendChild(tbody);
+    wrapper.appendChild(tableElement);
+    container.appendChild(wrapper);
+  }
+
+  function renderSections(state, answer) {
+    clearElement(state.sections);
+
+    if (answer.table) {
+      renderTable(state.sections, answer.table);
+    }
+
+    (answer.sections || []).forEach(function (section) {
+      var card;
+      var items;
+      var title;
+      var list;
+
+      items = (section.items || []).map(compactText).filter(Boolean);
+
+      if (!items.length) {
+        return;
+      }
+
+      card = createElement('section', 'education-detail-card');
+      title = createElement('h3', '', section.title);
+      list = createElement('ul');
+
+      items.forEach(function (item) {
+        list.appendChild(createElement('li', '', item));
+      });
+
+      card.appendChild(title);
+      card.appendChild(list);
+      state.sections.appendChild(card);
+    });
+
+    if (!state.sections.children.length) {
+      state.sections.appendChild(
+        createElement(
+          'div',
+          'education-detail-card',
+          'No additional structured evidence is available for this question in the current ontology snapshot.'
+        )
+      );
+    }
+  }
+
+  function closeLightbox(state) {
+    if (!state.lightbox) {
+      return;
+    }
+
+    state.lightbox.hidden = true;
+    state.lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function openLightbox(state, visual) {
+    if (!state.lightbox || !state.lightboxImage || !state.lightboxCaption) {
+      return;
+    }
+
+    state.lightboxImage.src = visual.src;
+    state.lightboxImage.alt = visual.alt || visual.asanaLabel || 'Expanded CYP visual';
+    state.lightboxCaption.textContent = visual.asanaLabel + ' - ' + visual.caption;
+    state.lightbox.hidden = false;
+    state.lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function renderVisuals(state, visuals) {
+    clearElement(state.visuals);
+
+    if (!visuals || !visuals.length) {
+      state.visuals.appendChild(
+        createElement(
+          'div',
+          'education-visual-empty',
+          'No linked CYP page is available for the selected answer yet. Add more hasCYPPage annotations to expand this panel.'
+        )
+      );
+      if (state.visualNote) {
+        state.visualNote.textContent = 'No linked CYP page is currently available for this answer in the ontology.';
+      }
+      return;
+    }
+
+    if (state.visualNote) {
+      state.visualNote.textContent = 'Showing ' + visuals.length + ' linked CYP page visual' +
+        (visuals.length === 1 ? '' : 's') + ' for the selected answer.';
+    }
+
+    visuals.forEach(function (visual) {
+      var card = createElement('article', 'education-visual-card');
+      var button = createElement('button', 'education-visual-button');
+      var image = createElement('img', 'visual-reference-thumbnail');
+      var meta = createElement('div', 'education-visual-meta');
+      var title = createElement('strong', '', visual.asanaLabel);
+      var caption = createElement('p', '', visual.caption);
+      var page = createElement('span', '', 'Page ' + visual.page);
+
+      button.type = 'button';
+      image.src = visual.src;
+      image.alt = visual.alt;
+      image.loading = 'lazy';
+
+      button.appendChild(image);
+      button.addEventListener('click', function () {
+        openLightbox(state, visual);
+      });
+
+      meta.appendChild(title);
+      meta.appendChild(caption);
+      meta.appendChild(page);
+
+      card.appendChild(button);
+      card.appendChild(meta);
+      state.visuals.appendChild(card);
+    });
+  }
+
+  function renderAnswer(state, descriptor, answer) {
+    var queryNote = descriptor.queryNote || 'Query template';
+
+    if (state.answerTitle) {
+      state.answerTitle.textContent = descriptor.prompt || 'Ontology answer';
+    }
+
+    if (state.answerText) {
+      state.answerText.textContent = answer.narrative || '';
+    }
+
+    if (state.activeQuestionId) {
+      state.activeQuestionId.textContent = descriptor.badgeLabel || '';
+    }
+
+    if (state.sparql) {
+      state.sparql.textContent = descriptor.sparql || '';
+    }
+
+    if (state.queryNote) {
+      state.queryNote.textContent = queryNote;
+    }
+
+    renderFacts(state, answer.facts || []);
+    renderSections(state, answer);
+    renderVisuals(state, answer.visuals || []);
+    setError(state, '');
+    setStatus(state, state.model ? 'Ontology ready' : 'Loading ontology');
+  }
+
+  function renderCustomExecution(state, execution, showNarrative) {
+    if (state.nlSparql) {
+      state.nlSparql.textContent = execution.sparql || (state.aiSession && state.aiSession.sparql) || '';
+    }
+    
+    if (execution && execution.answer) {
+      var origFacts = state.facts;
+      var origSections = state.sections;
+      state.facts = state.nlFacts;
+      state.sections = state.nlSections;
+      
+      renderFacts(state, execution.answer.facts || []);
+      renderSections(state, execution.answer);
+      
+      state.facts = origFacts;
+      state.sections = origSections;
+    }
+    
+    if (showNarrative && execution.answer && execution.answer.narrative) {
+      if (state.nlExplanation) state.nlExplanation.style.display = 'block';
+      if (state.nlExplanationText) state.nlExplanationText.textContent = execution.answer.narrative;
+    } else {
+      if (state.nlExplanation) state.nlExplanation.style.display = 'none';
+    }
+  }
+
+  function updateQuestionButtons(state) {
+    if (!state.questionList) {
+      return;
+    }
+
+    Array.prototype.forEach.call(state.questionList.querySelectorAll('[data-question-id]'), function (button) {
+      var active = button.getAttribute('data-question-id') === state.selectedQuestionId;
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  }
+
+  function ensureAnswerVisible(state) {
+    var anchor = state.answerTitle || state.sections || state.root;
+    var rect;
+
+    if (!anchor || typeof anchor.getBoundingClientRect !== 'function') {
+      return;
+    }
+
+    rect = anchor.getBoundingClientRect();
+    if (rect.top >= 72 && rect.top <= window.innerHeight * 0.4) {
+      return;
+    }
+
+    anchor.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+
+  function setRuntimeCard(card, heading, body) {
+    var title;
+    var text;
+
+    if (!card) {
+      return;
+    }
+
+    title = card.querySelector('strong');
+    text = card.querySelector('p');
+
+    if (title && typeof heading === 'string') {
+      title.textContent = heading;
+    }
+
+    if (text && typeof body === 'string') {
+      text.textContent = body;
+    }
+  }
+
+  function setRuntimePill(state, message) {
+    if (state.runtimePill) {
+      state.runtimePill.textContent = message || '';
+    }
+  }
+
+  function buildPredefinedDescriptor(state, question) {
+    var visibleIndex = state.suggestedQuestions.indexOf(question);
+
+    return {
+      prompt: question.prompt,
+      sparql: question.sparql || '',
+      badgeLabel: 'Q-' + padIndex((visibleIndex >= 0 ? visibleIndex : state.questions.indexOf(question)) + 1),
+      queryNote: 'Query template'
+    };
+  }
+
+  function buildPlanningAnswer(session) {
+    var plan = session.plan;
+    var facts = [
+      { label: 'Intent', value: plan.intent },
+      { label: 'Confidence', value: Math.round(plan.confidence * 100) + '%' },
+      { label: 'Gemini model', value: session.modelName }
+    ];
+    var sections = [
+      {
+        title: 'Planner rationale',
+        items: [plan.rationale || 'Gemini mapped the question to the closest supported ontology template.']
+      }
+    ];
+
+    if (plan.poseNumber) {
+      facts.push({ label: 'Pose', value: 'Pose ' + plan.poseNumber });
+    }
+    if (plan.asanaLabel) {
+      facts.push({ label: 'Asana', value: plan.asanaLabel });
+    }
+
+    return {
+      narrative: 'The custom question has been mapped to "' + session.templateLabel +
+        '". Review the generated SPARQL, then run the query to retrieve ontology-backed results before asking Gemini for a prose explanation.',
+      facts: facts,
+      sections: sections,
+      table: null,
+      visuals: []
+    };
+  }
+
+  function updateAIControls(state) {
+    var ready = Boolean(state.model);
+    var hasQuestion = Boolean(compactText(state.aiQuestionInput && state.aiQuestionInput.value));
+    var hasPlan = Boolean(state.aiSession && state.aiSession.plan);
+    var busy = Boolean(state.aiBusy);
+
+    setButtonDisabled(state.aiGenerateButton, !ready || !hasQuestion || busy);
+    setButtonDisabled(state.aiRunButton, !ready || !hasPlan || busy);
+    setButtonDisabled(state.aiExplainButton, !ready || !hasPlan || busy);
+    setButtonDisabled(state.queryRunButton, !ready || !hasPlan || busy);
+    setButtonDisabled(state.queryExplainButton, !ready || !hasPlan || busy);
+  }
+
+  function setAIBusy(state, busy) {
+    state.aiBusy = Boolean(busy);
+    updateAIControls(state);
+  }
+
+  function clearCustomSelection(state) {
+    state.selectedQuestionId = '';
+    updateQuestionButtons(state);
+  }
+
+  function renderQuestion(state, questionId, options) {
+    var question = state.questionsById[questionId];
+    var answer;
+
+    if (!state.model || !question) {
+      return;
+    }
+
+    state.selectedQuestionId = questionId;
+    state.lastPredefinedQuestionId = questionId;
+    updateQuestionButtons(state);
+    state.activeMode = 'predefined';
+    setWorkspaceMode(state, 'predefined');
+    if (window.history && typeof window.history.replaceState === 'function') {
+      window.history.replaceState(null, '', '#' + questionId);
+    }
+
+    try {
+      answer = question.run(state.model);
+      renderAnswer(state, buildPredefinedDescriptor(state, question), answer);
+      setAnswerView(state, 'answer');
+      if (state.queryNote) {
+        state.queryNote.textContent = 'Query template';
+      }
+      if (options && options.userInitiated) {
+        ensureAnswerVisible(state);
+      }
+    } catch (error) {
+      setStatus(state, 'Render failed');
+      setError(state, error && error.message ? error.message : 'Unknown rendering error.');
+    }
+  }
+
+  function renderQuestionList(state) {
+    clearElement(state.questionList);
+    if (!state.questionList) return;
+
+    state.suggestedQuestions.forEach(function (question, index) {
+      var button = createElement('button', 'education-question-button');
+      var eyebrow = createElement('div', 'education-question-eyebrow');
+      var number = createElement('span', '', 'Q-' + padIndex(index + 1));
+      var tag = createElement('span', '', questionMeta(question.id));
+      var title = createElement('strong', 'education-question-title', question.title);
+      var prompt = createElement('p', 'education-question-prompt', question.prompt);
+
+      button.type = 'button';
+      button.setAttribute('data-question-id', question.id);
+      button.setAttribute('aria-pressed', question.id === state.selectedQuestionId ? 'true' : 'false');
+      button.title = question.prompt;
+
+      eyebrow.appendChild(number);
+      eyebrow.appendChild(tag);
+      button.appendChild(eyebrow);
+      button.appendChild(title);
+      button.appendChild(prompt);
+
+      button.addEventListener('click', function () {
+        renderQuestion(state, question.id, { userInitiated: true });
+      });
+
+      state.questionList.appendChild(button);
+    });
+  }
+
+  function updateStats(state) {
+    var baseVariant = state.model.getBaseVariant();
+    var basePoses = baseVariant ? state.model.getOrderedPosesForVariant(baseVariant) : [];
+
+    if (state.statQuestions) {
+      state.statQuestions.textContent = String(state.questions.length);
+    }
+    if (state.statVariants) {
+      state.statVariants.textContent = String(state.model.variants.length);
+    }
+    if (state.statAsanas) {
+      state.statAsanas.textContent = String(state.model.asanas.length);
+    }
+    if (state.statBasePoses) {
+      state.statBasePoses.textContent = String(basePoses.length);
+    }
+  }
+
+  function initializeLightbox(state) {
+    if (!state.lightbox) {
+      return;
+    }
+
+    if (state.lightboxClose) {
+      state.lightboxClose.addEventListener('click', function () {
+        closeLightbox(state);
+      });
+    }
+
+    state.lightbox.addEventListener('click', function (event) {
+      if (event.target === state.lightbox) {
+        closeLightbox(state);
+      }
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !state.lightbox.hidden) {
+        closeLightbox(state);
+      }
+    });
+  }
+
+  function initializeAnswerViewToggle(state) {
+    if (!state.answerViewToggle) {
+      return;
+    }
+
+    state.answerViewToggle.addEventListener('click', function (event) {
+      event.preventDefault();
+      setAnswerView(state, state.currentAnswerView === 'query' ? 'answer' : 'query');
+    });
+  }
+
+  function initializeNav() {
+    var nav = byId('education-nav');
+    var links;
+    var sections;
+
+    if (!nav) {
+      return;
+    }
+
+    links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+    sections = links
+      .map(function (link) {
+        return document.querySelector(link.getAttribute('href'));
+      })
+      .filter(Boolean);
+
+    links.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        var target = document.querySelector(link.getAttribute('href'));
+        if (!target) {
+          return;
+        }
+        event.preventDefault();
+        window.scrollTo({
+          top: target.offsetTop - 40,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    window.addEventListener('scroll', function () {
+      var currentId = sections.length ? sections[0].id : '';
+
+      sections.forEach(function (section) {
+        if (window.pageYOffset >= (section.offsetTop - 180)) {
+          currentId = section.id;
+        }
+      });
+
+      links.forEach(function (link) {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+      });
+    });
+  }
+
+  function initializeWorkspaceModeToggle(state) {
+    if (state.customModeButton) {
+      state.customModeButton.addEventListener('click', function () {
+        setWorkspaceMode(state, 'custom');
+      });
+    }
+
+    if (state.predefinedModeButton) {
+      state.predefinedModeButton.addEventListener('click', function () {
+        setWorkspaceMode(state, 'predefined');
+      });
+    }
+  }
+
+  function initializeAISuggestions(state) {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ai-question]'), function (button) {
+      button.addEventListener('click', function () {
+        if (!state.aiQuestionInput) {
+          return;
+        }
+        state.aiQuestionInput.value = button.getAttribute('data-ai-question') || '';
+        state.aiQuestionInput.focus();
+        updateAIControls(state);
+      });
+    });
+  }
+
+  function resetAIRuntime(state) {
+    if (state.aiSession) {
+      setAIStatus(state, 'Gemini active');
+    } else {
+      setAIStatus(state, 'Gemini idle');
+    }
+  }
+
+  function syncApiKeyFromStorage(state) {
+    if (!state.ai || !state.aiApiKeyInput) {
+      return;
+    }
+
+    state.aiApiKeyInput.value = state.ai.loadApiKey();
+  }
+
+  function getCurrentQuestionText(state) {
+    return compactText(state.aiQuestionInput && state.aiQuestionInput.value);
+  }
+
+  function getCurrentApiKey(state) {
+    var fieldValue = compactText(state.aiApiKeyInput && state.aiApiKeyInput.value);
+    return fieldValue || compactText(state.ai && state.ai.loadApiKey ? state.ai.loadApiKey() : '');
+  }
+
+  function getCurrentGeminiModel(state) {
+    return compactText(state.aiModelSelect && state.aiModelSelect.value) || (state.ai ? state.ai.DEFAULT_MODEL : 'gemini-2.5-flash');
+  }
+
+  function clearAIComposer(state) {
+    if (state.aiQuestionInput) {
+      state.aiQuestionInput.value = '';
+    }
+    state.aiSession = null;
+    state.aiExecution = null;
+    state.aiExplained = false;
+    setError(state, '');
+    resetAIRuntime(state);
+    updateAIControls(state);
+  }
+
+  function ensureCurrentPlan(state) {
+    var questionText = getCurrentQuestionText(state);
+
+    if (state.aiSession && state.aiSession.questionText === questionText) {
+      return Promise.resolve(state.aiSession);
+    }
+
+    return generateCustomQuery(state);
+  }
+
+  function generateCustomQuery(state) {
+    var questionText = getCurrentQuestionText(state);
+    var apiKey = getCurrentApiKey(state);
+    var geminiModel = getCurrentGeminiModel(state);
+
+    if (!state.ai) {
+      return Promise.reject(new Error('Gemini planner support is not available on this page.'));
+    }
+
+    setAIBusy(state, true);
+    setError(state, '');
+    setAIStatus(state, 'Generating SPARQL');
+
+    return state.ai.planQuestion({
+      model: state.model,
+      questionText: questionText,
+      apiKey: apiKey,
+      modelName: geminiModel
+    }).then(function (session) {
+      state.ai.saveApiKey(apiKey);
+      state.aiSession = session;
+      state.aiExecution = null;
+      state.aiExplained = false;
+      state.activeMode = 'custom';
+      setWorkspaceMode(state, 'custom');
+      clearCustomSelection(state);
+
+      if (state.nlStateWelcome) state.nlStateWelcome.style.display = 'none';
+      if (state.nlStateResults) state.nlStateResults.style.display = 'none';
+      if (state.nlStateSparql) state.nlStateSparql.style.display = 'flex';
+      
+      if (state.nlSparql) {
+        state.nlSparql.textContent = session.sparql;
+      }
+      
+      setAIStatus(state, 'SPARQL ready');
+      /* Skipping runtime card updates */
+      return session;
+    }).catch(function (error) {
+      setAIStatus(state, 'Gemini failed');
+      setError(state, error && error.message ? error.message : 'Unknown Gemini planning error.');
+      
+      if (state.nlStateWelcome) state.nlStateWelcome.style.display = 'none';
+      if (state.nlStateResults) state.nlStateResults.style.display = 'none';
+      if (state.nlStateSparql) state.nlStateSparql.style.display = 'flex';
+      if (state.nlSparql) state.nlSparql.textContent = "Error Generating Query:\n" + (error && error.message ? error.message : "Service Unavailable or Rate Limited");
+      
+      throw error;
+    }).finally(function () {
+      setAIBusy(state, false);
+    });
+  }
+
+  function runCustomQuery(state) {
+    return ensureCurrentPlan(state).then(function (session) {
+      var execution;
+
+      setAIBusy(state, true);
+      setError(state, '');
+      setAIStatus(state, 'Running query');
+
+      try {
+        execution = state.ai.executePlan({
+          model: state.model,
+          session: session,
+          questionText: session.questionText
+        });
+      } catch (error) {
+        setAIStatus(state, 'Execution failed');
+        setError(state, error && error.message ? error.message : 'Unknown ontology execution error.');
+        throw error;
+      } finally {
+        setAIBusy(state, false);
+      }
+
+      state.aiExecution = execution;
+      state.aiExplained = false;
+      renderCustomExecution(state, execution, false);
+      
+      if (state.nlStateSparql) state.nlStateSparql.style.display = 'none';
+      if (state.nlStateResults) state.nlStateResults.style.display = 'flex';
+      
+      setAIStatus(state, 'Query executed');
+
+      return execution;
+    }).catch(function(error) {
+      setError(state, error && error.message ? error.message : 'Unknown query execution error.');
+      setAIStatus(state, 'Execution failed');
+      throw error;
+    });
+  }
+
+  function explainCustomQuery(state) {
+    return ensureCurrentPlan(state).then(function () {
+      return state.aiExecution ? Promise.resolve(state.aiExecution) : runCustomQuery(state);
+    }).then(function (execution) {
+      var apiKey = getCurrentApiKey(state);
+      var geminiModel = getCurrentGeminiModel(state);
+
+      setAIBusy(state, true);
+      setError(state, '');
+      setAIStatus(state, 'Generating explanation');
+
+      return state.ai.explainExecution({
+        apiKey: apiKey,
+        modelName: geminiModel,
+        questionText: state.aiSession.questionText,
+        session: state.aiSession,
+        execution: execution
+      }).then(function (narrative) {
+        execution.answer.narrative = narrative;
+        state.aiExplained = true;
+        renderCustomExecution(state, execution, true);
+        setAIStatus(state, 'Explanation ready');
+        return narrative;
+      }).catch(function (error) {
+        setAIStatus(state, 'Explanation failed');
+        setError(state, error && error.message ? error.message : 'Unknown Gemini explanation error.');
+        throw error;
+      }).finally(function () {
+        setAIBusy(state, false);
+      });
+    });
+  }
+
+  function initializeAIWorkspace(state) {
+    if (!state.aiQuestionInput) {
+      return;
+    }
+
+    syncApiKeyFromStorage(state);
+    initializeAISuggestions(state);
+    resetAIRuntime(state);
+    setAIStatus(state, state.ai ? 'Gemini idle' : 'Gemini unavailable');
+
+    if (state.aiQuestionInput) {
+      state.aiQuestionInput.addEventListener('input', function () {
+        updateAIControls(state);
+      });
+    }
+
+    if (state.aiApiKeyInput && state.ai) {
+      state.aiApiKeyInput.addEventListener('change', function () {
+        state.ai.saveApiKey(state.aiApiKeyInput.value);
+      });
+      state.aiApiKeyInput.addEventListener('blur', function () {
+        state.ai.saveApiKey(state.aiApiKeyInput.value);
+      });
+    }
+
+    if (state.aiClearButton) {
+      state.aiClearButton.addEventListener('click', function () {
+        if (state.aiQuestionInput) {
+          state.aiQuestionInput.value = '';
+        }
+        setError(state, '');
+        state.aiSession = null;
+        state.aiExecution = null;
+        state.aiExplained = false;
+        if (state.nlStateWelcome) state.nlStateWelcome.style.display = 'flex';
+        if (state.nlStateSparql) state.nlStateSparql.style.display = 'none';
+        if (state.nlStateResults) state.nlStateResults.style.display = 'none';
+        if (state.nlExplanation) state.nlExplanation.style.display = 'none';
+        resetAIRuntime(state);
+        updateAIControls(state);
+      });
+    }
+
+    if (state.aiGenerateButton) {
+      state.aiGenerateButton.addEventListener('click', function () {
+        generateCustomQuery(state).catch(function () {
+          return null;
+        });
+      });
+    }
+
+    if (state.aiRunButton) {
+      state.aiRunButton.addEventListener('click', function () {
+        runCustomQuery(state).catch(function () {
+          return null;
+        });
+      });
+    }
+
+    if (state.aiExplainButton) {
+      state.aiExplainButton.addEventListener('click', function () {
+        explainCustomQuery(state).catch(function () {
+          return null;
+        });
+      });
+    }
+
+    if (state.nlToggleSparql) {
+      state.nlToggleSparql.addEventListener('click', function () {
+        if (state.nlStateSparql.style.display === 'none') {
+          // Switch to SPARQL
+          state.nlStateSparql.style.display = 'flex';
+          state.nlStateResults.style.display = 'none';
+          state.nlToggleSparql.textContent = 'View Results';
+          // Move the toggle button to SPARQL header
+          state.nlStateSparql.querySelector('.education-panel-header').appendChild(state.nlToggleSparql);
+        } else {
+          // Switch to Results
+          state.nlStateSparql.style.display = 'none';
+          state.nlStateResults.style.display = 'flex';
+          state.nlToggleSparql.textContent = 'View SPARQL';
+          // Move the toggle button back to Results header
+          state.nlStateResults.querySelector('.education-panel-header').appendChild(state.nlToggleSparql);
+        }
+      });
+    }
+
+    if (state.queryRunButton) {
+      state.queryRunButton.addEventListener('click', function () {
+        runCustomQuery(state).catch(function () {
+          return null;
+        });
+      });
+    }
+
+    if (state.queryExplainButton) {
+      state.queryExplainButton.addEventListener('click', function () {
+        explainCustomQuery(state).catch(function () {
+          return null;
+        });
+      });
+    }
+
+    updateAIControls(state);
+  }
+
+  function mount() {
+    var root = document.querySelector('[data-education-app]');
+    var deps = global.SNOntologyGraph && global.SNEducationData ? {
+      graph: global.SNOntologyGraph,
+      data: global.SNEducationData,
+      ai: global.SNEducationAI || null
+    } : null;
+    var state;
+
+    if (!root || !deps) {
+      return null;
+    }
+
+    state = {
+      root: root,
+      graph: deps.graph,
+      data: deps.data,
+      ai: deps.ai,
+      questions: deps.data.QUESTIONS.slice(),
+      suggestedQuestions: getSuggestedQuestions(deps.data.QUESTIONS),
+      questionsById: deps.data.QUESTIONS.reduce(function (accumulator, question) {
+        accumulator[question.id] = question;
+        return accumulator;
+      }, {}),
+      selectedQuestionId: getInitialQuestionId(deps.data.QUESTIONS),
+      lastPredefinedQuestionId: getInitialQuestionId(deps.data.QUESTIONS),
+      model: null,
+      status: byId('education-status'),
+      aiStatus: byId('education-ai-status'),
+      runtimePill: byId('education-runtime-pill'),
+      answerTitle: byId('education-answer-title'),
+      answerText: byId('education-answer-text'),
+      facts: byId('education-facts'),
+      sections: byId('education-sections'),
+      sparql: byId('education-sparql'),
+      queryNote: byId('education-query-note'),
+      visuals: byId('education-visuals'),
+      visualNote: byId('education-visual-note'),
+      layout: root.querySelector('.education-layout'),
+      questionList: byId('education-question-list'),
+      composerPanel: byId('education-composer-panel'),
+      predefinedPanel: byId('education-predefined-panel'),
+      customModeButton: byId('education-mode-custom'),
+      predefinedModeButton: byId('education-mode-predefined'),
+      answerPanel: document.querySelector('.education-answer-panel'),
+      error: byId('education-error'),
+      activeQuestionId: byId('education-active-question-id'),
+      answerContent: byId('education-answer-content'),
+      queryView: byId('education-query-view'),
+      answerViewToggle: byId('education-answer-view-toggle'),
+      queryRunButton: byId('education-query-run'),
+      queryExplainButton: byId('education-query-explain'),
+      lightbox: byId('education-lightbox'),
+      lightboxClose: byId('education-lightbox-close'),
+      lightboxImage: byId('education-lightbox-image'),
+      lightboxCaption: byId('education-lightbox-caption'),
+      aiForm: byId('education-ai-form'),
+      aiQuestionInput: byId('education-ai-question'),
+      aiApiKeyInput: byId('education-api-key'),
+      aiModelSelect: byId('education-ai-model'),
+      aiClearButton: byId('education-ai-clear'),
+      aiGenerateButton: byId('education-ai-generate'),
+      aiRunButton: byId('education-ai-run'),
+      aiExplainButton: byId('education-ai-explain'),
+      nlInterface: byId('nl-interface-wrapper'),
+      predefinedInterface: byId('predefined-interface-wrapper'),
+      nlStateWelcome: byId('nl-state-welcome'),
+      nlStateSparql: byId('nl-state-sparql'),
+      nlStateResults: byId('nl-state-results'),
+      nlToggleSparql: byId('nl-toggle-sparql'),
+      nlSparql: byId('education-nl-sparql'),
+      nlTabularResults: byId('education-nl-tabular-results'),
+      nlFacts: byId('education-nl-facts'),
+      nlSections: byId('education-nl-sections'),
+      nlExplanation: byId('education-nl-explanation'),
+      nlExplanationText: byId('education-nl-explanation-text'),
+      nlError: byId('education-nl-error'),
+      runtimeStatusCard: byId('education-runtime-status'),
+      runtimeTemplateCard: byId('education-runtime-template'),
+      runtimeResultCard: byId('education-runtime-result'),
+      currentAnswerView: 'answer',
+      workspaceMode: 'predefined',
+      activeMode: 'predefined',
+      aiBusy: false,
+      aiSession: null,
+      aiExecution: null,
+      aiExplained: false,
+      statQuestions: byId('stat-questions'),
+      statVariants: byId('stat-variants'),
+      statAsanas: byId('stat-asanas'),
+      statBasePoses: byId('stat-base-poses')
+    };
+
+    initializeNav();
+    initializeLightbox(state);
+    initializeAnswerViewToggle(state);
+    initializeWorkspaceModeToggle(state);
+    initializeAIWorkspace(state);
+    setAnswerView(state, 'answer');
+    setWorkspaceMode(state, 'predefined');
+    renderQuestionList(state);
+    setStatus(state, 'Loading ontology');
+    setError(state, '');
+    updateAIControls(state);
+
+    deps.graph.load({
+      ontologySrc: root.dataset.ontologySrc,
+      cypImageBase: root.dataset.cypImageBase
+    }).then(function (model) {
+      state.model = model;
+      updateStats(state);
+      updateAIControls(state);
+      setStatus(state, 'Ontology ready');
+      if (!state.ai) {
+        setAIStatus(state, 'Gemini unavailable');
+      }
+      renderQuestion(state, state.selectedQuestionId);
+    }).catch(function (error) {
+      setStatus(state, 'Load failed');
+      setAIStatus(state, 'Ontology failed');
+      setError(state, error && error.message ? error.message : 'Unknown ontology loading error.');
+      renderVisuals(state, []);
+      updateAIControls(state);
+    });
+
+    return state;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mount);
+  } else {
+    mount();
+  }
+}(window));

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Workspace | Surya Namaskar Education</title>
+  <meta
+    name="description"
+    content="Surya Namaskar learning workspace with predefined questions, ontology-grounded answers, and linked CYP visuals."
+  />
+  <link rel="stylesheet" href="css/style.css?v=20260422l" />
+  <link rel="stylesheet" href="css/education.css?v=20260422l" />
+</head>
+<body class="education-page education-body education-body--workspace">
+  <div class="container education-container education-container--workspace">
+    <aside class="sidebar education-sidebar">
+      <div class="sidebar-brand">
+        <h2>Surya Namaskar<br />Education</h2>
+      </div>
+
+      <nav class="education-page-nav education-static-nav" aria-label="Education navigation">
+        <a href="index.html">Back To Home</a>
+        <a href="education.html?v=20260422l">Overview</a>
+        <a href="education-workspace.html?v=20260422l" class="active">Learning Workspace</a>
+      </nav>
+
+      <div class="education-sidebar-card">
+        <p class="education-sidebar-label">Workspace Flow</p>
+        <p>
+          The overview lives on its own page. This workspace keeps the input
+          flow at the top, the answer surface below it, and linked CYP visuals
+          at the bottom.
+        </p>
+      </div>
+
+      <div class="education-sidebar-card education-sidebar-card--compact">
+        <p class="education-sidebar-label">Signals</p>
+        <div class="education-sidebar-tags">
+          <span>OWL</span>
+          <span>SPARQL</span>
+          <span>Knowledge Graph</span>
+          <span>Pose Guidance</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content education-content education-content--workspace">
+      <section
+        class="visible education-workspace education-workspace--page"
+        data-education-app
+        data-ontology-src="models/master.owl"
+        data-cyp-image-base="images/cyp-pages"
+      >
+        <div class="education-workspace-shell">
+          <header class="education-workspace-header">
+            <div class="education-workspace-heading">
+              <p class="education-kicker">Learning Workspace</p>
+              <h1>Guided questions, grounded answers, and linked CYP visuals.</h1>
+              <p class="education-panel-copy education-workspace-copy">
+                Ask a custom question or choose a suggested one.
+              </p>
+            </div>
+
+            <div class="education-workspace-actions">
+              <a class="btn btn-outline" href="education.html?v=20260422l">Back To Overview</a>
+            </div>
+          </header>
+
+          <div class="education-layout">
+            <aside class="education-questions-column">
+              <div class="education-workspace-switch" role="tablist" aria-label="Workspace mode">
+                <button
+                  type="button"
+                  class="education-workspace-switch-button"
+                  id="education-mode-custom"
+                  data-workspace-mode="custom"
+                  aria-pressed="false"
+                >
+                  Natural Language
+                </button>
+                <button
+                  type="button"
+                  class="education-workspace-switch-button"
+                  id="education-mode-predefined"
+                  data-workspace-mode="predefined"
+                  aria-pressed="true"
+                >
+                  Suggested Questions
+                </button>
+              </div>
+
+              <div class="education-panel education-composer-panel" id="education-composer-panel" hidden>
+                <div class="education-panel-header education-panel-header--spread">
+                  <div>
+                    <p class="education-kicker">Natural Language Composer</p>
+                    <h2>Ask a Custom Question</h2>
+                  </div>
+                  <span class="education-status-pill education-status-pill--subtle" id="education-ai-status">Gemini idle</span>
+                </div>
+
+                <p class="education-panel-copy">
+                  Generate SPARQL, run it on the ontology, then explain the result.
+                </p>
+
+                <form class="education-composer-form" id="education-ai-form" aria-label="Custom natural language question composer">
+                  <div class="education-composer-config-grid">
+                    <div class="education-composer-field">
+                      <label class="education-composer-label" for="education-ai-model">Gemini model</label>
+                      <select id="education-ai-model" class="education-composer-select" name="education-ai-model">
+                        <option value="gemini-2.5-flash" selected>gemini-2.5-flash</option>
+                        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <label class="education-composer-label" for="education-ai-question">Question draft</label>
+                  <textarea
+                    id="education-ai-question"
+                    class="education-composer-input"
+                    name="education-ai-question"
+                    rows="4"
+                    spellcheck="false"
+                    placeholder="e.g. What posture guidance, common errors, and corrections are modeled for Bhujangasana in Base Surya Namaskar?"
+                  ></textarea>
+
+                  <div class="education-composer-actions" aria-label="Composer actions">
+                    <button
+                      type="button"
+                      class="education-composer-button education-composer-button--ghost"
+                      id="education-ai-clear"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      type="button"
+                      class="education-composer-button education-composer-button--ghost"
+                      id="education-ai-generate"
+                      disabled
+                      aria-disabled="true"
+                    >
+                      Generate SPARQL
+                    </button>
+                    <button
+                      type="button"
+                      class="education-composer-button education-composer-button--ghost"
+                      id="education-ai-run"
+                      disabled
+                      aria-disabled="true"
+                    >
+                      Run Query
+                    </button>
+                    <button
+                      type="button"
+                      class="education-composer-button education-composer-button--primary"
+                      id="education-ai-explain"
+                      disabled
+                      aria-disabled="true"
+                    >
+                      Explain With Gemini
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="education-panel education-panel--fill" id="education-predefined-panel">
+                <div class="education-panel-header">
+                  <div>
+                    <p class="education-kicker">Suggested Questions</p>
+                    <h2>Start With A Guided Prompt</h2>
+                  </div>
+                  <span class="education-status-pill" id="education-status">Loading ontology</span>
+                </div>
+
+                <p class="education-panel-copy">
+                  Choose one of these curated prompts.
+                </p>
+
+                <div id="education-question-list" class="education-question-list" aria-label="Suggested education questions"></div>
+              </div>
+            </aside>
+
+            <div class="education-response-column">
+              <div class="education-panel education-answer-panel">
+                <div class="education-panel-header education-panel-header--spread">
+                  <div>
+                    <p class="education-kicker">Answer Surface</p>
+                    <h2 id="education-answer-title">Loading first question...</h2>
+                  </div>
+                  <div class="education-answer-header-actions">
+                    <button
+                      type="button"
+                      class="education-answer-toggle"
+                      id="education-answer-view-toggle"
+                      aria-pressed="false"
+                    >
+                      Show SPARQL
+                    </button>
+                    <span class="education-question-id" id="education-active-question-id">Q-01</span>
+                  </div>
+                </div>
+
+                <div class="education-answer-scroll" id="education-answer-content">
+                  <p id="education-answer-text" class="education-answer-lede"></p>
+                  <div id="education-facts" class="education-facts" aria-label="Answer facts"></div>
+                  <div id="education-sections" class="education-sections" aria-label="Answer details"></div>
+
+                  <div id="education-error" class="education-error" hidden></div>
+                </div>
+
+                <div class="education-query-view" id="education-query-view" hidden>
+                  <div class="education-query-box">
+                    <div class="education-query-box-header">
+                      <p class="education-kicker">Mapped SPARQL</p>
+                      <div class="education-query-actions">
+                        <span class="education-query-note" id="education-query-note">Query template</span>
+                        <button type="button" class="education-inline-button" id="education-query-run" disabled aria-disabled="true">Run Query</button>
+                        <button type="button" class="education-inline-button education-inline-button--primary" id="education-query-explain" disabled aria-disabled="true">Explain</button>
+                      </div>
+                    </div>
+                    <pre id="education-sparql" class="education-code"></pre>
+                  </div>
+                </div>
+              </div>
+
+              <div class="education-panel education-visual-panel" id="education-visual-panel">
+                <div class="education-panel-header education-panel-header--spread">
+                  <div>
+                    <p class="education-kicker">PDF Visual Extraction</p>
+                    <h2>Linked CYP Pages</h2>
+                  </div>
+                  <span class="education-status-pill education-status-pill--subtle">Click image to expand</span>
+                </div>
+
+                <div class="education-visual-scroll">
+                  <p id="education-visual-note" class="education-panel-copy">
+                    Visual references for the selected answer will appear here
+                    when the ontology has linked CYP page data.
+                  </p>
+
+                  <div id="education-visuals" class="education-visuals" aria-label="Linked CYP visual references"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div
+    class="education-lightbox"
+    id="education-lightbox"
+    hidden
+    aria-hidden="true"
+    role="dialog"
+    aria-label="Expanded CYP page visual"
+  >
+    <button
+      type="button"
+      class="education-lightbox-close"
+      id="education-lightbox-close"
+      aria-label="Close expanded visual"
+    >
+      ×
+    </button>
+    <figure class="education-lightbox-figure">
+      <img id="education-lightbox-image" alt="" />
+      <figcaption id="education-lightbox-caption"></figcaption>
+    </figure>
+  </div>
+
+  <script src="js/ontology-graph.js?v=20260422l"></script>
+  <script src="js/education-data.js?v=20260422l"></script>
+  <script src="js/education-local-config.js?v=20260422l"></script>
+  <script src="js/education-ai.js?v=20260422l"></script>
+  <script src="js/education.js?v=20260422l"></script>
+</body>
+</html>

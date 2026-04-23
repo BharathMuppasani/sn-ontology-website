@@ -38,6 +38,7 @@
     <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hastha uthanasana</hasAlternateName>
     <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raised arms pose</hasAlternateName>
     <rdfs:label>Hasta Utthanasana</rdfs:label>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">23</hasCYPPage>
     <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Legs">
@@ -155,6 +156,7 @@
     <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pranam-asana</hasAlternateName>
     <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prayer pose</hasAlternateName>
     <rdfs:label>Pranamasana</rdfs:label>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20</hasCYPPage>
   </Asana>
   <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Knee">
     <rdfs:label>Knee</rdfs:label>
@@ -242,6 +244,7 @@
     <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ashtanga namaskara</hasAlternateName>
     <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Salute with eight parts or points</hasAlternateName>
     <rdfs:label>Ashtanga Namaskara</rdfs:label>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">34</hasCYPPage>
     <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Hands">
@@ -255,10 +258,12 @@
   <Asana rdf:about="http://example.org/suryanamaskar/core#UrdhwaMukhaSvanasana">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
     <rdfs:label>Urdhwa Mukha Svanasana</rdfs:label>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">33</hasCYPPage>
   </Asana>
   <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Samasthiti">
     <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
     <rdfs:label>Samasthiti</rdfs:label>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">20</hasCYPPage>
   </owl:NamedIndividual>
   <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/title"/>
   <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Parvatasana">
@@ -291,6 +296,7 @@
         <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">22</hasCYPPage>
       </Asana>
     </sameAsanaAs>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">22</hasCYPPage>
     <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Phalakasana">
@@ -312,6 +318,105 @@
   <owl:Class rdf:about="http://example.org/suryanamaskar/core#Asana">
     <rdfs:label>Asana</rdfs:label>
   </owl:Class>
+
+  <!-- CYP Enrichment Individuals -->
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Vrksasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Vrksasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tree Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">21</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ardhachakrasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Ardhachakrasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Half Wheel Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">23</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Vajrasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Vajrasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thunderbolt Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">26</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ardhaustrasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Ardhaustrasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Half Camel Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">27</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ustrasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Ustrasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Camel Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">28</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Uttanamandukasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Uttanamandukasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stretched-up Frog Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">30</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Vakrasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Vakrasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Spinal Twist Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">31</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Makarasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Makarasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Crocodile Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">32</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Shalabhasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Shalabhasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Locust Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">34</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Setubandhasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Setubandhasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bridge Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">35</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Uttanapadasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Uttanapadasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raised Feet Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">36</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ardhahalasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Ardhahalasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Half Plough Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">37</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Pavanamuktasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Pavanamuktasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wind Releasing Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">38</hasCYPPage>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Shavasana">
+    <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+    <rdfs:label>Shavasana</rdfs:label>
+    <hasAlternateName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Corpse Pose</hasAlternateName>
+    <hasCYPPage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">39</hasCYPPage>
+  </owl:NamedIndividual>
   <owl:Class rdf:about="http://example.org/suryanamaskar/core#PoseError">
     <rdfs:label>Pose Error</rdfs:label>
   </owl:Class>

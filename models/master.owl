@@ -1693,6 +1693,7 @@
         <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
         <core:hasAlternateName>Ashtanga namaskara</core:hasAlternateName>
         <core:hasAlternateName>Salute with eight parts or points</core:hasAlternateName>
+        <core:hasCYPPage>34</core:hasCYPPage>
         <rdfs:label>Ashtanga Namaskara</rdfs:label>
     </owl:NamedIndividual>
     
@@ -1803,6 +1804,7 @@
         <core:hasAlternateName>Hasta Utthan-asana</core:hasAlternateName>
         <core:hasAlternateName>Hastha uthanasana</core:hasAlternateName>
         <core:hasAlternateName>Raised arms pose</core:hasAlternateName>
+        <core:hasCYPPage>23</core:hasCYPPage>
         <rdfs:label>Hasta Utthanasana</rdfs:label>
     </owl:NamedIndividual>
     
@@ -1898,6 +1900,7 @@
         <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
         <core:hasAlternateName>Pranam-asana</core:hasAlternateName>
         <core:hasAlternateName>Prayer pose</core:hasAlternateName>
+        <core:hasCYPPage>20</core:hasCYPPage>
         <rdfs:label>Pranamasana</rdfs:label>
     </owl:NamedIndividual>
     
@@ -1907,6 +1910,7 @@
 
     <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Samasthiti">
         <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>20</core:hasCYPPage>
         <rdfs:label>Samasthiti</rdfs:label>
     </owl:NamedIndividual>
     
@@ -1964,6 +1968,7 @@
 
     <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#UrdhwaMukhaSvanasana">
         <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>33</core:hasCYPPage>
         <rdfs:label>Urdhwa Mukha Svanasana</rdfs:label>
     </owl:NamedIndividual>
     
@@ -1984,7 +1989,94 @@
     <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Uttanasana">
         <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
         <core:sameAsanaAs rdf:resource="http://example.org/suryanamaskar/core#Padahastasana"/>
+        <core:hasCYPPage>22</core:hasCYPPage>
         <rdfs:label>Uttanasana</rdfs:label>
+    </owl:NamedIndividual>
+
+
+    <!-- CYP Enrichment Individuals -->
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Vrksasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>21</core:hasCYPPage>
+        <rdfs:label>Vrksasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ardhachakrasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>23</core:hasCYPPage>
+        <rdfs:label>Ardhachakrasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Vajrasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>26</core:hasCYPPage>
+        <rdfs:label>Vajrasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ardhaustrasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>27</core:hasCYPPage>
+        <rdfs:label>Ardhaustrasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ustrasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>28</core:hasCYPPage>
+        <rdfs:label>Ustrasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Uttanamandukasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>30</core:hasCYPPage>
+        <rdfs:label>Uttanamandukasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Vakrasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>31</core:hasCYPPage>
+        <rdfs:label>Vakrasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Makarasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>32</core:hasCYPPage>
+        <rdfs:label>Makarasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Shalabhasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>34</core:hasCYPPage>
+        <rdfs:label>Shalabhasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Setubandhasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>35</core:hasCYPPage>
+        <rdfs:label>Setubandhasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Uttanapadasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>36</core:hasCYPPage>
+        <rdfs:label>Uttanapadasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Ardhahalasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>37</core:hasCYPPage>
+        <rdfs:label>Ardhahalasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Pavanamuktasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>38</core:hasCYPPage>
+        <rdfs:label>Pavanamuktasana</rdfs:label>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.org/suryanamaskar/core#Shavasana">
+        <rdf:type rdf:resource="http://example.org/suryanamaskar/core#Asana"/>
+        <core:hasCYPPage>39</core:hasCYPPage>
+        <rdfs:label>Shavasana</rdfs:label>
     </owl:NamedIndividual>
     
 
@@ -2645,4 +2737,3 @@
 
 
 <!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
-

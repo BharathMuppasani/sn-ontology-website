@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Surya Namaskar Ontology</title>
+  <title>SN-YO Surya Namaskar Yoga Ontology</title>
   <meta name="description" content="Semantic Modeling of Surya Namaskar Yoga Poses and Variants">
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -14,25 +14,28 @@
   <div class="container">
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <h2>Surya Namaskar<br/>Ontology</h2>
+        <h2>SN-YO Surya Namaskar<br/>Yoga Ontology</h2>
       </div>
       <nav id="nav">
-        <a href="#about" class="active">About</a>
-        <a href="#ontology">Ontology Overview</a>
-        <a href="#files">Project Files</a>
-        <a href="#metadata">Ontology Metadata</a>
-        <a href="#usecases">Use Cases</a>
-        <a href="#sparql">Competency Questions & SPARQL</a>
-        <a href="#visuals">Visual Resources</a>
-        <a href="#contributors">Contributors</a>
+        <a href="#about" class="active" data-tab="about">About</a>
+        <a href="#usecases" data-tab="usecases">Use Cases</a>
+        <a href="#sparql" data-tab="sparql">Competency Questions</a>
+        <a href="#ontology" data-tab="ontology">Ontology Overview</a>
+        <a href="#files" data-tab="files">Project Files</a>
+        <a href="#metadata" data-tab="metadata">Metadata</a>
+        <a href="#visuals" data-tab="visuals">Visual Resources</a>
+        <a href="#contributors" data-tab="contributors">Contributors</a>
       </nav>
+      <div style="margin-top: 2rem; padding: 0 16px;">
+        <a href="education.html" class="btn btn-education-portal" style="display: block; text-align: center; background: var(--accent-secondary); color: white; padding: 12px; border-radius: var(--radius-md); font-weight: 600; text-decoration: none;">SN-YE</a>
+      </div>
     </aside>
 
     <main class="content">
       
       <!-- ABOUT -->
-      <section id="about" class="visible">
-        <h1>Surya Namaskar Ontology</h1>
+      <section id="about" class="visible tab-section active-tab">
+        <h1>SN-YO Surya Namaskar Yoga Ontology</h1>
         <p class="subtitle" style="color: var(--accent-color); font-weight: 600; margin-bottom: 24px;">Semantic Modeling | <span class="keyword-highlight">OWL</span> | <span class="keyword-highlight">SPARQL</span> | Knowledge Representation</p>
         <div class="glass-panel">
           <p>
@@ -47,10 +50,11 @@
             constraints, possible errors, and correction instructions.
           </p>
         </div>
+        <img src="images/sn-ontology-view.png" alt="Ontology Visualization" class="expandable-img" style="background: #ffffff; width: 100%; border-radius: var(--radius-sm); border: 1px solid #d8e2ee; margin-top: 24px; cursor: pointer;">
       </section>
 
       <!-- ONTOLOGY OVERVIEW -->
-      <section id="ontology">
+      <section id="ontology" class="tab-section">
         <h2>Ontology Overview</h2>
         
         <h3>Classes</h3>
@@ -135,7 +139,7 @@
       </section>
 
       <!-- FILES -->
-      <section id="files">
+      <section id="files" class="tab-section">
         <h2>Project Files</h2>
         <div class="files-grid">
           <div class="glass-panel" style="margin-bottom:0;">
@@ -157,7 +161,7 @@
       </section>
 
       <!-- METADATA -->
-      <section id="metadata">
+      <section id="metadata" class="tab-section">
         <h2>Ontology Metadata</h2>
         
         <div class="metadata-grid">
@@ -194,7 +198,7 @@
       </section>
 
       <!-- USE CASES -->
-      <section id="usecases">
+      <section id="usecases" class="tab-section">
         <h2>Use Cases</h2>
         
         <div class="usecase-grid">
@@ -230,7 +234,7 @@
       </section>
 
       <!-- COMPETENCY QUESTIONS & SPARQL QUERIES -->
-      <section id="sparql">
+      <section id="sparql" class="tab-section">
         <h2>Competency Questions & SPARQL Queries</h2>
         <p>Interactive exploration of Competency Questions and their corresponding SPARQL queries. Click to expand and view the evaluated results.</p>
 
@@ -579,28 +583,32 @@ WHERE {
 
       </section>
 
+
+
       <!-- VISUAL RESOURCES -->
-      <section id="visuals">
+      <section id="visuals" class="tab-section">
         <h2>Visual Resources</h2>
         
-        <div class="visual-block" style="margin-bottom: 40px; text-align: center;">
-          <h3 style="text-align: left;">Ontology Diagram</h3>
-          <p style="text-align: left;">High-level mapping of the core ontology concepts and their relationships. Click to expand.</p>
-          <img src="images/ontology_diagram.png" alt="Ontology Diagram" class="expandable-img" style="width: 60% !important; margin: 0 auto; display: block; border-radius: var(--radius-sm); border: 1px solid #d8e2ee; padding: 10px; background: white;">
-        </div>
-        
-        <div class="visual-block">
-          <h3>Interactive Visualization</h3>
-          <p>Dynamic web-based visualization of the ontology mapping. Click the image to expand the high-resolution view.</p>
-          <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/master.owl" target="_blank" class="btn btn-sm" style="margin-bottom: 16px;">
-            Open WebVOWL Tool ↗
-          </a>
-          <img src="images/sn-ontology-view.png" alt="Ontology Visualization" class="expandable-img" style="background: #ffffff; width: 100%; border-radius: var(--radius-sm); border: 1px solid #d8e2ee;">
+        <div class="visuals-grid">
+          <div class="visual-block" style="text-align: center;">
+            <h3 style="text-align: center;">Ontology Diagram</h3>
+            <p style="text-align: center;">High-level mapping of the core ontology concepts and their relationships. Click to expand.</p>
+            <img src="images/ontology_diagram.png" alt="Ontology Diagram" class="expandable-img" style="border-radius: var(--radius-sm); border: 1px solid #d8e2ee; padding: 10px; background: white;">
+          </div>
+          
+          <div class="visual-block" style="text-align: center;">
+            <h3 style="text-align: center;">Interactive Visualization</h3>
+            <p style="text-align: center;">Dynamic web-based visualization of the ontology mapping. Click the image to expand the high-resolution view.</p>
+            <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/master.owl" target="_blank" class="btn btn-sm" style="margin-bottom: 16px;">
+              Open WebVOWL Tool ↗
+            </a>
+            <img src="images/sn-ontology-view.png" alt="Ontology Visualization" class="expandable-img" style="background: #ffffff; border-radius: var(--radius-sm); border: 1px solid #d8e2ee;">
+          </div>
         </div>
       </section>
 
       <!-- CONTRIBUTORS -->
-      <section id="contributors">
+      <section id="contributors" class="tab-section">
         <h2>Contributors</h2>
         <div class="glass-panel" style="text-align: center;">
           <h3 style="margin-top: 0; color: var(--accent-color);">Surya Namaskar Ontology Research Team</h3>
