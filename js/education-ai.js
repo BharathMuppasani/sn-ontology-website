@@ -3,7 +3,7 @@
 
   var STORAGE_KEY = 'snEducationGeminiApiKey';
   var DEFAULT_MODEL = 'gemma-4-31b-it';
-  var FALLBACK_MODEL = 'gemini-2.5-flash-lite';
+  var FALLBACK_MODEL = 'gemini-3.1-flash-lite-preview';
   var SUPPORTED_INTENTS = [
     'base_sequence',
     'base_mantra_chakra',
