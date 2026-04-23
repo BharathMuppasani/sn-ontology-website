@@ -21,6 +21,7 @@
         <a href="#usecases" data-tab="usecases">Use Cases</a>
         <a href="#sparql" data-tab="sparql">Competency Questions</a>
         <a href="#ontology" data-tab="ontology">Ontology Overview</a>
+        <a href="#files" data-tab="files">Project Files</a>
         <a href="#metadata" data-tab="metadata">Metadata</a>
         <a href="#visuals" data-tab="visuals">Visual Resources</a>
         <a href="#contributors" data-tab="contributors">Contributors</a>
@@ -137,7 +138,27 @@
         </div>
       </section>
 
-
+      <!-- FILES -->
+      <section id="files" class="tab-section">
+        <h2>Project Files</h2>
+        <div class="files-grid">
+          <div class="glass-panel" style="margin-bottom:0;">
+            <h3>Ontology File</h3>
+            <p>Main OWL ontology file for Surya Namaskar.</p>
+            <a class="btn" href="models/master.owl" download>Download OWL</a>
+          </div>
+          <div class="glass-panel" style="margin-bottom:0;">
+            <h3>pyLODE Documentation</h3>
+            <p>Generated ontology documentation for classes, properties, and metadata.</p>
+            <a class="btn btn-outline" href="docs/ontology-doc.html" target="_blank">View Docs</a>
+          </div>
+          <div class="glass-panel" style="margin-bottom:0;">
+            <h3>GitHub Repository</h3>
+            <p>Source code, ontology files, images, and project structure.</p>
+            <a class="btn btn-outline" href="https://github.com/mansidodiya01/sn-ontology-website" target="_blank">View Repo</a>
+          </div>
+        </div>
+      </section>
 
       <!-- METADATA -->
       <section id="metadata" class="tab-section">
@@ -577,8 +598,8 @@ WHERE {
           
           <div class="visual-block" style="text-align: center;">
             <h3 style="text-align: center;">Interactive Visualization</h3>
-            <p style="text-align: center;">Dynamic web-based visualization of the ontology mapping. Click the image to expand.</p>
-            <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/merged_sn_ontology.owl" target="_blank" class="btn btn-sm" style="margin-bottom: 16px;">
+            <p style="text-align: center;">Dynamic web-based visualization of the ontology mapping. Click the image to expand the high-resolution view.</p>
+            <a href="https://service.tib.eu/webvowl/#iri=https://mansidodiya01.github.io/sn-ontology-website/models/master.owl" target="_blank" class="btn btn-sm" style="margin-bottom: 16px;">
               Open WebVOWL Tool ↗
             </a>
             <img src="images/sn-ontology-view.png" alt="Ontology Visualization" class="expandable-img" style="background: #ffffff; border-radius: var(--radius-sm); border: 1px solid #d8e2ee;">
