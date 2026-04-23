@@ -35,6 +35,9 @@ Additionally, it features an advanced **Pose Correction Layer** specifically des
 - **Namespaces:** `http://example.org/suryanamaskar#`
 - **Tooling:** Built and visualized using Protégé, SPARQL, and WebVOWL.
 
+## License
+This project is licensed under the MIT License.
+
 ---
 
 **Author:** Mansi Dodiya  
