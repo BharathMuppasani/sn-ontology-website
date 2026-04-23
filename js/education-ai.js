@@ -117,6 +117,10 @@
     return String(value || '').replace(/\s+/g, ' ').trim();
   }
 
+  function isGemmaModel(modelName) {
+    return /^gemma-/i.test(compactText(modelName));
+  }
+
   function normalizeKey(value) {
     return compactText(value).toLowerCase();
   }
@@ -533,8 +537,8 @@
     ].join('\n\n');
   }
 
-  function buildExplanationPrompt(questionText, session, execution) {
-    var evidence = {
+  function buildExplanationEvidence(questionText, session, execution) {
+    return {
       question: questionText,
       template: session.templateLabel,
       intent: session.plan.intent,
@@ -550,6 +554,10 @@
         };
       })
     };
+  }
+
+  function buildExplanationPrompt(questionText, session, execution) {
+    var evidence = buildExplanationEvidence(questionText, session, execution);
 
     return [
       'Student question:',
@@ -562,7 +570,30 @@
     ].join('\n\n');
   }
 
-  function extractGeminiText(payload) {
+  function buildGemmaExplanationPrompt(questionText, session, execution) {
+    var evidence = buildExplanationEvidence(questionText, session, execution);
+
+    return [
+      'You are writing a grounded educational explanation for a Surya Namaskar ontology workspace.',
+      'Use only the supplied evidence JSON.',
+      'Do not invent pose counts, relations, or visual page references that are not present in the evidence JSON.',
+      'If the evidence is limited, say so briefly instead of speculating.',
+      'Use plain teaching language.',
+      'Write one or two short paragraphs.',
+      'Mention linked CYP visuals only if they are present in the evidence.',
+      'Return only the final explanation inside these exact tags:',
+      '<final_explanation>',
+      'your explanation here',
+      '</final_explanation>',
+      'Do not include notes, bullets, self-checks, reasoning, prompt restatement, or any text outside those tags.',
+      'Student question:',
+      compactText(questionText),
+      'Evidence JSON:',
+      JSON.stringify(evidence, null, 2)
+    ].join('\n\n');
+  }
+
+  function extractGeminiText(payload, preserveWhitespace) {
     var candidates = payload && payload.candidates ? payload.candidates : [];
     var texts = [];
 
@@ -578,7 +609,30 @@
       });
     });
 
-    return compactText(texts.join('\n'));
+    return preserveWhitespace ? texts.join('\n').trim() : compactText(texts.join('\n'));
+  }
+
+  function extractGemmaExplanationText(text) {
+    var raw = String(text || '').trim();
+    var match = raw.match(/<final_explanation>([\s\S]*?)<\/final_explanation>/i);
+    var filteredLines;
+
+    if (match) {
+      return compactText(match[1]);
+    }
+
+    filteredLines = raw
+      .split(/\n+/)
+      .map(function (line) {
+        return line.trim();
+      })
+      .filter(Boolean)
+      .filter(function (line) {
+        return !/^Explanation:\s*$/i.test(line) &&
+          !/^\*\s*(User Question|Evidence|Constraints|Visuals|Draft|Concise\?|Educational\?|Only supplied evidence\?|No invented counts\?|Plain teaching language\?|Text only\?|No bullets\?|Visuals included\?)/i.test(line);
+      });
+
+    return compactText(filteredLines.join(' ')).replace(/^Explanation:\s*/i, '');
   }
 
   function requestGemini(apiKey, modelName, body) {
@@ -652,7 +706,22 @@
   }
 
   function requestExplanation(options) {
-    return requestGemini(options.apiKey, options.modelName, {
+    var modelName = compactText(options.modelName) || DEFAULT_MODEL;
+    var gemmaMode = isGemmaModel(modelName);
+    var requestBody = gemmaMode ? {
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            { text: buildGemmaExplanationPrompt(options.questionText, options.session, options.execution) }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.2,
+        candidateCount: 1
+      }
+    } : {
       systemInstruction: {
         parts: [
           { text: EXPLANATION_SYSTEM_PROMPT }
@@ -670,8 +739,14 @@
         temperature: 0.2,
         candidateCount: 1
       }
-    }).then(function (payload) {
-      var text = extractGeminiText(payload);
+    };
+
+    return requestGemini(options.apiKey, modelName, requestBody).then(function (payload) {
+      var text = extractGeminiText(payload, gemmaMode);
+
+      if (gemmaMode) {
+        text = extractGemmaExplanationText(text);
+      }
 
       if (!text) {
         throw new Error('Gemini returned an empty explanation.');
