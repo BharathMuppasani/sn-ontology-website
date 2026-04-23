@@ -557,7 +557,8 @@
       'Evidence JSON:',
       JSON.stringify(evidence, null, 2),
       'Write a grounded educational explanation in one or two short paragraphs.',
-      'Mention linked CYP visuals only if they are present in the evidence.'
+      'Mention linked CYP visuals only if they are present in the evidence.',
+      'Return only the final explanation. Do not include notes, bullets, self-checks, reasoning, or prompt restatement.'
     ].join('\n\n');
   }
 
