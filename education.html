@@ -94,6 +94,21 @@
                   <form class="education-composer-form" id="education-ai-form" aria-label="Custom natural language question composer">
                     <div class="education-composer-config-grid">
                       <div class="education-composer-field">
+                        <label class="education-composer-label" for="education-api-key">Gemini API key</label>
+                        <input
+                          id="education-api-key"
+                          class="education-composer-input"
+                          name="education-api-key"
+                          type="password"
+                          spellcheck="false"
+                          autocomplete="off"
+                          placeholder="Paste your Gemini API key"
+                        />
+                        <p class="education-panel-copy" style="margin-top: 8px; margin-bottom: 0; font-size: 0.92rem;">
+                          Stored only in this browser via local storage. It is not committed to GitHub.
+                        </p>
+                      </div>
+                      <div class="education-composer-field">
                         <label class="education-composer-label" for="education-ai-model">Model configuration</label>
                         <select id="education-ai-model" class="education-composer-select" name="education-ai-model">
                           <option value="gemma-4-31b-it" selected>gemma-4-31b-it</option>
@@ -302,7 +317,6 @@
 
   <script src="js/ontology-graph.js"></script>
   <script src="js/education-data.js"></script>
-  <script src="js/education-local-config.js"></script>
   <script src="js/education-ai.js"></script>
   <script src="js/education.js"></script>
 </body>
