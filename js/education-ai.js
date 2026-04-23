@@ -90,6 +90,16 @@
     ],
     additionalProperties: false
   };
+  var EXPLANATION_SCHEMA = {
+    type: 'object',
+    properties: {
+      answer: {
+        type: 'string'
+      }
+    },
+    required: ['answer'],
+    additionalProperties: false
+  };
   var PLANNER_SYSTEM_PROMPT = [
     'You are a query planner for a Surya Namaskar education workspace backed by an OWL ontology.',
     'You must map the user question to exactly one supported intent.',
@@ -579,18 +589,97 @@
       'Do not invent pose counts, relations, or visual page references that are not present in the evidence JSON.',
       'If the evidence is limited, say so briefly instead of speculating.',
       'Use plain teaching language.',
-      'Write one or two short paragraphs.',
+      'Write one or two short paragraphs in the value of the "answer" field.',
       'Mention linked CYP visuals only if they are present in the evidence.',
-      'Return only the final explanation inside these exact tags:',
-      '<final_explanation>',
-      'your explanation here',
-      '</final_explanation>',
-      'Do not include notes, bullets, self-checks, reasoning, prompt restatement, or any text outside those tags.',
+      'Return only valid JSON matching this schema: {"answer":"string"}.',
+      'Do not include markdown, code fences, notes, bullets, self-checks, reasoning, prompt restatement, or any keys other than "answer".',
       'Student question:',
       compactText(questionText),
       'Evidence JSON:',
       JSON.stringify(evidence, null, 2)
     ].join('\n\n');
+  }
+
+  function tryParseExplanationObject(text) {
+    var raw = String(text || '').trim();
+    var candidates = [
+      raw,
+      raw.replace(/^```json\s*/i, '').replace(/\s*```$/i, ''),
+      raw.replace(/^```\s*/i, '').replace(/\s*```$/i, '')
+    ];
+    var parsed = null;
+
+    candidates.some(function (candidate) {
+      try {
+        parsed = JSON.parse(candidate);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    });
+
+    return parsed;
+  }
+
+  function findExplanationObject(text) {
+    var raw = String(text || '');
+    var start = -1;
+    var depth = 0;
+    var inString = false;
+    var escaped = false;
+    var index;
+    var char;
+    var candidate;
+    var parsed;
+
+    for (index = 0; index < raw.length; index += 1) {
+      char = raw.charAt(index);
+
+      if (start === -1) {
+        if (char === '{') {
+          start = index;
+          depth = 1;
+          inString = false;
+          escaped = false;
+        }
+        continue;
+      }
+
+      if (inString) {
+        if (escaped) {
+          escaped = false;
+        } else if (char === '\\') {
+          escaped = true;
+        } else if (char === '"') {
+          inString = false;
+        }
+        continue;
+      }
+
+      if (char === '"') {
+        inString = true;
+        continue;
+      }
+
+      if (char === '{') {
+        depth += 1;
+        continue;
+      }
+
+      if (char === '}') {
+        depth -= 1;
+        if (depth === 0) {
+          candidate = raw.slice(start, index + 1);
+          parsed = tryParseExplanationObject(candidate);
+          if (parsed && typeof parsed.answer === 'string') {
+            return parsed;
+          }
+          start = -1;
+        }
+      }
+    }
+
+    return null;
   }
 
   function extractGeminiText(payload, preserveWhitespace) {
@@ -614,11 +703,44 @@
 
   function extractGemmaExplanationText(text) {
     var raw = String(text || '').trim();
+    var parsedObject = tryParseExplanationObject(raw) || findExplanationObject(raw);
     var match = raw.match(/<final_explanation>([\s\S]*?)<\/final_explanation>/i);
+    var escapedMatch = raw.match(/&lt;final_explanation&gt;([\s\S]*?)&lt;\/final_explanation&gt;/i);
+    var openTagIndex;
+    var escapedOpenTagIndex;
+    var trailingText;
     var filteredLines;
+
+    if (parsedObject && typeof parsedObject.answer === 'string') {
+      return compactText(parsedObject.answer);
+    }
 
     if (match) {
       return compactText(match[1]);
+    }
+
+    if (escapedMatch) {
+      return compactText(escapedMatch[1]);
+    }
+
+    openTagIndex = raw.toLowerCase().lastIndexOf('<final_explanation>');
+    if (openTagIndex !== -1) {
+      trailingText = raw.slice(openTagIndex + '<final_explanation>'.length);
+      trailingText = trailingText.replace(/<\/final_explanation>\s*$/i, '');
+      trailingText = compactText(trailingText);
+      if (trailingText) {
+        return trailingText;
+      }
+    }
+
+    escapedOpenTagIndex = raw.toLowerCase().lastIndexOf('&lt;final_explanation&gt;');
+    if (escapedOpenTagIndex !== -1) {
+      trailingText = raw.slice(escapedOpenTagIndex + '&lt;final_explanation&gt;'.length);
+      trailingText = trailingText.replace(/&lt;\/final_explanation&gt;\s*$/i, '');
+      trailingText = compactText(trailingText);
+      if (trailingText) {
+        return trailingText;
+      }
     }
 
     filteredLines = raw
@@ -718,6 +840,8 @@
         }
       ],
       generationConfig: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: EXPLANATION_SCHEMA,
         temperature: 0.2,
         candidateCount: 1
       }
