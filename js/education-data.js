@@ -60,6 +60,69 @@
 
   var QUESTIONS = [
     {
+      id: 'sn-variants',
+      title: 'SN Variants',
+      prompt: 'What are the different variants of SN?',
+      sparql: withPrefixes(
+        'SELECT ?variantLabel (COUNT(DISTINCT ?pose) AS ?poseCount) (COUNT(DISTINCT ?asana) AS ?distinctAsanaCount)\n' +
+        'WHERE {\n' +
+        '  ?variant rdf:type core:Variant ;\n' +
+        '           rdfs:label ?variantLabel .\n' +
+        '  OPTIONAL {\n' +
+        '    ?pose rdf:type core:Pose ;\n' +
+        '          core:belongsToVariant ?variant ;\n' +
+        '          core:hasAsana ?asana .\n' +
+        '  }\n' +
+        '}\n' +
+        'GROUP BY ?variantLabel\n' +
+        'ORDER BY ?variantLabel'
+      ),
+      run: function (model) {
+        var variants = (model.variants || []).slice().sort(function (left, right) {
+          return left.displayLabel.localeCompare(right.displayLabel);
+        });
+
+        if (!variants.length) {
+          return makeEmptyAnswer(this.prompt, 'No Surya Namaskar variants were found in the loaded ontology.');
+        }
+
+        return {
+          prompt: this.prompt,
+          narrative: 'The ontology currently models ' + variants.length + ' Surya Namaskar variants: ' +
+            joinList(variants.map(function (variant) {
+              return variant.displayLabel;
+            })) + '.',
+          facts: [
+            { label: 'Variants', value: String(variants.length) }
+          ],
+          table: {
+            columns: ['Variant', 'Pose count', 'Distinct asanas'],
+            rows: variants.map(function (variant) {
+              var poses = model.getOrderedPosesForVariant(variant);
+              var distinctAsanas = unique(poses.map(function (pose) {
+                return pose.asanaLabel;
+              }).filter(Boolean));
+
+              return [
+                variant.displayLabel,
+                String(poses.length),
+                String(distinctAsanas.length)
+              ];
+            })
+          },
+          sections: [
+            {
+              title: 'Variant list',
+              items: variants.map(function (variant) {
+                return variant.displayLabel;
+              })
+            }
+          ],
+          visuals: []
+        };
+      }
+    },
+    {
       id: 'base-sequence',
       title: 'Ordered Pose Sequence',
       prompt: 'What is the complete ordered sequence of poses in the Base Surya Namaskar variant?',

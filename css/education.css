@@ -1220,6 +1220,44 @@
   min-width: 560px;
 }
 
+.education-table-cell--asana {
+  min-width: 168px;
+}
+
+.education-asana-chip {
+  --education-asana-accent: #0f6e8c;
+  --education-asana-bg: #eef5fb;
+  --education-asana-border: #c8dced;
+  --education-asana-text: #1f3d5c;
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--education-asana-border);
+  border-radius: 999px;
+  background: var(--education-asana-bg);
+  color: var(--education-asana-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.education-asana-chip-marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--education-asana-accent);
+  flex-shrink: 0;
+}
+
+.education-asana-chip-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .education-query-box {
   margin-top: 22px;
   padding: 18px;
