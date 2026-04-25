@@ -21,6 +21,7 @@
     '#CF1C90', '#7F3C8D', '#D32B1E', '#A5AA99', '#DF8461', '#4B4B8F', '#E8E948', '#96CDE6',
     '#C0BD7F', '#2B3514', '#E68310', '#D485B2', '#92AE31', '#463397', '#7F7E80', '#B26A00'
   ];
+  var VARIANT_CHIP_ACCENTS = ['#2C5AA0', '#C46E2C', '#2E8B57', '#7A3E9D', '#B14E5A', '#0F6E8C'];
 
   var KNOWN_ASANA_CHIP_ACCENTS = {
     'Adho Mukha Svanasana': '#BA1C30',
@@ -55,6 +56,12 @@
     'Vajrasana': '#463397',
     'Vakrasana': '#7F7E80',
     'Vrksasana': '#F97B72'
+  };
+  var KNOWN_VARIANT_CHIP_ACCENTS = {
+    'Base SN (Sivananda Yoga Vedanta Centre, used at IIT BHU)': '#2C5AA0',
+    'Variant 1 Krishnamacharya Vinyasa': '#C46E2C',
+    'Variant 2 Bihar School Of Yoga': '#2E8B57',
+    'Variant 3 Swami Vivekananda Kendra': '#7A3E9D'
   };
 
   function byId(id) {
@@ -167,6 +174,19 @@
     };
   }
 
+  function buildVariantChipTheme(accentHex) {
+    var hsl = hexToHsl(accentHex);
+    var hue = hsl.h;
+    var saturation = Math.max(40, Math.min(68, hsl.s || 56));
+
+    return {
+      accent: 'hsl(' + hue + ', ' + saturation + '%, 40%)',
+      background: 'hsl(' + hue + ', ' + Math.max(24, saturation - 20) + '%, 97%)',
+      border: 'hsl(' + hue + ', ' + Math.max(20, saturation - 24) + '%, 82%)',
+      text: 'hsl(' + hue + ', ' + Math.max(44, saturation + 4) + '%, 27%)'
+    };
+  }
+
   function initializeAsanaThemeMap(state) {
     var labels;
 
@@ -195,9 +215,41 @@
     state.asanaThemeMapInitialized = true;
   }
 
+  function initializeVariantThemeMap(state) {
+    var labels;
+
+    if (!state || state.variantThemeMapInitialized || !state.model || !state.model.variants) {
+      return;
+    }
+
+    state.variantThemeMap = state.variantThemeMap || {};
+    labels = state.model.variants
+      .map(function (variant) {
+        return compactText(variant && variant.displayLabel);
+      })
+      .filter(Boolean)
+      .sort(function (left, right) {
+        return left.localeCompare(right);
+      })
+      .filter(function (label, index, items) {
+        return index === 0 || label !== items[index - 1];
+      });
+
+    labels.forEach(function (label, index) {
+      state.variantThemeMap[normalizeToken(label)] = KNOWN_VARIANT_CHIP_ACCENTS[label] ||
+        VARIANT_CHIP_ACCENTS[index % VARIANT_CHIP_ACCENTS.length];
+    });
+
+    state.variantThemeMapInitialized = true;
+  }
+
   function isAsanaColumn(columnLabel) {
     var key = normalizeToken(columnLabel);
     return /\basana\b/.test(key) || key === 'first pose' || key === 'last pose';
+  }
+
+  function isVariantColumn(columnLabel) {
+    return /\bvariant\b/.test(normalizeToken(columnLabel));
   }
 
   function getAsanaChipTheme(state, label) {
@@ -241,6 +293,48 @@
 
     marker.setAttribute('aria-hidden', 'true');
     chip.appendChild(marker);
+    chip.appendChild(chipLabel);
+
+    return chip;
+  }
+
+  function getVariantChipTheme(state, label) {
+    var key = normalizeToken(label);
+    var accentHex;
+
+    if (!key || key === '-') {
+      return null;
+    }
+
+    initializeVariantThemeMap(state);
+    state.variantThemeMap = state.variantThemeMap || {};
+
+    if (typeof state.variantThemeMap[key] !== 'string') {
+      state.variantThemeMap[key] = VARIANT_CHIP_ACCENTS[hashString(key) % VARIANT_CHIP_ACCENTS.length];
+    }
+
+    accentHex = state.variantThemeMap[key];
+    return buildVariantChipTheme(accentHex);
+  }
+
+  function createVariantChip(state, label) {
+    var text = compactText(label);
+    var theme = getVariantChipTheme(state, text);
+    var chip = createElement('span', 'education-variant-chip');
+    var rail = createElement('span', 'education-variant-chip-rail');
+    var chipLabel = createElement('span', 'education-variant-chip-label', text);
+
+    chip.title = text;
+
+    if (theme) {
+      chip.style.setProperty('--education-variant-accent', theme.accent);
+      chip.style.setProperty('--education-variant-bg', theme.background);
+      chip.style.setProperty('--education-variant-border', theme.border);
+      chip.style.setProperty('--education-variant-text', theme.text);
+    }
+
+    rail.setAttribute('aria-hidden', 'true');
+    chip.appendChild(rail);
     chip.appendChild(chipLabel);
 
     return chip;
@@ -353,6 +447,9 @@
   function clearStructuredAnswer(state) {
     clearElement(state.facts);
     clearElement(state.sections);
+    if (state.sections) {
+      state.sections.hidden = true;
+    }
   }
 
   function clearAnswerSurface(state, options) {
@@ -457,9 +554,65 @@
     });
   }
 
+  function isVisualCellData(value) {
+    return Boolean(
+      value &&
+      typeof value === 'object' &&
+      value.kind === 'cyp-visual' &&
+      value.src
+    );
+  }
+
+  function renderVisualTableCell(state, visualData) {
+    var cell = createElement('td', 'education-table-cell education-table-cell--visual');
+    var button = createElement('button', 'education-table-visual-button');
+    var image = createElement('img', 'education-table-visual-image');
+    var label = createElement('span', 'education-table-visual-label', 'Expand image');
+    var pageText = visualData.page ? 'CYP page ' + visualData.page : 'Linked CYP image';
+
+    button.type = 'button';
+    button.title = 'Expand ' + (visualData.asanaLabel || 'CYP visual');
+    button.setAttribute(
+      'aria-label',
+      'Expand ' + (visualData.asanaLabel || 'asana') + ' visual reference' +
+      (visualData.page ? ' from CYP page ' + visualData.page : '')
+    );
+
+    image.src = visualData.src;
+    image.alt = visualData.alt || ((visualData.asanaLabel || 'Asana') + ' visual reference');
+    image.loading = 'lazy';
+
+    button.appendChild(image);
+    button.appendChild(label);
+    button.addEventListener('click', function () {
+      openLightbox(state, {
+        src: visualData.src,
+        alt: visualData.alt,
+        asanaLabel: visualData.asanaLabel || 'CYP visual',
+        caption: visualData.caption || pageText,
+        page: visualData.page || ''
+      });
+    });
+
+    cell.appendChild(button);
+    return cell;
+  }
+
   function renderTableCell(state, columnLabel, cellValue) {
     var cell = createElement('td');
-    var text = String(cellValue);
+    var text;
+
+    if (isVisualCellData(cellValue)) {
+      return renderVisualTableCell(state, cellValue);
+    }
+
+    text = String(cellValue);
+
+    if (isVariantColumn(columnLabel) && compactText(cellValue) && compactText(cellValue) !== '-') {
+      cell.className = 'education-table-cell education-table-cell--variant';
+      cell.appendChild(createVariantChip(state, text));
+      return cell;
+    }
 
     if (isAsanaColumn(columnLabel) && compactText(cellValue) && compactText(cellValue) !== '-') {
       cell.className = 'education-table-cell education-table-cell--asana';
@@ -508,46 +661,16 @@
   }
 
   function renderSections(state, answer) {
+    if (!state.sections) {
+      return;
+    }
+
     clearElement(state.sections);
 
     if (answer.table) {
       renderTable(state, state.sections, answer.table);
     }
-
-    (answer.sections || []).forEach(function (section) {
-      var card;
-      var items;
-      var title;
-      var list;
-
-      items = (section.items || []).map(compactText).filter(Boolean);
-
-      if (!items.length) {
-        return;
-      }
-
-      card = createElement('section', 'education-detail-card');
-      title = createElement('h3', '', section.title);
-      list = createElement('ul');
-
-      items.forEach(function (item) {
-        list.appendChild(createElement('li', '', item));
-      });
-
-      card.appendChild(title);
-      card.appendChild(list);
-      state.sections.appendChild(card);
-    });
-
-    if (!state.sections.children.length) {
-      state.sections.appendChild(
-        createElement(
-          'div',
-          'education-detail-card',
-          'No additional structured evidence is available for this question in the current ontology snapshot.'
-        )
-      );
-    }
+    state.sections.hidden = !state.sections.children.length;
   }
 
   function closeLightbox(state) {
@@ -836,8 +959,6 @@
     setButtonDisabled(state.aiGenerateButton, !ready || !hasQuestion || busy);
     setButtonDisabled(state.aiRunButton, !ready || !hasPlan || busy);
     setButtonDisabled(state.aiExplainButton, !ready || !hasPlan || busy);
-    setButtonDisabled(state.queryRunButton, !ready || !hasPlan || busy);
-    setButtonDisabled(state.queryExplainButton, !ready || !hasPlan || busy);
   }
 
   function setAIBusy(state, busy) {
@@ -1325,22 +1446,6 @@
       });
     }
 
-    if (state.queryRunButton) {
-      state.queryRunButton.addEventListener('click', function () {
-        runCustomQuery(state).catch(function () {
-          return null;
-        });
-      });
-    }
-
-    if (state.queryExplainButton) {
-      state.queryExplainButton.addEventListener('click', function () {
-        explainCustomQuery(state).catch(function () {
-          return null;
-        });
-      });
-    }
-
     updateAIControls(state);
   }
 
@@ -1394,8 +1499,6 @@
       answerContent: byId('education-answer-content'),
       queryView: byId('education-query-view'),
       answerViewToggle: byId('education-answer-view-toggle'),
-      queryRunButton: byId('education-query-run'),
-      queryExplainButton: byId('education-query-explain'),
       lightbox: byId('education-lightbox'),
       lightboxClose: byId('education-lightbox-close'),
       lightboxImage: byId('education-lightbox-image'),
@@ -1436,6 +1539,8 @@
       aiExplanationLoading: false,
       asanaThemeMap: {},
       asanaThemeMapInitialized: false,
+      variantThemeMap: {},
+      variantThemeMapInitialized: false,
       statQuestions: byId('stat-questions'),
       statVariants: byId('stat-variants'),
       statAsanas: byId('stat-asanas'),
@@ -1461,7 +1566,10 @@
       state.model = model;
       state.asanaThemeMap = {};
       state.asanaThemeMapInitialized = false;
+      state.variantThemeMap = {};
+      state.variantThemeMapInitialized = false;
       initializeAsanaThemeMap(state);
+      initializeVariantThemeMap(state);
       updateStats(state);
       updateAIControls(state);
       setStatus(state, 'Ontology ready');
