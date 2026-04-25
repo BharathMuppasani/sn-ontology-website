@@ -2,6 +2,7 @@
   'use strict';
 
   var SUGGESTED_QUESTION_IDS = [
+    'sn-variants',
     'base-sequence',
     'base-mantra-chakra',
     'base-repeats',
@@ -11,6 +12,50 @@
     'cyp-visual-references',
     'base-pose-7-guidance'
   ];
+
+  // Curated high-separation categorical palette tuned for this ontology's asana set.
+  // The order is intentionally varied warm/cool to avoid adjacent labels landing on nearby shades.
+  var ASANA_CHIP_ACCENTS = [
+    '#BA1C30', '#4277B6', '#5FA641', '#DB6917', '#702C8C', '#E1A11A', '#11A579', '#E73F74',
+    '#6F340D', '#3969AC', '#80BA5A', '#0F5D92', '#F97B72', '#008695', '#91218C', '#F2B701',
+    '#CF1C90', '#7F3C8D', '#D32B1E', '#A5AA99', '#DF8461', '#4B4B8F', '#E8E948', '#96CDE6',
+    '#C0BD7F', '#2B3514', '#E68310', '#D485B2', '#92AE31', '#463397', '#7F7E80', '#B26A00'
+  ];
+
+  var KNOWN_ASANA_CHIP_ACCENTS = {
+    'Adho Mukha Svanasana': '#BA1C30',
+    'Ardhachakrasana': '#4277B6',
+    'Ardhahalasana': '#5FA641',
+    'Ardhaustrasana': '#DB6917',
+    'Ashtanga Namaskara': '#702C8C',
+    'Ashwa Sanchalanasana': '#F4A261',
+    'Bhujangasana': '#11A579',
+    'Chaturanga Dandasana': '#E73F74',
+    'Danda Samarpana': '#6F340D',
+    'Hasta Utthanasana': '#3969AC',
+    'Makarasana': '#80BA5A',
+    'Padahastasana': '#0F5D92',
+    'Parvatasana': '#92AE31',
+    'Pavanamuktasana': '#008695',
+    'Phalakasana': '#91218C',
+    'Pranamasana': '#F2B701',
+    'Samasthiti': '#CF1C90',
+    'Setubandhasana': '#7F3C8D',
+    'Shalabhasana': '#D32B1E',
+    'Shashankasana': '#A5AA99',
+    'Shashtanga Namaskara': '#DF8461',
+    'Shavasana': '#4B4B8F',
+    'Tadasana': '#E8E948',
+    'Urdhwa Mukha Svanasana': '#96CDE6',
+    'Ustrasana': '#C0BD7F',
+    'Utkatasana': '#2B3514',
+    'Uttanamandukasana': '#E68310',
+    'Uttanapadasana': '#D485B2',
+    'Uttanasana': '#B26A00',
+    'Vajrasana': '#463397',
+    'Vakrasana': '#7F7E80',
+    'Vrksasana': '#F97B72'
+  };
 
   function byId(id) {
     return document.getElementById(id);
@@ -40,6 +85,167 @@
     return String(value || '').replace(/\s+/g, ' ').trim();
   }
 
+  function normalizeToken(value) {
+    return compactText(value).toLowerCase();
+  }
+
+  function hashString(value) {
+    var text = String(value || '');
+    var hash = 0;
+    var index;
+
+    for (index = 0; index < text.length; index += 1) {
+      hash = ((hash << 5) - hash) + text.charCodeAt(index);
+      hash |= 0;
+    }
+
+    return Math.abs(hash);
+  }
+
+  function hexToHsl(value) {
+    var hex = String(value || '').replace('#', '');
+    var red;
+    var green;
+    var blue;
+    var max;
+    var min;
+    var delta;
+    var hue = 0;
+    var saturation = 0;
+    var lightness;
+
+    if (hex.length === 3) {
+      hex = hex.replace(/(.)/g, '$1$1');
+    }
+
+    red = parseInt(hex.slice(0, 2), 16) / 255;
+    green = parseInt(hex.slice(2, 4), 16) / 255;
+    blue = parseInt(hex.slice(4, 6), 16) / 255;
+
+    max = Math.max(red, green, blue);
+    min = Math.min(red, green, blue);
+    delta = max - min;
+    lightness = (max + min) / 2;
+
+    if (delta !== 0) {
+      saturation = delta / (1 - Math.abs((2 * lightness) - 1));
+
+      switch (max) {
+      case red:
+        hue = 60 * (((green - blue) / delta) % 6);
+        break;
+      case green:
+        hue = 60 * (((blue - red) / delta) + 2);
+        break;
+      default:
+        hue = 60 * (((red - green) / delta) + 4);
+        break;
+      }
+    }
+
+    if (hue < 0) {
+      hue += 360;
+    }
+
+    return {
+      h: hue,
+      s: saturation * 100,
+      l: lightness * 100
+    };
+  }
+
+  function buildAsanaChipTheme(accentHex) {
+    var hsl = hexToHsl(accentHex);
+    var hue = hsl.h;
+    var saturation = Math.max(58, Math.min(82, hsl.s || 68));
+
+    return {
+      accent: 'hsl(' + hue + ', ' + saturation + '%, 38%)',
+      background: 'hsl(' + hue + ', ' + Math.max(42, saturation - 18) + '%, 95%)',
+      border: 'hsl(' + hue + ', ' + Math.max(34, saturation - 28) + '%, 74%)',
+      text: 'hsl(' + hue + ', ' + saturation + '%, 24%)'
+    };
+  }
+
+  function initializeAsanaThemeMap(state) {
+    var labels;
+
+    if (!state || state.asanaThemeMapInitialized || !state.model || !state.model.asanas) {
+      return;
+    }
+
+    state.asanaThemeMap = state.asanaThemeMap || {};
+    labels = state.model.asanas
+      .map(function (asana) {
+        return compactText(asana && asana.label);
+      })
+      .filter(Boolean)
+      .sort(function (left, right) {
+        return left.localeCompare(right);
+      })
+      .filter(function (label, index, items) {
+        return index === 0 || label !== items[index - 1];
+      });
+
+    labels.forEach(function (label, index) {
+      state.asanaThemeMap[normalizeToken(label)] = KNOWN_ASANA_CHIP_ACCENTS[label] ||
+        ASANA_CHIP_ACCENTS[index % ASANA_CHIP_ACCENTS.length];
+    });
+
+    state.asanaThemeMapInitialized = true;
+  }
+
+  function isAsanaColumn(columnLabel) {
+    var key = normalizeToken(columnLabel);
+    return /\basana\b/.test(key) || key === 'first pose' || key === 'last pose';
+  }
+
+  function getAsanaChipTheme(state, label) {
+    var key = normalizeToken(label);
+    var accentHex;
+
+    if (!key || key === '-') {
+      return null;
+    }
+
+    initializeAsanaThemeMap(state);
+    state.asanaThemeMap = state.asanaThemeMap || {};
+
+    if (typeof state.asanaThemeMap[key] !== 'string') {
+      state.asanaThemeMap[key] = ASANA_CHIP_ACCENTS[hashString(key) % ASANA_CHIP_ACCENTS.length];
+    }
+
+    accentHex = state.asanaThemeMap[key];
+    return buildAsanaChipTheme(accentHex);
+  }
+
+  function createAsanaChip(state, label) {
+    var text = compactText(label);
+    var theme = getAsanaChipTheme(state, text);
+    var chip;
+    var marker;
+    var chipLabel;
+
+    chip = createElement('span', 'education-asana-chip');
+    marker = createElement('span', 'education-asana-chip-marker');
+    chipLabel = createElement('span', 'education-asana-chip-label', text);
+
+    chip.title = text;
+
+    if (theme) {
+      chip.style.setProperty('--education-asana-accent', theme.accent);
+      chip.style.setProperty('--education-asana-bg', theme.background);
+      chip.style.setProperty('--education-asana-border', theme.border);
+      chip.style.setProperty('--education-asana-text', theme.text);
+    }
+
+    marker.setAttribute('aria-hidden', 'true');
+    chip.appendChild(marker);
+    chip.appendChild(chipLabel);
+
+    return chip;
+  }
+
   function padIndex(value) {
     var number = Number(value) || 0;
     return number < 10 ? '0' + number : String(number);
@@ -52,7 +258,7 @@
     if (questionId.indexOf('guidance') !== -1) {
       return 'Pose Guidance';
     }
-    if (questionId.indexOf('shared') !== -1 || questionId.indexOf('same-') !== -1) {
+    if (questionId.indexOf('shared') !== -1 || questionId.indexOf('same-') !== -1 || questionId.indexOf('variant') !== -1) {
       return 'Cross-Variant';
     }
     if (questionId.indexOf('mantra') !== -1) {
@@ -251,7 +457,21 @@
     });
   }
 
-  function renderTable(container, table) {
+  function renderTableCell(state, columnLabel, cellValue) {
+    var cell = createElement('td');
+    var text = String(cellValue);
+
+    if (isAsanaColumn(columnLabel) && compactText(cellValue) && compactText(cellValue) !== '-') {
+      cell.className = 'education-table-cell education-table-cell--asana';
+      cell.appendChild(createAsanaChip(state, text));
+      return cell;
+    }
+
+    cell.textContent = text;
+    return cell;
+  }
+
+  function renderTable(state, container, table) {
     var wrapper;
     var tableElement;
     var thead;
@@ -274,8 +494,8 @@
 
     table.rows.forEach(function (row) {
       var bodyRow = createElement('tr');
-      row.forEach(function (cell) {
-        bodyRow.appendChild(createElement('td', '', String(cell)));
+      row.forEach(function (cell, index) {
+        bodyRow.appendChild(renderTableCell(state, table.columns[index] || '', cell));
       });
       tbody.appendChild(bodyRow);
     });
@@ -291,7 +511,7 @@
     clearElement(state.sections);
 
     if (answer.table) {
-      renderTable(state.sections, answer.table);
+      renderTable(state, state.sections, answer.table);
     }
 
     (answer.sections || []).forEach(function (section) {
@@ -1214,6 +1434,8 @@
       aiExecution: null,
       aiExplained: false,
       aiExplanationLoading: false,
+      asanaThemeMap: {},
+      asanaThemeMapInitialized: false,
       statQuestions: byId('stat-questions'),
       statVariants: byId('stat-variants'),
       statAsanas: byId('stat-asanas'),
@@ -1237,6 +1459,9 @@
       cypImageBase: root.dataset.cypImageBase
     }).then(function (model) {
       state.model = model;
+      state.asanaThemeMap = {};
+      state.asanaThemeMapInitialized = false;
+      initializeAsanaThemeMap(state);
       updateStats(state);
       updateAIControls(state);
       setStatus(state, 'Ontology ready');

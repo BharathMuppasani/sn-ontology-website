@@ -109,6 +109,7 @@
     'When a specific variant is mentioned, copy the clearest variant label when possible.',
     'When a question asks about posture guidance, errors, corrections, rules, or constraints for a specific base pose or asana, choose pose_guidance.',
     'Questions asking how many poses a variant has, or comparing pose counts across variants, should map to variant_pose_counts.',
+    'Questions asking what the different variants of Surya Namaskar are should also map to variant_pose_counts.',
     'Questions asking for the ordered poses or sequence of a named variant should map to variant_sequence.',
     'Questions asking which variants include a specific asana should map to asana_variant_coverage.',
     'Questions about poses or asanas common, shared, overlapping, or present across variants should map to shared_asanas.',
@@ -535,7 +536,7 @@
       '- same_asana_equivalences: explicit sameAsanaAs links.',
       '- cyp_visual_references: linked CYP page visuals, optionally for a specific asana.',
       '- pose_guidance: guidance, rules, constraints, errors, corrections, or body parts for a specific Base Surya Namaskar pose or asana.',
-      '- variant_pose_counts: how many poses each variant has, including comparisons across all or named variants.',
+      '- variant_pose_counts: how many poses each variant has, including comparisons across all or named variants, and questions asking what the different variants are.',
       '- variant_sequence: the ordered pose sequence for one or more named variants.',
       '- asana_variant_coverage: which variants include a specific asana, and at which pose numbers it appears.',
       '- unsupported: anything else.',
@@ -916,6 +917,13 @@
       /\bpose\b|\bposes\b/.test(text);
   }
 
+  function looksLikeVariantCatalogQuestion(questionText) {
+    var text = normalizeKey(questionText);
+
+    return /(variant|variants|sn|surya namaskar)/.test(text) &&
+      /(different variants|what are the variants|which variants|list.*variants|variants of sn|variants of surya namaskar|types of sn|types of surya namaskar)/.test(text);
+  }
+
   function looksLikeVariantSequenceQuestion(questionText) {
     var text = normalizeKey(questionText);
 
@@ -980,7 +988,13 @@
       }
     }
 
-    if (looksLikeVariantPoseCountQuestion(questionText)) {
+    if (looksLikeVariantCatalogQuestion(questionText)) {
+      resolvedPlan.intent = 'variant_pose_counts';
+      resolvedPlan.confidence = Math.max(resolvedPlan.confidence, 0.72);
+      resolvedPlan.poseNumber = null;
+      resolvedPlan.unsupportedReason = null;
+      resolvedPlan.rationale = 'The question asks which Surya Namaskar variants are modeled, so the variant pose count template is used to list the variants with their pose counts.';
+    } else if (looksLikeVariantPoseCountQuestion(questionText)) {
       resolvedPlan.intent = 'variant_pose_counts';
       resolvedPlan.confidence = Math.max(resolvedPlan.confidence, 0.72);
       resolvedPlan.poseNumber = null;
