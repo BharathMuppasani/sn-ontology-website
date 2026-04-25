@@ -434,6 +434,51 @@
     setStatus(state, state.model ? 'Ontology ready' : 'Loading ontology');
   }
 
+  function hideCustomExplanation(state) {
+    if (state.nlExplanationText) {
+      state.nlExplanationText.textContent = '';
+    }
+    if (state.nlExplanation) {
+      state.nlExplanation.hidden = true;
+    }
+    if (state.nlExplanationLoader) {
+      state.nlExplanationLoader.hidden = true;
+    }
+    if (state.nlExplanationBody) {
+      state.nlExplanationBody.hidden = true;
+    }
+  }
+
+  function showCustomExplanationLoading(state) {
+    if (state.nlExplanationText) {
+      state.nlExplanationText.textContent = '';
+    }
+    if (state.nlExplanation) {
+      state.nlExplanation.hidden = false;
+    }
+    if (state.nlExplanationLoader) {
+      state.nlExplanationLoader.hidden = false;
+    }
+    if (state.nlExplanationBody) {
+      state.nlExplanationBody.hidden = true;
+    }
+  }
+
+  function showCustomExplanationNarrative(state, narrative) {
+    if (state.nlExplanationText) {
+      state.nlExplanationText.textContent = narrative || '';
+    }
+    if (state.nlExplanation) {
+      state.nlExplanation.hidden = false;
+    }
+    if (state.nlExplanationLoader) {
+      state.nlExplanationLoader.hidden = true;
+    }
+    if (state.nlExplanationBody) {
+      state.nlExplanationBody.hidden = false;
+    }
+  }
+
   function renderCustomExecution(state, execution, showNarrative) {
     if (state.nlSparql) {
       state.nlSparql.textContent = execution.sparql || (state.aiSession && state.aiSession.sparql) || '';
@@ -451,12 +496,16 @@
       state.facts = origFacts;
       state.sections = origSections;
     }
-    
+
+    if (state.aiExplanationLoading) {
+      showCustomExplanationLoading(state);
+      return;
+    }
+
     if (showNarrative && execution.answer && execution.answer.narrative) {
-      if (state.nlExplanation) state.nlExplanation.style.display = 'block';
-      if (state.nlExplanationText) state.nlExplanationText.textContent = execution.answer.narrative;
+      showCustomExplanationNarrative(state, execution.answer.narrative);
     } else {
-      if (state.nlExplanation) state.nlExplanation.style.display = 'none';
+      hideCustomExplanation(state);
     }
   }
 
@@ -806,7 +855,9 @@
     state.aiSession = null;
     state.aiExecution = null;
     state.aiExplained = false;
+    state.aiExplanationLoading = false;
     setError(state, '');
+    hideCustomExplanation(state);
     resetAIRuntime(state);
     updateAIControls(state);
   }
@@ -844,9 +895,11 @@
       state.aiSession = session;
       state.aiExecution = null;
       state.aiExplained = false;
+      state.aiExplanationLoading = false;
       state.activeMode = 'custom';
       setWorkspaceMode(state, 'custom');
       clearCustomSelection(state);
+      hideCustomExplanation(state);
 
       if (state.nlStateWelcome) state.nlStateWelcome.style.display = 'none';
       if (state.nlStateResults) state.nlStateResults.style.display = 'none';
@@ -862,6 +915,8 @@
     }).catch(function (error) {
       setAIStatus(state, 'Gemini failed');
       setError(state, error && error.message ? error.message : 'Unknown Gemini planning error.');
+      state.aiExplanationLoading = false;
+      hideCustomExplanation(state);
       
       if (state.nlStateWelcome) state.nlStateWelcome.style.display = 'none';
       if (state.nlStateResults) state.nlStateResults.style.display = 'none';
@@ -871,6 +926,46 @@
       throw error;
     }).finally(function () {
       setAIBusy(state, false);
+    });
+  }
+
+  function requestCustomExplanation(state, execution) {
+    var apiKey = getCurrentApiKey(state);
+    var geminiModel = getCurrentGeminiModel(state);
+
+    state.aiExplanationLoading = true;
+    state.aiExplained = false;
+    setAIBusy(state, true);
+    setError(state, '');
+    setAIStatus(state, 'Generating explanation');
+    renderCustomExecution(state, execution, false);
+
+    return state.ai.explainExecution({
+      apiKey: apiKey,
+      modelName: geminiModel,
+      questionText: state.aiSession.questionText,
+      session: state.aiSession,
+      execution: execution
+    }).then(function (narrative) {
+      execution.answer.narrative = narrative;
+      state.aiExplained = true;
+      setAIStatus(state, 'Explanation ready');
+      return narrative;
+    }).catch(function (error) {
+      state.aiExplained = false;
+      setAIStatus(state, 'Explanation failed');
+      setError(state, error && error.message ? error.message : 'Unknown Gemini explanation error.');
+      throw error;
+    }).finally(function () {
+      state.aiExplanationLoading = false;
+      renderCustomExecution(state, execution, Boolean(state.aiExplained));
+      setAIBusy(state, false);
+    });
+  }
+
+  function startAutoExplanation(state, execution) {
+    return requestCustomExplanation(state, execution).catch(function () {
+      return null;
     });
   }
 
@@ -902,8 +997,9 @@
       
       if (state.nlStateSparql) state.nlStateSparql.style.display = 'none';
       if (state.nlStateResults) state.nlStateResults.style.display = 'flex';
-      
+
       setAIStatus(state, 'Query executed');
+      startAutoExplanation(state, execution);
 
       return execution;
     }).catch(function(error) {
@@ -917,32 +1013,7 @@
     return ensureCurrentPlan(state).then(function () {
       return state.aiExecution ? Promise.resolve(state.aiExecution) : runCustomQuery(state);
     }).then(function (execution) {
-      var apiKey = getCurrentApiKey(state);
-      var geminiModel = getCurrentGeminiModel(state);
-
-      setAIBusy(state, true);
-      setError(state, '');
-      setAIStatus(state, 'Generating explanation');
-
-      return state.ai.explainExecution({
-        apiKey: apiKey,
-        modelName: geminiModel,
-        questionText: state.aiSession.questionText,
-        session: state.aiSession,
-        execution: execution
-      }).then(function (narrative) {
-        execution.answer.narrative = narrative;
-        state.aiExplained = true;
-        renderCustomExecution(state, execution, true);
-        setAIStatus(state, 'Explanation ready');
-        return narrative;
-      }).catch(function (error) {
-        setAIStatus(state, 'Explanation failed');
-        setError(state, error && error.message ? error.message : 'Unknown Gemini explanation error.');
-        throw error;
-      }).finally(function () {
-        setAIBusy(state, false);
-      });
+      return requestCustomExplanation(state, execution);
     });
   }
 
@@ -980,10 +1051,11 @@
         state.aiSession = null;
         state.aiExecution = null;
         state.aiExplained = false;
+        state.aiExplanationLoading = false;
         if (state.nlStateWelcome) state.nlStateWelcome.style.display = 'flex';
         if (state.nlStateSparql) state.nlStateSparql.style.display = 'none';
         if (state.nlStateResults) state.nlStateResults.style.display = 'none';
-        if (state.nlExplanation) state.nlExplanation.style.display = 'none';
+        hideCustomExplanation(state);
         resetAIRuntime(state);
         updateAIControls(state);
       });
@@ -1127,6 +1199,8 @@
       nlFacts: byId('education-nl-facts'),
       nlSections: byId('education-nl-sections'),
       nlExplanation: byId('education-nl-explanation'),
+      nlExplanationLoader: byId('education-nl-explanation-loading'),
+      nlExplanationBody: byId('education-nl-explanation-body'),
       nlExplanationText: byId('education-nl-explanation-text'),
       nlError: byId('education-nl-error'),
       runtimeStatusCard: byId('education-runtime-status'),
@@ -1139,6 +1213,7 @@
       aiSession: null,
       aiExecution: null,
       aiExplained: false,
+      aiExplanationLoading: false,
       statQuestions: byId('stat-questions'),
       statVariants: byId('stat-variants'),
       statAsanas: byId('stat-asanas'),

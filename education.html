@@ -44,9 +44,15 @@
             <div class="education-workspace-heading">
               <p class="education-kicker">SN-YE Portal</p>
               <h1>SN-YE: Surya Namaskara Yoga Education</h1>
-              <p class="education-subtitle">Interactive Ontology Explorer</p>
+              <p class="education-subtitle education-subtitle--highlight">Interactive Ontology Explorer</p>
               <p class="education-panel-copy education-workspace-copy">
                 Explore the ontology using natural language queries or predefined competency questions grounded in the knowledge graph.
+              </p>
+              <p class="education-panel-copy education-workspace-reference">
+                All visual references in this explorer are drawn from the
+                <a href="https://www.yogamdniy.nic.in/ckfinder/userfiles/files/Common%20Yoga%20Protocol%20Book%20_%20English%20(1).pdf" target="_blank" rel="noopener noreferrer">
+                  Ministry of Ayush, Government of India, <span class="keyword-highlight"><em>Common Yoga Protocol</em></span> (English)
+                </a>.
               </p>
             </div>
           </header>
@@ -55,20 +61,20 @@
             <button
               type="button"
               class="education-workspace-switch-button"
-              id="education-mode-custom"
-              data-workspace-mode="custom"
-              aria-pressed="true"
-            >
-              Natural Language to SPARQL
-            </button>
-            <button
-              type="button"
-              class="education-workspace-switch-button"
               id="education-mode-predefined"
               data-workspace-mode="predefined"
               aria-pressed="false"
             >
               Predefined Questions
+            </button>
+            <button
+              type="button"
+              class="education-workspace-switch-button"
+              id="education-mode-custom"
+              data-workspace-mode="custom"
+              aria-pressed="true"
+            >
+              Natural Language
             </button>
           </div>
 
@@ -92,33 +98,49 @@
                   </p>
 
                   <form class="education-composer-form" id="education-ai-form" aria-label="Custom natural language question composer">
-                    <div class="education-composer-config-grid">
-                      <div class="education-composer-field">
-                        <label class="education-composer-label" for="education-api-key">Gemini API key</label>
-                        <input
-                          id="education-api-key"
-                          class="education-composer-input education-composer-input--single-line"
-                          name="education-api-key"
-                          type="password"
-                          spellcheck="false"
-                          autocomplete="off"
-                          placeholder="Paste your Gemini API key"
-                        />
+                    <details class="education-config-panel">
+                      <summary class="education-config-summary">
+                        <span>Gemini API Key &amp; Model</span>
+                        <span class="education-config-summary-note">Required</span>
+                      </summary>
+                      <div class="education-config-panel-body">
+                        <div class="education-composer-config-grid">
+                          <div class="education-composer-field">
+                            <label class="education-composer-label" for="education-api-key">Gemini API key</label>
+                            <input
+                              id="education-api-key"
+                              class="education-composer-input education-composer-input--single-line"
+                              name="education-api-key"
+                              type="password"
+                              spellcheck="false"
+                              autocomplete="off"
+                              placeholder="Paste your Gemini API key"
+                            />
+                          </div>
+                          <div class="education-composer-field">
+                            <label class="education-composer-label" for="education-ai-model">Model</label>
+                            <select id="education-ai-model" class="education-composer-select" name="education-ai-model">
+                              <option value="gemma-4-31b-it" selected>Gemma 4 31B</option>
+                              <option value="gemma-4-26b-a4b-it">Gemma 4 26B</option>
+                              <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash-Lite Preview</option>
+                              <option value="gemini-3-flash-preview">Gemini 3 Flash Preview</option>
+                              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                              <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite</option>
+                            </select>
+                          </div>
+                        </div>
                       </div>
-                      <div class="education-composer-field">
-                        <label class="education-composer-label" for="education-ai-model">Model</label>
-                        <select id="education-ai-model" class="education-composer-select" name="education-ai-model">
-                          <option value="gemma-4-31b-it" selected>Gemma 4 31B</option>
-                          <option value="gemma-4-26b-a4b-it">Gemma 4 26B</option>
-                          <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash-Lite Preview</option>
-                          <option value="gemini-3-flash-preview">Gemini 3 Flash Preview</option>
-                          <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-                          <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite</option>
-                        </select>
-                      </div>
-                    </div>
+                    </details>
 
-                    <label class="education-composer-label" for="education-ai-question">Input prompt</label>
+                    <div class="education-label-row">
+                      <label class="education-composer-label" for="education-ai-question">Input prompt</label>
+                      <span class="education-info-popover">
+                        <button type="button" class="education-info-button" aria-label="API key info">i</button>
+                        <span class="education-info-tooltip" role="tooltip">
+                          A Gemini API key is required to generate SPARQL and the natural language explanation. Open the Gemini API Key &amp; Model section to add it.
+                        </span>
+                      </span>
+                    </div>
                     <textarea
                       id="education-ai-question"
                       class="education-composer-input"
@@ -185,13 +207,18 @@
                     <button type="button" class="education-inline-button education-inline-button--ghost" id="nl-toggle-sparql">View SPARQL</button>
                   </div>
 
-                  <button type="button" class="education-composer-button education-composer-button--primary" id="education-ai-explain" style="margin-bottom: 24px;">
-                    Generate NL Explanation
-                  </button>
-
-                  <!-- The purple highlight box for LLM explanation -->
-                  <div class="llm-explanation-box" id="education-nl-explanation" style="display: none; margin-top: 0; margin-bottom: 24px;">
-                    <strong>Explanation:</strong> <span id="education-nl-explanation-text"></span>
+                  <div class="llm-explanation-box" id="education-nl-explanation" hidden>
+                    <div class="education-llm-heading">
+                      <strong>Explanation</strong>
+                      <span class="education-llm-dots" id="education-nl-explanation-loading" role="status" aria-label="Generating explanation" hidden>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </span>
+                    </div>
+                    <div class="education-llm-copy" id="education-nl-explanation-body" hidden>
+                      <span id="education-nl-explanation-text"></span>
+                    </div>
                   </div>
 
                   <div class="education-facts" id="education-nl-facts" aria-label="Answer facts"></div>
@@ -211,7 +238,6 @@
                       <p class="education-kicker">Competency Questions</p>
                       <h2>Select a Validated Query</h2>
                     </div>
-                    <span class="education-status-pill" id="education-status">Loading ontology</span>
                   </div>
 
                   <p class="education-panel-copy">
@@ -226,7 +252,7 @@
                 <div class="education-panel education-answer-panel">
                   <div class="education-panel-header education-panel-header--spread">
                     <div>
-                      <p class="education-kicker">Retrieved Data Payload</p>
+                      <p class="education-kicker">Retrieved Data and Explanations</p>
                       <h2 id="education-answer-title">Select a query...</h2>
                     </div>
                     <div class="education-answer-header-actions">
