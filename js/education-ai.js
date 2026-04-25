@@ -211,6 +211,21 @@
       : [];
   }
 
+  function createVisualTableCell(asana) {
+    if (!asana || !asana.visual) {
+      return '-';
+    }
+
+    return {
+      kind: 'cyp-visual',
+      src: asana.visual.src,
+      alt: asana.visual.alt,
+      asanaLabel: asana.label,
+      caption: asana.visual.caption,
+      page: asana.cypPage
+    };
+  }
+
   function getStorage() {
     try {
       return global.localStorage || null;
@@ -1353,12 +1368,12 @@
           { label: 'Matches', value: String(filteredAsanas.length) }
         ],
         table: {
-          columns: ['Asana', 'CYP page', 'Image file'],
+          columns: ['Asana', 'CYP page', 'Image'],
           rows: filteredAsanas.map(function (asana) {
             return [
               asana.label,
               String(asana.cypPage),
-              asana.visual ? asana.visual.src : '-'
+              createVisualTableCell(asana)
             ];
           })
         },

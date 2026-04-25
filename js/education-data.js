@@ -58,6 +58,21 @@
     };
   }
 
+  function createVisualTableCell(asana) {
+    if (!asana || !asana.visual) {
+      return '-';
+    }
+
+    return {
+      kind: 'cyp-visual',
+      src: asana.visual.src,
+      alt: asana.visual.alt,
+      asanaLabel: asana.label,
+      caption: asana.visual.caption,
+      page: asana.cypPage
+    };
+  }
+
   var QUESTIONS = [
     {
       id: 'sn-variants',
@@ -471,12 +486,12 @@
             { label: 'Distinct CYP pages', value: distinctPages.join(', ') }
           ],
           table: {
-            columns: ['Asana', 'CYP page', 'Image file'],
+            columns: ['Asana', 'CYP page', 'Image'],
             rows: asanas.map(function (asana) {
               return [
                 asana.label,
                 asana.cypPage,
-                asana.visual ? asana.visual.src : '-'
+                createVisualTableCell(asana)
               ];
             })
           },
@@ -490,87 +505,88 @@
       title: 'Bhujangasana Guidance Model',
       prompt: 'What posture rules, biomechanical constraints, documented errors, and corrections are modeled for Bhujangasana (Pose 7)?',
       sparql: withPrefixes(
-        'SELECT ?ruleDescription ?constraintDescription ?errorDescription ?correctionText\n' +
+        'SELECT ?category ?detail\n' +
         'WHERE {\n' +
         '  BIND(base:BaseSN_Pose07 AS ?pose)\n' +
-        '  OPTIONAL { ?pose core:hasRule ?rule . ?rule core:ruleDescription ?ruleDescription . }\n' +
-        '  OPTIONAL { ?pose core:hasConstraint ?constraint . ?constraint core:constraintDescription ?constraintDescription . }\n' +
-        '  OPTIONAL {\n' +
+        '  {\n' +
+        '    ?pose core:hasRule ?rule .\n' +
+        '    ?rule core:ruleDescription ?detail .\n' +
+        '    BIND("Rule" AS ?category)\n' +
+        '  }\n' +
+        '  UNION\n' +
+        '  {\n' +
+        '    ?pose core:hasConstraint ?constraint .\n' +
+        '    ?constraint core:constraintDescription ?detail .\n' +
+        '    BIND("Constraint" AS ?category)\n' +
+        '  }\n' +
+        '  UNION\n' +
+        '  {\n' +
         '    ?pose core:hasPossibleError ?error .\n' +
-        '    ?error core:errorDescription ?errorDescription .\n' +
-        '    OPTIONAL {\n' +
-        '      ?error core:hasCorrection ?correction .\n' +
-        '      ?correction core:correctionText ?correctionText .\n' +
-        '    }\n' +
+        '    ?error core:errorDescription ?detail .\n' +
+        '    BIND("Error" AS ?category)\n' +
+        '  }\n' +
+        '  UNION\n' +
+        '  {\n' +
+        '    ?pose core:hasPossibleError ?error .\n' +
+        '    ?error core:hasCorrection ?correction .\n' +
+        '    ?correction core:correctionText ?detail .\n' +
+        '    BIND("Correction" AS ?category)\n' +
+        '  }\n' +
+        '  UNION\n' +
+        '  {\n' +
+        '    ?pose core:involvesBodyPart ?bodyPart .\n' +
+        '    ?bodyPart rdfs:label ?detail .\n' +
+        '    BIND("Body part" AS ?category)\n' +
         '  }\n' +
         '}\n' +
-        'ORDER BY ?ruleDescription ?errorDescription ?correctionText'
+        'ORDER BY ?category ?detail'
       ),
       run: function (model) {
         var guidance = model.getPoseGuidance('BaseSN_Pose07');
-        var constraintLead;
-        var ruleLead;
-        var errorLead;
         var pose;
+        var rows;
 
         if (!guidance) {
           return makeEmptyAnswer(this.prompt, 'BaseSN_Pose07 could not be resolved in the ontology.');
         }
 
         pose = guidance.pose;
-        constraintLead = guidance.constraints[0]
-          ? lowerFirst(guidance.constraints[0].description || guidance.constraints[0].label)
-          : 'a controlled spinal extension';
-        ruleLead = joinList(guidance.rules.map(function (rule) {
-          return lowerFirst(rule.description || rule.label);
-        }));
-        errorLead = joinList(guidance.errors.map(function (error) {
-          return lowerFirst(error.description || error.label);
-        }));
+        rows = []
+          .concat(guidance.rules.map(function (rule) {
+            return ['Rule', rule.description || rule.label];
+          }))
+          .concat(guidance.constraints.map(function (constraint) {
+            return ['Constraint', constraint.description || constraint.label];
+          }))
+          .concat(guidance.errors.map(function (error) {
+            return ['Error', error.description || error.label];
+          }))
+          .concat(guidance.corrections.map(function (correction) {
+            return ['Correction', correction.text || correction.label];
+          }))
+          .concat(guidance.bodyParts.map(function (bodyPart) {
+            return ['Body part', bodyPart.label];
+          }));
 
         return {
           prompt: this.prompt,
-          narrative: 'Base Pose 7 is ' + pose.asanaLabel + ', modeled as ' + constraintLead +
-            '. It emphasizes ' + ruleLead + ', while warning against ' + errorLead + '.',
+          narrative: 'The ontology links Base Pose ' + pose.poseNumber + ' (' + pose.asanaLabel +
+            ') to ' + guidance.rules.length + ' rule' + (guidance.rules.length === 1 ? '' : 's') + ', ' +
+            guidance.constraints.length + ' constraint' + (guidance.constraints.length === 1 ? '' : 's') + ', and ' +
+            guidance.errors.length + ' modeled error' + (guidance.errors.length === 1 ? '' : 's') + '.',
           facts: [
             { label: 'Pose', value: 'Pose ' + pose.poseNumber },
             { label: 'Asana', value: pose.asanaLabel },
-            { label: 'Support', value: pose.supportType || '-' },
-            { label: 'Chakra', value: pose.chakra || '-' },
-            { label: 'Mantra', value: pose.mantra || '-' }
+            { label: 'Rules', value: String(guidance.rules.length) },
+            { label: 'Constraints', value: String(guidance.constraints.length) },
+            { label: 'Errors', value: String(guidance.errors.length) },
+            { label: 'Corrections', value: String(guidance.corrections.length) }
           ],
-          table: null,
-          sections: [
-            {
-              title: 'Rules',
-              items: guidance.rules.map(function (rule) {
-                return rule.description || rule.label;
-              })
-            },
-            {
-              title: 'Constraints',
-              items: guidance.constraints.map(function (constraint) {
-                return constraint.description || constraint.label;
-              })
-            },
-            {
-              title: 'Errors And Corrections',
-              items: guidance.errors.map(function (error) {
-                var correctionText = error.corrections.map(function (correction) {
-                  return correction.text || correction.label;
-                });
-                return (error.description || error.label) + (correctionText.length
-                  ? ' Correction: ' + joinList(correctionText) + '.'
-                  : '');
-              })
-            },
-            {
-              title: 'Body Parts',
-              items: guidance.bodyParts.map(function (bodyPart) {
-                return bodyPart.label;
-              })
-            }
-          ],
+          table: rows.length ? {
+            columns: ['Category', 'Detail'],
+            rows: rows
+          } : null,
+          sections: [],
           visuals: guidance.visuals
         };
       }
