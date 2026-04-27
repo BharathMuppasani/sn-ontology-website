@@ -1,6 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
   const navLinks = Array.from(document.querySelectorAll('.sidebar nav a'));
   const tabSections = Array.from(document.querySelectorAll('.tab-section'));
+  const sidebar = document.querySelector('.sidebar');
+  const mobileSidebarQuery = window.matchMedia('(max-width: 1100px)');
+
+  const updateMobileSidebarOffset = () => {
+    if (!sidebar) return;
+
+    if (mobileSidebarQuery.matches) {
+      const sidebarHeight = Math.ceil(sidebar.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--mobile-sidebar-offset', `${sidebarHeight}px`);
+      return;
+    }
+
+    document.documentElement.style.setProperty('--mobile-sidebar-offset', '0px');
+  };
+
+  updateMobileSidebarOffset();
+  window.addEventListener('resize', updateMobileSidebarOffset);
+  window.addEventListener('orientationchange', updateMobileSidebarOffset);
+
+  if (typeof ResizeObserver !== 'undefined' && sidebar) {
+    const sidebarObserver = new ResizeObserver(() => {
+      updateMobileSidebarOffset();
+    });
+    sidebarObserver.observe(sidebar);
+  }
 
   // Tab Navigation Logic
   navLinks.forEach(link => {

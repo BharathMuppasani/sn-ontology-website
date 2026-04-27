@@ -10,19 +10,6 @@
   />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/explorer.css" />
-  <style>
-    /* Ensure content centers nicely without sidebar layout */
-    .education-content--workspace {
-      margin-left: 0;
-      width: 100%;
-      padding: 32px 5vw;
-    }
-    .education-workspace-header {
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-  </style>
 </head>
 <body class="education-page education-body education-body--workspace">
   <div class="container education-container education-container--workspace">
@@ -49,7 +36,7 @@
             </div>
           </header>
 
-          <div class="education-workspace-switch" role="tablist" aria-label="Workspace mode" style="margin-bottom: 24px;">
+          <div class="education-workspace-switch education-workspace-switch--page" role="tablist" aria-label="Workspace mode">
             <button
               type="button"
               class="education-workspace-switch-button"
@@ -73,11 +60,11 @@
           <div class="education-layout-container">
             
             <!-- Natural Language Interface - Left/Right State Flow -->
-            <div id="nl-interface-wrapper" class="education-layout" data-mode="custom" style="display: none; width: 100%;">
+            <div id="nl-interface-wrapper" class="education-layout" data-mode="custom" style="display: none;">
               
               <!-- LEFT PANE: Composer -->
               <aside class="education-questions-column" id="nl-interface-column">
-                <div class="education-panel education-composer-panel" id="education-composer-panel" style="margin: 0; height: 100%;">
+                <div class="education-panel education-composer-panel education-panel--workspace-column" id="education-composer-panel">
                   <div class="education-panel-header education-panel-header--spread">
                     <div>
                       <p class="education-kicker">Natural Language Interface</p>
@@ -162,9 +149,9 @@
                       <h2>Example Queries</h2>
                     </div>
                   </div>
-                  <div class="education-panel-copy" style="flex: 1;">
+                  <div class="education-panel-copy education-panel-copy--grow">
                     <p>Select a model and enter a natural language prompt on the left to begin generating custom queries dynamically. If you're not sure where to start, try these tested examples:</p>
-                    <ul style="margin-top: 16px; margin-left: 20px; line-height: 1.6; color: var(--text-color);">
+                    <ul class="education-example-list">
                       <li>"What are the different variants of SN?"</li>
                       <li>"What is the ordered sequence of poses in the Base Surya Namaskar (Sivananda) variant?"</li>
                       <li>"What rules and common errors are documented for Bhujangasana (Pose 7)?"</li>
@@ -187,7 +174,7 @@
                     </div>
                     <button type="button" class="education-inline-button education-inline-button--primary" id="education-ai-run">Run Query</button>
                   </div>
-                  <pre id="education-nl-sparql" class="education-code" style="flex: 1; border-radius: var(--radius-sm); margin-top: 8px;"></pre>
+                  <pre id="education-nl-sparql" class="education-code education-code--stretch"></pre>
                 </div>
 
                 <!-- STATE 3: Analysis & Results -->
@@ -223,9 +210,9 @@
             </div>
 
             <!-- Predefined Questions Layout (Left questions, Right answers) -->
-            <div id="predefined-interface-wrapper" class="education-layout" data-mode="predefined" style="display: none; width: 100%;">
+            <div id="predefined-interface-wrapper" class="education-layout" data-mode="predefined" style="display: none;">
               <aside class="education-questions-column">
-                <div class="education-panel education-panel--fill" id="education-predefined-panel" style="margin: 0; height: 100%;">
+                <div class="education-panel education-panel--fill education-panel--workspace-column" id="education-predefined-panel">
                   <div class="education-panel-header">
                     <div>
                       <p class="education-kicker">Competency Questions</p>
