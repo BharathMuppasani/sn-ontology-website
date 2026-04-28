@@ -594,6 +594,124 @@ ORDER BY ?pose</code></pre>
           </div>
         </div>
 
+       <!-- C10 -->
+  <div class="query-block">
+          <div class="query-header">
+            <h3>C10: Which errors can occur in each pose of Base Surya Namaskar, and how can they be corrected??</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX core: <http://example.org/suryanamaskar/core#>
+PREFIX base: <http://example.org/suryanamaskar/base-sn#>
+PREFIX v1: <http://example.org/suryanamaskar/variant01#>
+PREFIX v2: <http://example.org/suryanamaskar/variant02#>
+PREFIX v3: <http://example.org/suryanamaskar/variant03#>
+
+SELECT ?pose ?asana ?error ?instruction
+WHERE {
+  ?pose core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
+        core:hasAsana ?asana ;
+        core:hasPossibleError ?error .
+
+  ?error core:hasCorrection ?instruction .
+}
+ORDER BY ?pose ?error</code></pre>
+            </div>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+               <thead>
+    <tr>
+      <th>Pose</th>
+      <th>Asana</th>
+      <th>Error</th>
+      <th>Instruction</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- Pose 01 -->
+    <tr><td>BaseSN_Pose01</td><td>Pranamasana</td><td>CollapsedChestError</td><td>LiftChestForwardUpwardInstruction</td></tr>
+    <tr><td>BaseSN_Pose01</td><td>Pranamasana</td><td>CollapsedChestError</td><td>LiftChestInstruction</td></tr>
+    <tr><td>BaseSN_Pose01</td><td>Pranamasana</td><td>CollapsedChestError</td><td>LiftChestForwardInstruction</td></tr>
+    <tr><td>BaseSN_Pose01</td><td>Pranamasana</td><td>PalmsMisalignedError</td><td>AlignPalmsAtChestInstruction</td></tr>
+    <tr><td>BaseSN_Pose01</td><td>Pranamasana</td><td>RoundedShouldersError</td><td>RelaxShouldersInstruction</td></tr>
+    <tr><td>BaseSN_Pose01</td><td>Pranamasana</td><td>UnevenWeightError</td><td>BalanceWeightEvenlyInstruction</td></tr>
+
+    <!-- Pose 02 -->
+    <tr><td>BaseSN_Pose02</td><td>HastaUtthanasana</td><td>BentArmsError</td><td>KeepArmsStraightInstruction</td></tr>
+    <tr><td>BaseSN_Pose02</td><td>HastaUtthanasana</td><td>LowerBackOverarchingError</td><td>LiftUpwardFirstInstruction</td></tr>
+    <tr><td>BaseSN_Pose02</td><td>HastaUtthanasana</td><td>LowerBackOverarchingError</td><td>LengthenSpineInstruction</td></tr>
+    <tr><td>BaseSN_Pose02</td><td>HastaUtthanasana</td><td>LowerBackOverarchingError</td><td>GentleBackbendInstruction</td></tr>
+    <tr><td>BaseSN_Pose02</td><td>HastaUtthanasana</td><td>NeckStrainError</td><td>LengthenSpineInstruction</td></tr>
+    <tr><td>BaseSN_Pose02</td><td>HastaUtthanasana</td><td>RaisedShouldersError</td><td>RelaxShouldersInstruction</td></tr>
+
+    <!-- Pose 03 -->
+    <tr><td>BaseSN_Pose03</td><td>Padahastasana</td><td>ExcessiveKneeBendError</td><td>SoftenKneesInstruction</td></tr>
+    <tr><td>BaseSN_Pose03</td><td>Padahastasana</td><td>RoundedBackError</td><td>BendFromHipsInstruction</td></tr>
+    <tr><td>BaseSN_Pose03</td><td>Padahastasana</td><td>RoundedBackError</td><td>LengthenSpineInstruction</td></tr>
+    <tr><td>BaseSN_Pose03</td><td>Padahastasana</td><td>WeightOnHeelsOnlyError</td><td>DistributeWeightEvenlyInstruction</td></tr>
+
+    <!-- Pose 04 -->
+    <tr><td>BaseSN_Pose04</td><td>AshwaSanchalanasana</td><td>CollapsedChestError</td><td>LiftChestForwardUpwardInstruction</td></tr>
+    <tr><td>BaseSN_Pose04</td><td>AshwaSanchalanasana</td><td>CollapsedChestError</td><td>LiftChestInstruction</td></tr>
+    <tr><td>BaseSN_Pose04</td><td>AshwaSanchalanasana</td><td>CollapsedChestError</td><td>LiftChestForwardInstruction</td></tr>
+    <tr><td>BaseSN_Pose04</td><td>AshwaSanchalanasana</td><td>KneeBeyondAnkleError</td><td>AlignFrontKneeInstruction</td></tr>
+    <tr><td>BaseSN_Pose04</td><td>AshwaSanchalanasana</td><td>WeakBackLegError</td><td>ExtendBackLegInstruction</td></tr>
+
+    <!-- Pose 05 -->
+    <tr><td>BaseSN_Pose05</td><td>ChaturangaDandasana</td><td>ElbowsFlaredError</td><td>TuckElbowsInstruction</td></tr>
+    <tr><td>BaseSN_Pose05</td><td>ChaturangaDandasana</td><td>RaisedHipsError</td><td>KeepBodyAlignedInstruction</td></tr>
+    <tr><td>BaseSN_Pose05</td><td>ChaturangaDandasana</td><td>SaggingHipsError</td><td>EngageCoreInstruction</td></tr>
+    <tr><td>BaseSN_Pose05</td><td>ChaturangaDandasana</td><td>SaggingHipsError</td><td>KeepBodyAlignedInstruction</td></tr>
+
+    <!-- Pose 06 -->
+    <tr><td>BaseSN_Pose06</td><td>AshtangaNamaskara</td><td>ChestNotLoweredError</td><td>LowerChestProperlyInstruction</td></tr>
+    <tr><td>BaseSN_Pose06</td><td>AshtangaNamaskara</td><td>ElbowsWideError</td><td>KeepElbowsCloseInstruction</td></tr>
+    <tr><td>BaseSN_Pose06</td><td>AshtangaNamaskara</td><td>HipsDroppedFullyError</td><td>MaintainHipPositionInstruction</td></tr>
+
+    <!-- Pose 07 -->
+    <tr><td>BaseSN_Pose07</td><td>Bhujangasana</td><td>CompressedLowerBackError</td><td>LengthenSpineInstruction</td></tr>
+    <tr><td>BaseSN_Pose07</td><td>Bhujangasana</td><td>OverextensionError</td><td>GentleBackbendInstruction</td></tr>
+    <tr><td>BaseSN_Pose07</td><td>Bhujangasana</td><td>ShoulderTensionError</td><td>RelaxShouldersInstruction</td></tr>
+
+    <!-- Pose 08 -->
+    <tr><td>BaseSN_Pose08</td><td>Parvatasana</td><td>RoundedBackError</td><td>BendFromHipsInstruction</td></tr>
+    <tr><td>BaseSN_Pose08</td><td>Parvatasana</td><td>RoundedBackError</td><td>LengthenSpineInstruction</td></tr>
+    <tr><td>BaseSN_Pose08</td><td>Parvatasana</td><td>UnstableLegsError</td><td>StabilizeLegsInstruction</td></tr>
+    <tr><td>BaseSN_Pose08</td><td>Parvatasana</td><td>WristOverloadError</td><td>PushHipsUpwardInstruction</td></tr>
+    <tr><td>BaseSN_Pose08</td><td>Parvatasana</td><td>WristOverloadError</td><td>DistributeWeightEvenlyInstruction</td></tr>
+
+    <!-- Pose 09 -->
+    <tr><td>BaseSN_Pose09</td><td>AshwaSanchalanasana</td><td>CollapsedChestError</td><td>LiftChestForwardUpwardInstruction</td></tr>
+    <tr><td>BaseSN_Pose09</td><td>AshwaSanchalanasana</td><td>CollapsedChestError</td><td>LiftChestInstruction</td></tr>
+    <tr><td>BaseSN_Pose09</td><td>AshwaSanchalanasana</td><td>CollapsedChestError</td><td>LiftChestForwardInstruction</td></tr>
+    <tr><td>BaseSN_Pose09</td><td>AshwaSanchalanasana</td><td>KneeBeyondAnkleError</td><td>AlignFrontKneeInstruction</td></tr>
+    <tr><td>BaseSN_Pose09</td><td>AshwaSanchalanasana</td><td>WeakBackLegError</td><td>ExtendBackLegInstruction</td></tr>
+
+    <!-- Pose 10 -->
+    <tr><td>BaseSN_Pose10</td><td>Padahastasana</td><td>ExcessiveKneeBendError</td><td>SoftenKneesInstruction</td></tr>
+    <tr><td>BaseSN_Pose10</td><td>Padahastasana</td><td>RoundedBackError</td><td>BendFromHipsInstruction</td></tr>
+    <tr><td>BaseSN_Pose10</td><td>Padahastasana</td><td>RoundedBackError</td><td>LengthenSpineInstruction</td></tr>
+
+    <!-- Pose 11 -->
+    <tr><td>BaseSN_Pose11</td><td>HastaUtthanasana</td><td>CompressedLowerBackError</td><td>LengthenSpineInstruction</td></tr>
+    <tr><td>BaseSN_Pose11</td><td>HastaUtthanasana</td><td>ShoulderTensionError</td><td>RelaxShouldersInstruction</td></tr>
+
+    <!-- Pose 12 -->
+    <tr><td>BaseSN_Pose12</td><td>Pranamasana</td><td>CollapsedPostureError</td><td>CenterBodyInstruction</td></tr>
+    <tr><td>BaseSN_Pose12</td><td>Pranamasana</td><td>CollapsedPostureError</td><td>LiftChestInstruction</td></tr>
+    <tr><td>BaseSN_Pose12</td><td>Pranamasana</td><td>PoorBalanceError</td><td>CenterBodyInstruction</td></tr>
+
+  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
       </section>
 
 
