@@ -2,11 +2,11 @@ import csv
 from rdflib import Graph, URIRef, Literal, RDFS
 
 FILES = {
-    "core.owl": "core_with_labels.owl",
-    "base-sn.owl": "base-sn_with_labels.owl",
-    "variant01.owl": "variant01_with_labels.owl",
-    "variant02.owl": "variant02_with_labels.owl",
-    "variant03.owl": "variant03_with_labels.owl",
+    "core.owl": "core_withlabels.owl",
+    "base-sn.owl": "base-sn_withlabels.owl",
+    "variant01.owl": "variant01_withlabels.owl",
+    "variant02.owl": "variant02_withlabels.owl",
+    "variant03.owl": "variant03_withlabels.owl",
 }
 
 CSV_FILE = "SN_YO_labels_combined.csv"
@@ -32,12 +32,12 @@ for f in FILES:
     g.parse(f)
     graphs[f] = g
 
-# STEP 1: REMOVE ALL OLD LABELS
+# REMOVE ALL OLD LABELS
 for g in graphs.values():
     for s, p, o in list(g.triples((None, RDFS.label, None))):
         g.remove((s, p, o))
 
-# STEP 2: ADD CLEAN LABELS FROM CSV
+# ADD CLEAN LABELS FROM CSV
 with open(CSV_FILE, newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
     for row in reader:
