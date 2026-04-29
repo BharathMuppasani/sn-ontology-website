@@ -711,6 +711,137 @@ ORDER BY ?pose ?error</code></pre>
           </div>
         </div>
 
+ <!-- C11 -->
+        <div class="query-block">
+          <div class="query-header">
+            <h3>C11: What are the poses in the Base Surya Namaskar sequence, along with their associated asanas, breathing patterns, and safety notes?</h3>
+            <span class="query-icon">▼</span>
+          </div>
+          <div class="query-content">
+            <div class="code-box">
+              <pre><code>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX core: &lt;http://example.org/suryanamaskar/core#&gt;
+PREFIX base: &lt;http://example.org/suryanamaskar/base-sn#&gt;
+PREFIX v1: &lt;http://example.org/suryanamaskar/variant01#&gt;
+PREFIX v2: &lt;http://example.org/suryanamaskar/variant02#&gt;
+PREFIX v3: &lt;http://example.org/suryanamaskar/variant03#&gt;
+
+SELECT ?poseNumber ?pose ?asana ?breathing ?safetyNote
+WHERE {
+  ?pose rdf:type core:Pose ;
+        core:belongsToVariant base:BaseSN_SivanandaYogaVedantaCentre_UsedatIITBHU ;
+        core:poseNumber ?poseNumber ;
+        core:hasAsana ?asana ;
+        core:hasBreathingPattern ?breathing ;
+        core:hasSafetyNote ?safetyNote .
+}
+ORDER BY ?poseNumber
+</code></pre>
+               </div>
+            <div class="data-box">
+              <h4>Execution Result</h4>
+              <table>
+  <thead>
+    <tr>
+      <th>Pose Number</th>
+      <th>Pose</th>
+      <th>Asana</th>
+      <th>Breathing</th>
+      <th>Safety Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>BaseSN_Pose01</td>
+      <td>Pranamasana</td>
+      <td>Exhale</td>
+      <td>Stand upright with balanced weight and avoid locking the knees.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>BaseSN_Pose02</td>
+      <td>Hasta Utthanasana</td>
+      <td>Inhale</td>
+      <td>Lift the chest upward with control and avoid compressing the lower back during the backbend.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>BaseSN_Pose03</td>
+      <td>Padahastasana</td>
+      <td>Exhale</td>
+      <td>Avoid deep forward bending in case of back pain or tight hamstrings; keep the knees slightly bent and spine long.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>BaseSN_Pose04</td>
+      <td>Ashwa Sanchalanasana</td>
+      <td>Inhale</td>
+      <td>Keep the front knee aligned over the ankle and place the back knee gently on the floor.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>BaseSN_Pose05</td>
+      <td>Chaturanga Dandasana</td>
+      <td>Hold</td>
+      <td>Maintain a straight body line from head to heels and avoid sagging or lifting the hips excessively.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>BaseSN_Pose06</td>
+      <td>Ashtanga Namaskara</td>
+      <td>Exhale</td>
+      <td>Lower the body gradually with control and distribute weight evenly across the eight contact points.</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>BaseSN_Pose07</td>
+      <td>Bhujangasana</td>
+      <td>Inhale</td>
+      <td>Lift the chest gently without forcing the backbend and keep the shoulders relaxed.</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>BaseSN_Pose08</td>
+      <td>Parvatasana</td>
+      <td>Exhale</td>
+      <td>Lengthen the spine and avoid rounding the back; press the heels down gently without forcing.</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>BaseSN_Pose09</td>
+      <td>Ashwa Sanchalanasana</td>
+      <td>Inhale</td>
+      <td>Step forward smoothly and ensure proper alignment of the front knee over the ankle.</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>BaseSN_Pose10</td>
+      <td>Padahastasana</td>
+      <td>Exhale</td>
+      <td>Move into the forward bend with control and avoid overstretching the hamstrings.</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>BaseSN_Pose11</td>
+      <td>Hasta Utthanasana</td>
+      <td>Inhale</td>
+      <td>Rise upward with control and extend the chest without collapsing into the lower back.</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>BaseSN_Pose12</td>
+      <td>Pranamasana</td>
+      <td>Exhale</td>
+      <td>Return to a steady standing posture and maintain relaxed, even breathing.</td>
+    </tr>
+  </tbody>
+</table>
+            </div>
+          </div>
+        </div>
+
       </section>
 
 
