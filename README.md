@@ -10,13 +10,13 @@ An open-source Semantic Web project that formally models **Surya Namaskar (Sun S
 
 The ontology systematically separates **Asanas** (the physical yoga postures) from **Poses** (their specific numbered occurrence within a sequence) and maps them across different traditional **Variants**. 
 
-Additionally, it features an advanced **Pose Correction Layer** specifically designed for the Base Surya Namaskar sequence followed at IIT (BHU). This layer maps body parts, posture rules, constraints, common performance errors, and precise correction instructions to support movement analysis and automated coaching tools.
+It features an advanced Pose Correction Layer designed for the Base Surya Namaskar sequence followed at IIT (BHU). This layer models body parts, breathing patterns, safety notes, common pose errors, and corresponding correction instructions, enabling structured movement analysis and supporting automated coaching applications.
 
 ## Key Features
 
 - **Semantic Separation:** Decouples sequence order (Pose) from the actual posture (Asana).
 - **Variant Mapping:** Consistently structures and maps multiple global Surya Namaskar traditions (e.g., Sivananda Yoga Vedanta Centre, Krishnamacharya Vinyasa, Bihar School of Yoga, Swami Vivekananda Kendra).
-- **Correction Layer:** Encodes posture rules, physical constraints, and automated correction instructions to improve pose accuracy.
+- **Correction Layer:** Encodes pose errors and correction instructions along with body parts, breathing patterns, and safety notes.
 - **Rich Metadata:** Captures nuanced traditional details including associated Mantras, Chakras, Support Types, and Inverse/Repeated relationships.
 - **SPARQL Ready:** Easily queryable to compare variants, identify shared asanas, or extract specific flow transitions.
 
