@@ -1,28 +1,37 @@
 file,subject,property,value,language
 core.owl,core:AdhoMukhaSvanasana,rdfs:label,Adho Mukha Svanasana,en
 core.owl,core:AdhoMukhaSvanasana,rdfs:label,अधोमुख श्वानासन,hi
+core.owl,core:AdhoMukhaSvanasana,rdfs:label,అధో ముఖ శ్వానాసనం,te
 core.owl,core:Ankle,rdfs:label,Ankle,en
 core.owl,core:Ankle,rdfs:label,टखना,hi
 core.owl,core:Ardhachakrasana,rdfs:label,Ardhachakrasana,en
 core.owl,core:Ardhachakrasana,rdfs:label,अर्ध चक्रासन,hi
+core.owl,core:Ardhachakrasana,rdfs:label,అర్ధ చక్రాసనం,te
 core.owl,core:Ardhahalasana,rdfs:label,Ardhahalasana,en
 core.owl,core:Ardhahalasana,rdfs:label,अर्ध हलासन,hi
+core.owl,core:Ardhahalasana,rdfs:label,అర్ధ హలాసనం,te
 core.owl,core:Ardhaustrasana,rdfs:label,Ardhaustrasana,en
 core.owl,core:Ardhaustrasana,rdfs:label,अर्ध उष्ट्रासन,hi
+core.owl,core:Ardhaustrasana,rdfs:label,అర్ధ ఉష్ట్రాసనం,te
 core.owl,core:Arms,rdfs:label,Arms,en
 core.owl,core:Arms,rdfs:label,बाहें,hi
 core.owl,core:Asana,rdfs:label,Asana,en
 core.owl,core:Asana,rdfs:label,आसन,hi
+core.owl,core:Asana,rdfs:label,ఆసనం,te
 core.owl,core:AshtangaNamaskara,rdfs:label,Ashtanga Namaskara,en
 core.owl,core:AshtangaNamaskara,rdfs:label,अष्टांग नमस्कार,hi
+core.owl,core:AshtangaNamaskara,rdfs:label,అష్టాంగ నమస్కారం,te
 core.owl,core:AshwaSanchalanasana,rdfs:label,Ashwa Sanchalanasana,en
 core.owl,core:AshwaSanchalanasana,rdfs:label,अश्व संचलनासन,hi
+core.owl,core:AshwaSanchalanasana,rdfs:label,అశ్వ సంచలనాసనం,te
 core.owl,core:Bhujangasana,rdfs:label,Bhujangasana,en
 core.owl,core:Bhujangasana,rdfs:label,भुजंगासन,hi
+core.owl,core:Bhujangasana,rdfs:label,భుజంగాసనం,te
 core.owl,core:BodyPart,rdfs:label,Body Part,en
 core.owl,core:BodyPart,rdfs:label,शरीर का अंग,hi
 core.owl,core:ChaturangaDandasana,rdfs:label,Chaturanga Dandasana,en
 core.owl,core:ChaturangaDandasana,rdfs:label,चतुरंग दंडासन,hi
+core.owl,core:ChaturangaDandasana,rdfs:label,చతురంగ దండాసనం,te
 core.owl,core:Chest,rdfs:label,Chest,en
 core.owl,core:Chest,rdfs:label,छाती,hi
 core.owl,core:Chin,rdfs:label,Chin,en
@@ -33,6 +42,7 @@ core.owl,core:CorrectionInstruction,rdfs:label,Correction Instruction,en
 core.owl,core:CorrectionInstruction,rdfs:label,सुधार निर्देश,hi
 core.owl,core:DandaSamarpana,rdfs:label,Danda Samarpana,en
 core.owl,core:DandaSamarpana,rdfs:label,दंड समर्पण,hi
+core.owl,core:DandaSamarpana,rdfs:label,దండ సమర్పణ,te
 core.owl,core:Elbow,rdfs:label,Elbow,en
 core.owl,core:Elbow,rdfs:label,कोहनी,hi
 core.owl,core:Feet,rdfs:label,Feet,en
@@ -41,6 +51,7 @@ core.owl,core:Hands,rdfs:label,Hands,en
 core.owl,core:Hands,rdfs:label,हाथ,hi
 core.owl,core:HastaUtthanasana,rdfs:label,Hasta Utthanasana,en
 core.owl,core:HastaUtthanasana,rdfs:label,हस्त उत्तानासन,hi
+core.owl,core:HastaUtthanasana,rdfs:label,హస్త ఉత్తానాసనం,te
 core.owl,core:Hip,rdfs:label,Hip,en
 core.owl,core:Hip,rdfs:label,श्रोणि,hi
 core.owl,core:Knee,rdfs:label,Knee,en
@@ -49,62 +60,84 @@ core.owl,core:Legs,rdfs:label,Legs,en
 core.owl,core:Legs,rdfs:label,टांगें,hi
 core.owl,core:Makarasana,rdfs:label,Makarasana,en
 core.owl,core:Makarasana,rdfs:label,मकरासन,hi
+core.owl,core:Makarasana,rdfs:label,మకరాసనం,te
 core.owl,core:Neck,rdfs:label,Neck,en
 core.owl,core:Neck,rdfs:label,गर्दन,hi
 core.owl,core:Padahastasana,rdfs:label,Padahastasana,en
 core.owl,core:Padahastasana,rdfs:label,पादहस्तासन,hi
+core.owl,core:Padahastasana,rdfs:label,పాదహస్తాసనం,te
 core.owl,core:Palms,rdfs:label,Palms,en
 core.owl,core:Palms,rdfs:label,हथेलियाँ,hi
 core.owl,core:Parvatasana,rdfs:label,Parvatasana,en
 core.owl,core:Parvatasana,rdfs:label,पर्वतासन,hi
+core.owl,core:Parvatasana,rdfs:label,పర్వతాసనం,te
 core.owl,core:Pavanamuktasana,rdfs:label,Pavanamuktasana,en
 core.owl,core:Pavanamuktasana,rdfs:label,पवनमुक्तासन,hi
+core.owl,core:Pavanamuktasana,rdfs:label,పవనముక్తాసనం,te
 core.owl,core:Phalakasana,rdfs:label,Phalakasana,en
 core.owl,core:Phalakasana,rdfs:label,फलकासन,hi
+core.owl,core:Phalakasana,rdfs:label,ఫలకాసనం,te
 core.owl,core:Pose,rdfs:label,Pose,en
 core.owl,core:Pose,rdfs:label,क्रमिक मुद्रा,hi
 core.owl,core:PoseError,rdfs:label,Pose Error,en
 core.owl,core:PoseError,rdfs:label,मुद्रा त्रुटि,hi
 core.owl,core:Pranamasana,rdfs:label,Pranamasana,en
 core.owl,core:Pranamasana,rdfs:label,प्रणामासन,hi
+core.owl,core:Pranamasana,rdfs:label,ప్రణామాసనం,te
 core.owl,core:Samasthiti,rdfs:label,Samasthiti,en
 core.owl,core:Samasthiti,rdfs:label,समस्थिति,hi
+core.owl,core:Samasthiti,rdfs:label,సమస్థితి,te
 core.owl,core:Setubandhasana,rdfs:label,Setubandhasana,en
 core.owl,core:Setubandhasana,rdfs:label,सेतुबंधासन,hi
+core.owl,core:Setubandhasana,rdfs:label,సేతు బంధాసనం,te
 core.owl,core:Shalabhasana,rdfs:label,Shalabhasana,en
 core.owl,core:Shalabhasana,rdfs:label,शलभासन,hi
+core.owl,core:Shalabhasana,rdfs:label,శలభాసనం,te
 core.owl,core:Shashankasana,rdfs:label,Shashankasana,en
 core.owl,core:Shashankasana,rdfs:label,शशांकासन,hi
+core.owl,core:Shashankasana,rdfs:label,శశాంకాసనం,te
 core.owl,core:ShashtangaNamaskara,rdfs:label,Shashtanga Namaskara,en
 core.owl,core:ShashtangaNamaskara,rdfs:label,षष्टांग नमस्कार,hi
+core.owl,core:ShashtangaNamaskara,rdfs:label,షష్టాంగ నమస్కారం,te
 core.owl,core:Shavasana,rdfs:label,Shavasana,en
 core.owl,core:Shavasana,rdfs:label,शवासन,hi
+core.owl,core:Shavasana,rdfs:label,శవాసనం,te
 core.owl,core:Shoulder,rdfs:label,Shoulder,en
 core.owl,core:Shoulder,rdfs:label,कंधा,hi
 core.owl,core:Spine,rdfs:label,Spine,en
 core.owl,core:Spine,rdfs:label,रीढ़,hi
 core.owl,core:Tadasana,rdfs:label,Tadasana,en
 core.owl,core:Tadasana,rdfs:label,ताड़ासन,hi
+core.owl,core:Tadasana,rdfs:label,తాడాసనం,te
 core.owl,core:UrdhwaMukhaSvanasana,rdfs:label,Urdhwa Mukha Svanasana,en
 core.owl,core:UrdhwaMukhaSvanasana,rdfs:label,ऊर्ध्वमुख श्वानासन,hi
+core.owl,core:UrdhwaMukhaSvanasana,rdfs:label,ఊర్ధ్వ ముఖ శ్వానాసనం,te
 core.owl,core:Ustrasana,rdfs:label,Ustrasana,en
 core.owl,core:Ustrasana,rdfs:label,उष्ट्रासन,hi
+core.owl,core:Ustrasana,rdfs:label,ఉష్ట్రాసనం,te
 core.owl,core:Utkatasana,rdfs:label,Utkatasana,en
 core.owl,core:Utkatasana,rdfs:label,उत्कटासन,hi
+core.owl,core:Utkatasana,rdfs:label,ఉత్కటాసనం,te
 core.owl,core:Uttanamandukasana,rdfs:label,Uttanamandukasana,en
 core.owl,core:Uttanamandukasana,rdfs:label,उत्तान मंडूकासन,hi
+core.owl,core:Uttanamandukasana,rdfs:label,ఉత్తాన మండూకాసనం,te
 core.owl,core:Uttanapadasana,rdfs:label,Uttanapadasana,en
 core.owl,core:Uttanapadasana,rdfs:label,उत्तानपादासन,hi
+core.owl,core:Uttanapadasana,rdfs:label,ఉత్తాన పాదాసనం,te
 core.owl,core:Uttanasana,rdfs:label,Uttanasana,en
 core.owl,core:Uttanasana,rdfs:label,उत्तानासन,hi
+core.owl,core:Uttanasana,rdfs:label,ఉత్తానాసనం,te
 core.owl,core:Vajrasana,rdfs:label,Vajrasana,en
 core.owl,core:Vajrasana,rdfs:label,वज्रासन,hi
+core.owl,core:Vajrasana,rdfs:label,వజ్రాసనం,te
 core.owl,core:Vakrasana,rdfs:label,Vakrasana,en
 core.owl,core:Vakrasana,rdfs:label,वक्रासन,hi
+core.owl,core:Vakrasana,rdfs:label,వక్రాసనం,te
 core.owl,core:Variant,rdfs:label,Variant,en
 core.owl,core:Variant,rdfs:label,संस्करण,hi
 core.owl,core:Vrksasana,rdfs:label,Vrksasana,en
 core.owl,core:Vrksasana,rdfs:label,वृक्षासन,hi
+core.owl,core:Vrksasana,rdfs:label,వృక్షాసనం,te
 core.owl,core:Wrist,rdfs:label,Wrist,en
 core.owl,core:Wrist,rdfs:label,कलाई,hi
 core.owl,core:belongsToVariant,rdfs:label,belongs to variant,en
@@ -147,12 +180,16 @@ core.owl,core:sameAsanaAs,rdfs:label,same asana as,en
 core.owl,core:sameAsanaAs,rdfs:label,समान आसन है,hi
 core.owl,core:BreathingPattern,rdfs:label,Breathing Pattern,en
 core.owl,core:BreathingPattern,rdfs:label,श्वास पैटर्न,hi
+core.owl,core:BreathingPattern,rdfs:label,శ్వాస విధానం,te
 core.owl,core:Inhale,rdfs:label,Inhale,en
 core.owl,core:Inhale,rdfs:label,श्वास लें,hi
+core.owl,core:Inhale,rdfs:label,శ్వాస పీల్చండి,te
 core.owl,core:Exhale,rdfs:label,Exhale,en
 core.owl,core:Exhale,rdfs:label,श्वास छोड़ें,hi
+core.owl,core:Exhale,rdfs:label,శ్వాస వదలండి,te
 core.owl,core:Hold,rdfs:label,Hold,en
 core.owl,core:Hold,rdfs:label,श्वास रोकें,hi
+core.owl,core:Hold,rdfs:label,శ్వాస నిలుపుకోండి,te
 core.owl,core:hasBreathingPattern,rdfs:label,has breathing pattern,en
 core.owl,core:hasBreathingPattern,rdfs:label,श्वास पैटर्न है,hi
 core.owl,core:hasSafetyNote,rdfs:label,has safety note,en

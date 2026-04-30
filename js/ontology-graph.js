@@ -18,6 +18,7 @@
     comment: RDFS_NS + 'comment',
     belongsToVariant: CORE_NS + 'belongsToVariant',
     hasAsana: CORE_NS + 'hasAsana',
+    hasBreathingPattern: CORE_NS + 'hasBreathingPattern',
     hasConstraint: CORE_NS + 'hasConstraint',
     hasCorrection: CORE_NS + 'hasCorrection',
     hasInversePose: CORE_NS + 'hasInversePose',
@@ -36,6 +37,7 @@
     hasChakra: CORE_NS + 'hasChakra',
     hasLaterality: CORE_NS + 'hasLaterality',
     hasMantra: CORE_NS + 'hasMantra',
+    hasSafetyNote: CORE_NS + 'hasSafetyNote',
     hasSupportType: CORE_NS + 'hasSupportType',
     poseNumber: CORE_NS + 'poseNumber',
     ruleDescription: CORE_NS + 'ruleDescription'
@@ -44,6 +46,7 @@
   var TYPES = {
     Asana: CORE_NS + 'Asana',
     BodyPart: CORE_NS + 'BodyPart',
+    BreathingPattern: CORE_NS + 'BreathingPattern',
     CorrectionInstruction: CORE_NS + 'CorrectionInstruction',
     Pose: CORE_NS + 'Pose',
     PoseConstraint: CORE_NS + 'PoseConstraint',
@@ -323,8 +326,86 @@
     return values.length ? values[0] : '';
   }
 
+  function getLiteralMap(entity, predicate) {
+    var map = createDictionary();
+    getLiteralEntries(entity, predicate).forEach(function (entry) {
+      var language = normalizeKey(entry.language);
+      if (language && !map[language]) {
+        map[language] = entry.value;
+      }
+    });
+    return map;
+  }
+
+  function getFirstLiteralByLanguage(entity, predicate, language) {
+    var targetLanguage = normalizeKey(language);
+    var entries;
+    var match;
+
+    if (!targetLanguage) {
+      return getFirstLiteral(entity, predicate);
+    }
+
+    entries = getLiteralEntries(entity, predicate);
+    match = entries.find(function (entry) {
+      return normalizeKey(entry.language) === targetLanguage;
+    }) || entries.find(function (entry) {
+      var entryLanguage = normalizeKey(entry.language);
+      return entryLanguage && (
+        entryLanguage.indexOf(targetLanguage + '-') === 0 ||
+        targetLanguage.indexOf(entryLanguage + '-') === 0
+      );
+    });
+
+    return match ? match.value : '';
+  }
+
+  function getFirstLiteralWithLanguageFallback(entity, predicate, language) {
+    return getFirstLiteralByLanguage(entity, predicate, language) ||
+      getFirstLiteralByLanguage(entity, predicate, 'en') ||
+      getFirstLiteral(entity, predicate);
+  }
+
   function getLinkValues(entity, predicate) {
     return entity && entity.links[predicate] ? entity.links[predicate].slice() : [];
+  }
+
+  function buildTriples(entities) {
+    var triples = [];
+
+    Object.keys(entities || {}).forEach(function (subjectUri) {
+      var entity = entities[subjectUri];
+
+      Object.keys(entity.links || {}).forEach(function (predicateUri) {
+        entity.links[predicateUri].forEach(function (objectUri) {
+          triples.push({
+            subject: subjectUri,
+            predicate: predicateUri,
+            object: {
+              termType: 'NamedNode',
+              value: objectUri
+            }
+          });
+        });
+      });
+
+      Object.keys(entity.literals || {}).forEach(function (predicateUri) {
+        entity.literals[predicateUri].forEach(function (literal) {
+          triples.push({
+            subject: subjectUri,
+            predicate: predicateUri,
+            object: {
+              termType: 'Literal',
+              value: literal.value,
+              datatype: literal.datatype || '',
+              language: literal.language || ''
+            }
+          });
+        });
+      });
+    });
+
+    return triples;
   }
 
   function hasType(entity, typeUri) {
@@ -344,11 +425,13 @@
       ontologySrc: options.ontologySrc || DEFAULTS.ontologySrc,
       cypImageBase: options.cypImageBase || DEFAULTS.cypImageBase
     };
+    var triples = buildTriples(entities);
     var entityList = Object.keys(entities).map(function (uri) {
       return entities[uri];
     });
     var asanas = [];
     var bodyParts = [];
+    var breathingPatterns = [];
     var corrections = [];
     var errors = [];
     var poses = [];
@@ -357,6 +440,7 @@
     var variants = [];
     var asanasByUri = createDictionary();
     var bodyPartsByUri = createDictionary();
+    var breathingPatternsByUri = createDictionary();
     var correctionsByUri = createDictionary();
     var errorsByUri = createDictionary();
     var posesByUri = createDictionary();
@@ -368,10 +452,19 @@
       return entities[uri] || null;
     }
 
-    function getEntityLabel(uri) {
+    function getEntityLabel(uri, language) {
       var entity = getEntity(uri);
-      var label = entity ? getFirstLiteral(entity, PREDICATES.label) : '';
+      var label = entity ? getFirstLiteralWithLanguageFallback(entity, PREDICATES.label, language || 'en') : '';
       return label || prettifyIdentifier(fragmentFromUri(uri));
+    }
+
+    function getEntityLabelsByLanguage(uri) {
+      var entity = getEntity(uri);
+      var labels = entity ? getLiteralMap(entity, PREDICATES.label) : createDictionary();
+      if (!labels.en) {
+        labels.en = getEntityLabel(uri, 'en');
+      }
+      return labels;
     }
 
     function getEntityComment(uri) {
@@ -380,7 +473,7 @@
     }
 
     function getDisplayVariantLabel(uri) {
-      var label = getEntityLabel(uri);
+      var label = getEntityLabel(uri, 'en');
       if (label === 'BaseSN_SivanandaYogaVedantaCentre') {
         return 'Base SN (Sivananda Yoga Vedanta Centre, used at IIT BHU)';
       }
@@ -403,10 +496,15 @@
     }
 
     function buildAsana(entity) {
+      var labelsByLanguage = getEntityLabelsByLanguage(entity.uri);
       var record = {
         uri: entity.uri,
         id: entity.id,
-        label: getEntityLabel(entity.uri),
+        label: labelsByLanguage.en || getEntityLabel(entity.uri, 'en'),
+        labelEn: labelsByLanguage.en || '',
+        labelHi: labelsByLanguage.hi || '',
+        labelTe: labelsByLanguage.te || '',
+        labelsByLanguage: labelsByLanguage,
         alternateNames: getLiteralValues(entity, PREDICATES.hasAlternateName),
         sameAsanaUris: getLinkValues(entity, PREDICATES.sameAsanaAs),
         cypPage: getFirstLiteral(entity, PREDICATES.hasCYPPage)
@@ -416,10 +514,25 @@
     }
 
     function buildBodyPart(entity) {
+      var labelsByLanguage = getEntityLabelsByLanguage(entity.uri);
       return {
         uri: entity.uri,
         id: entity.id,
-        label: getEntityLabel(entity.uri)
+        label: labelsByLanguage.en || getEntityLabel(entity.uri, 'en'),
+        labelsByLanguage: labelsByLanguage
+      };
+    }
+
+    function buildBreathingPattern(entity) {
+      var labelsByLanguage = getEntityLabelsByLanguage(entity.uri);
+      return {
+        uri: entity.uri,
+        id: entity.id,
+        label: labelsByLanguage.en || getEntityLabel(entity.uri, 'en'),
+        labelEn: labelsByLanguage.en || '',
+        labelHi: labelsByLanguage.hi || '',
+        labelTe: labelsByLanguage.te || '',
+        labelsByLanguage: labelsByLanguage
       };
     }
 
@@ -427,7 +540,7 @@
       return {
         uri: entity.uri,
         id: entity.id,
-        label: getEntityLabel(entity.uri),
+        label: getEntityLabel(entity.uri, 'en'),
         text: getFirstLiteral(entity, PREDICATES.correctionText)
       };
     }
@@ -436,7 +549,7 @@
       return {
         uri: entity.uri,
         id: entity.id,
-        label: getEntityLabel(entity.uri),
+        label: getEntityLabel(entity.uri, 'en'),
         description: getFirstLiteral(entity, PREDICATES.errorDescription),
         correctionUris: getLinkValues(entity, PREDICATES.hasCorrection)
       };
@@ -446,7 +559,7 @@
       return {
         uri: entity.uri,
         id: entity.id,
-        label: getEntityLabel(entity.uri),
+        label: getEntityLabel(entity.uri, 'en'),
         description: getFirstLiteral(entity, PREDICATES.ruleDescription)
       };
     }
@@ -455,17 +568,19 @@
       return {
         uri: entity.uri,
         id: entity.id,
-        label: getEntityLabel(entity.uri),
+        label: getEntityLabel(entity.uri, 'en'),
         description: getFirstLiteral(entity, PREDICATES.constraintDescription)
       };
     }
 
     function buildVariant(entity) {
+      var labelsByLanguage = getEntityLabelsByLanguage(entity.uri);
       return {
         uri: entity.uri,
         id: entity.id,
-        label: getEntityLabel(entity.uri),
+        label: labelsByLanguage.en || getEntityLabel(entity.uri, 'en'),
         displayLabel: getDisplayVariantLabel(entity.uri),
+        labelsByLanguage: labelsByLanguage,
         comment: getEntityComment(entity.uri)
       };
     }
@@ -474,15 +589,35 @@
       var poseNumber = Number(getFirstLiteral(entity, PREDICATES.poseNumber) || 0);
       var variantUri = getLinkValues(entity, PREDICATES.belongsToVariant)[0] || '';
       var asanaUri = getLinkValues(entity, PREDICATES.hasAsana)[0] || '';
+      var breathingPatternUri = getLinkValues(entity, PREDICATES.hasBreathingPattern)[0] || '';
+      var asanaLabelsByLanguage = asanaUri ? getEntityLabelsByLanguage(asanaUri) : createDictionary();
+      var breathingPatternLabelsByLanguage = breathingPatternUri
+        ? getEntityLabelsByLanguage(breathingPatternUri)
+        : createDictionary();
+      var safetyNotes = getLiteralValues(entity, PREDICATES.hasSafetyNote);
       return {
         uri: entity.uri,
         id: entity.id,
-        label: getEntityLabel(entity.uri),
+        label: getEntityLabel(entity.uri, 'en'),
         poseNumber: poseNumber || null,
         variantUri: variantUri,
         variantLabel: variantUri ? getDisplayVariantLabel(variantUri) : '',
         asanaUri: asanaUri,
-        asanaLabel: asanaUri ? getEntityLabel(asanaUri) : '',
+        asanaLabel: asanaUri ? (asanaLabelsByLanguage.en || getEntityLabel(asanaUri, 'en')) : '',
+        asanaLabelEn: asanaLabelsByLanguage.en || '',
+        asanaLabelHi: asanaLabelsByLanguage.hi || '',
+        asanaLabelTe: asanaLabelsByLanguage.te || '',
+        asanaLabelsByLanguage: asanaLabelsByLanguage,
+        breathingPatternUri: breathingPatternUri,
+        breathingPatternLabel: breathingPatternUri
+          ? (breathingPatternLabelsByLanguage.en || getEntityLabel(breathingPatternUri, 'en'))
+          : '',
+        breathingPatternLabelEn: breathingPatternLabelsByLanguage.en || '',
+        breathingPatternLabelHi: breathingPatternLabelsByLanguage.hi || '',
+        breathingPatternLabelTe: breathingPatternLabelsByLanguage.te || '',
+        breathingPatternLabelsByLanguage: breathingPatternLabelsByLanguage,
+        safetyNote: safetyNotes[0] || '',
+        safetyNotes: safetyNotes,
         laterality: getFirstLiteral(entity, PREDICATES.hasLaterality),
         supportType: getFirstLiteral(entity, PREDICATES.hasSupportType),
         chakra: getFirstLiteral(entity, PREDICATES.hasChakra),
@@ -504,6 +639,9 @@
       }
       if (hasType(entity, TYPES.BodyPart)) {
         bodyParts.push(buildBodyPart(entity));
+      }
+      if (hasType(entity, TYPES.BreathingPattern)) {
+        breathingPatterns.push(buildBreathingPattern(entity));
       }
       if (hasType(entity, TYPES.CorrectionInstruction)) {
         corrections.push(buildCorrection(entity));
@@ -531,6 +669,9 @@
     bodyParts.sort(function (left, right) {
       return compareStrings(left.label, right.label);
     });
+    breathingPatterns.sort(function (left, right) {
+      return compareStrings(left.label, right.label);
+    });
     corrections.sort(function (left, right) {
       return compareStrings(left.label, right.label);
     });
@@ -555,6 +696,9 @@
     });
     bodyParts.forEach(function (record) {
       bodyPartsByUri[record.uri] = record;
+    });
+    breathingPatterns.forEach(function (record) {
+      breathingPatternsByUri[record.uri] = record;
     });
     corrections.forEach(function (record) {
       correctionsByUri[record.uri] = record;
@@ -595,11 +739,34 @@
         return null;
       }
       return records.find(function (record) {
-        return normalizeKey(record.uri) === key ||
-          normalizeKey(record.id) === key ||
-          normalizeKey(record.label) === key ||
-          normalizeKey(record.displayLabel) === key;
+        var values = [
+          record.uri,
+          record.id,
+          record.label,
+          record.displayLabel
+        ];
+
+        Object.keys(record.labelsByLanguage || {}).forEach(function (language) {
+          values.push(record.labelsByLanguage[language]);
+        });
+
+        return values.some(function (value) {
+          return normalizeKey(value) === key;
+        });
       }) || null;
+    }
+
+    function getLanguageLabel(record, language) {
+      var preferredLanguage = normalizeKey(language);
+      var labels = record && record.labelsByLanguage ? record.labelsByLanguage : {};
+
+      if (!record) {
+        return '';
+      }
+      if (preferredLanguage && labels[preferredLanguage]) {
+        return labels[preferredLanguage];
+      }
+      return labels.en || record.label || '';
     }
 
     function getBaseVariant() {
@@ -640,6 +807,22 @@
 
     function getBodyPart(ref) {
       return findRecord(bodyParts, ref);
+    }
+
+    function getBreathingPattern(ref) {
+      return findRecord(breathingPatterns, ref);
+    }
+
+    function getAsanaLabel(asanaRef, language) {
+      var asana = typeof asanaRef === 'string' ? getAsana(asanaRef) : asanaRef;
+      return getLanguageLabel(asana, language);
+    }
+
+    function getBreathingPatternLabel(breathingPatternRef, language) {
+      var breathingPattern = typeof breathingPatternRef === 'string'
+        ? getBreathingPattern(breathingPatternRef)
+        : breathingPatternRef;
+      return getLanguageLabel(breathingPattern, language);
     }
 
     function getOrderedPosesForVariant(variantRef) {
@@ -972,9 +1155,11 @@
       predicates: PREDICATES,
       types: TYPES,
       entities: entities,
+      triples: triples,
       asanas: asanas,
-      bodyParts: bodyParts,
-      corrections: corrections,
+        bodyParts: bodyParts,
+        breathingPatterns: breathingPatterns,
+        corrections: corrections,
       errors: errors,
       poses: poses,
       rules: rules,
@@ -982,6 +1167,7 @@
       variants: variants,
       getEntity: getEntity,
       getEntityLabel: getEntityLabel,
+      getEntityLabelsByLanguage: getEntityLabelsByLanguage,
       getEntityComment: getEntityComment,
       getBaseVariant: getBaseVariant,
       getVariant: getVariant,
@@ -992,6 +1178,9 @@
       getConstraint: getConstraint,
       getCorrection: getCorrection,
       getBodyPart: getBodyPart,
+      getBreathingPattern: getBreathingPattern,
+      getAsanaLabel: getAsanaLabel,
+      getBreathingPatternLabel: getBreathingPatternLabel,
       getOrderedPosesForVariant: getOrderedPosesForVariant,
       getPoseByNumber: getPoseByNumber,
       getPosesForAsana: getPosesForAsana,
