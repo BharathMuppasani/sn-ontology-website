@@ -6,6 +6,7 @@
   var FALLBACK_MODEL = 'gemini-3.1-flash-lite-preview';
   var SUPPORTED_INTENTS = [
     'base_sequence',
+    'base_breathing_safety',
     'base_mantra_chakra',
     'base_repeats',
     'base_inverses',
@@ -20,6 +21,7 @@
   ];
   var TEMPLATE_LABELS = {
     base_sequence: 'Base sequence',
+    base_breathing_safety: 'Breathing and safety notes',
     base_mantra_chakra: 'Mantra and chakra coverage',
     base_repeats: 'Repeated poses',
     base_inverses: 'Inverse pose pairs',
@@ -34,6 +36,7 @@
   };
   var INTENT_TO_QUESTION_ID = {
     base_sequence: 'base-sequence',
+    base_breathing_safety: 'base-breathing-safety',
     base_mantra_chakra: 'base-mantra-chakra',
     base_repeats: 'base-repeats',
     base_inverses: 'base-inverses',
@@ -65,7 +68,7 @@
       poseNumber: {
         type: ['integer', 'null'],
         minimum: 1,
-        maximum: 12
+        maximum: 24
       },
       wantsVisuals: {
         type: 'boolean'
@@ -108,6 +111,7 @@
     'When a specific asana is mentioned, copy the exact ontology label when possible.',
     'When a specific variant is mentioned, copy the clearest variant label when possible.',
     'When a question asks about posture guidance, errors, corrections, rules, or constraints for a specific base pose or asana, choose pose_guidance.',
+    'Questions asking about breathing, inhale, exhale, breath holding, safety notes, precautions, or careful practice across Base SN poses should map to base_breathing_safety.',
     'Questions asking how many poses a variant has, or comparing pose counts across variants, should map to variant_pose_counts.',
     'Questions asking what the different variants of Surya Namaskar are should also map to variant_pose_counts.',
     'Questions asking for the ordered poses or sequence of a named variant should map to variant_sequence.',
@@ -185,6 +189,61 @@
       : '';
 
     return prefixBlock ? prefixBlock + '\n\n' + queryBody.trim() : queryBody.trim();
+  }
+
+  function normalizeResultLanguage(language) {
+    if (global.SNEducationData && typeof global.SNEducationData.normalizeResultLanguage === 'function') {
+      return global.SNEducationData.normalizeResultLanguage(language);
+    }
+    return String(language || '').trim().toLowerCase() === 'te' ? 'te' : 'hi';
+  }
+
+  function getLanguageOption(language) {
+    if (global.SNEducationData && typeof global.SNEducationData.getLanguageOption === 'function') {
+      return global.SNEducationData.getLanguageOption(language);
+    }
+    return normalizeResultLanguage(language) === 'te'
+      ? { code: 'te', label: 'Telugu', columnLabel: 'Telugu label' }
+      : { code: 'hi', label: 'Hindi', columnLabel: 'Hindi label' };
+  }
+
+  function getLanguageColumnLabel(language) {
+    return getLanguageOption(language).columnLabel;
+  }
+
+  function getRecordLanguageLabel(record, language) {
+    if (global.SNEducationData && typeof global.SNEducationData.getRecordLanguageLabel === 'function') {
+      return global.SNEducationData.getRecordLanguageLabel(record, language);
+    }
+    return record && record.labelsByLanguage && record.labelsByLanguage[normalizeResultLanguage(language)]
+      ? record.labelsByLanguage[normalizeResultLanguage(language)]
+      : '-';
+  }
+
+  function getPoseAsanaLanguageLabel(pose, language) {
+    if (global.SNEducationData && typeof global.SNEducationData.getPoseAsanaLanguageLabel === 'function') {
+      return global.SNEducationData.getPoseAsanaLanguageLabel(pose, language);
+    }
+    return pose && pose.asanaLabelsByLanguage && pose.asanaLabelsByLanguage[normalizeResultLanguage(language)]
+      ? pose.asanaLabelsByLanguage[normalizeResultLanguage(language)]
+      : '-';
+  }
+
+  function getBreathingPatternLanguageLabel(pose, language) {
+    if (global.SNEducationData && typeof global.SNEducationData.getBreathingPatternLanguageLabel === 'function') {
+      return global.SNEducationData.getBreathingPatternLanguageLabel(pose, language);
+    }
+    return pose && pose.breathingPatternLabelsByLanguage && pose.breathingPatternLabelsByLanguage[normalizeResultLanguage(language)]
+      ? pose.breathingPatternLabelsByLanguage[normalizeResultLanguage(language)]
+      : '-';
+  }
+
+  function getQuestionSparql(questionId, language) {
+    if (global.SNEducationData && typeof global.SNEducationData.getQuestionSparql === 'function') {
+      return global.SNEducationData.getQuestionSparql(questionId, language);
+    }
+    var question = getQuestionById(questionId);
+    return question ? question.sparql : '';
   }
 
   function getBaseVariant(model) {
@@ -521,7 +580,9 @@
       'Base variant: Base Surya Namaskar (default instructional sequence in this workspace).',
       'Base poses:',
       serializeContextList(basePoses, function (pose) {
-        return '- Pose ' + pose.poseNumber + ': ' + pose.asanaLabel;
+        return '- Pose ' + pose.poseNumber + ': ' + pose.asanaLabel +
+          (pose.breathingPatternLabel ? ', breathing: ' + pose.breathingPatternLabel : '') +
+          (pose.safetyNote ? ', safety: ' + pose.safetyNote : '');
       }),
       'Base poses with explicit guidance entities:',
       serializeContextList(guidedPoses, function (pose) {
@@ -544,6 +605,7 @@
     return [
       'Supported intents:',
       '- base_sequence: ordered sequence of poses in Base Surya Namaskar.',
+      '- base_breathing_safety: breathing pattern, inhale/exhale/hold, safety note, or precaution annotations across Base Surya Namaskar poses.',
       '- base_mantra_chakra: which Base Surya Namaskar poses have mantra and chakra annotations.',
       '- base_repeats: repeated poses on the return path in Base Surya Namaskar.',
       '- base_inverses: inverse left/right pose pairs in Base Surya Namaskar.',
@@ -568,6 +630,7 @@
       question: questionText,
       template: session.templateLabel,
       intent: session.plan.intent,
+      language: session.language || session.plan.language || 'hi',
       sparql: session.sparql,
       facts: execution.answer.facts || [],
       table: execution.answer.table || null,
@@ -946,6 +1009,13 @@
       /(sequence|ordered|order|pose list|list the poses|poses in|poses of)/.test(text);
   }
 
+  function looksLikeBreathingSafetyQuestion(questionText) {
+    var text = normalizeKey(questionText);
+
+    return /(breath|breathing|inhale|exhale|hold|safety|safe|precaution|careful|note|notes)/.test(text) &&
+      /(base|surya namaskar|sn|pose|poses|sequence)/.test(text);
+  }
+
   function looksLikeAsanaVariantCoverageQuestion(questionText) {
     var text = normalizeKey(questionText);
 
@@ -989,6 +1059,14 @@
       resolvedPlan.poseNumber = null;
       resolvedPlan.unsupportedReason = null;
       resolvedPlan.rationale = 'The question asks for what is common across variants, which maps to the shared_asanas template. Cross-variant overlap is answered at the asana identity level.';
+    }
+
+    if (looksLikeBreathingSafetyQuestion(questionText)) {
+      resolvedPlan.intent = 'base_breathing_safety';
+      resolvedPlan.confidence = Math.max(resolvedPlan.confidence, 0.74);
+      resolvedPlan.poseNumber = null;
+      resolvedPlan.unsupportedReason = null;
+      resolvedPlan.rationale = 'The question asks for breathing or safety annotations, which are currently modeled on the Base Surya Namaskar poses.';
     }
 
     if (resolvedPlan.asanaLabel) {
@@ -1092,31 +1170,60 @@
     }).join(' ') + ' }\n';
   }
 
-  function buildVisualReferenceSparql(asanaLabel) {
+  function getLanguageValueClause(language) {
+    return '  VALUES ?selectedLanguage { "' + normalizeResultLanguage(language) + '" }\n';
+  }
+
+  function getAsanaLabelPattern(asanaVariable, englishLabelVariable, selectedLabelVariable) {
+    return '  ' + asanaVariable + ' rdfs:label ' + englishLabelVariable + ' .\n' +
+      '  FILTER (LANGMATCHES(LANG(' + englishLabelVariable + '), "en"))\n' +
+      '  OPTIONAL {\n' +
+      '    ' + asanaVariable + ' rdfs:label ' + selectedLabelVariable + ' .\n' +
+      '    FILTER (LANGMATCHES(LANG(' + selectedLabelVariable + '), ?selectedLanguage))\n' +
+      '  }\n';
+  }
+
+  function getBreathingLabelPattern(breathingVariable, englishLabelVariable, selectedLabelVariable) {
+    return '  ' + breathingVariable + ' rdfs:label ' + englishLabelVariable + ' .\n' +
+      '  FILTER (LANGMATCHES(LANG(' + englishLabelVariable + '), "en"))\n' +
+      '  OPTIONAL {\n' +
+      '    ' + breathingVariable + ' rdfs:label ' + selectedLabelVariable + ' .\n' +
+      '    FILTER (LANGMATCHES(LANG(' + selectedLabelVariable + '), ?selectedLanguage))\n' +
+      '  }\n';
+  }
+
+  function buildVisualReferenceSparql(asanaLabel, language) {
     var filter = asanaLabel
       ? '\n  FILTER (LCASE(STR(?asanaLabel)) = "' + escapeSparqlString(normalizeKey(asanaLabel)) + '")'
       : '';
 
     return withPrefixes(
-      'SELECT ?asanaLabel ?cypPage\n' +
+      'SELECT ?asanaLabel ?asanaLabelSelected ?cypPage\n' +
       'WHERE {\n' +
+      getLanguageValueClause(language) +
       '  ?asana rdf:type core:Asana ;\n' +
-      '         rdfs:label ?asanaLabel ;\n' +
-      '         core:hasCYPPage ?cypPage .' +
+      '         core:hasCYPPage ?cypPage .\n' +
+      getAsanaLabelPattern('?asana', '?asanaLabel', '?asanaLabelSelected') +
       filter + '\n' +
       '}\n' +
       'ORDER BY ?cypPage ?asanaLabel'
     );
   }
 
-  function buildPoseGuidanceSparql(pose) {
+  function buildPoseGuidanceSparql(pose, language) {
     return withPrefixes(
-      'SELECT ?poseNumber ?asanaLabel ?ruleDescription ?constraintDescription ?errorDescription ?correctionText\n' +
+      'SELECT ?poseNumber ?asanaLabel ?asanaLabelSelected ?breathingLabel ?breathingLabelSelected ?safetyNote ?ruleDescription ?constraintDescription ?errorDescription ?correctionText\n' +
       'WHERE {\n' +
+      getLanguageValueClause(language) +
       '  BIND(base:' + pose.id + ' AS ?pose)\n' +
       '  ?pose core:poseNumber ?poseNumber ;\n' +
       '        core:hasAsana ?asana .\n' +
-      '  ?asana rdfs:label ?asanaLabel .\n' +
+      getAsanaLabelPattern('?asana', '?asanaLabel', '?asanaLabelSelected') +
+      '  OPTIONAL {\n' +
+      '    ?pose core:hasBreathingPattern ?breathing .\n' +
+      getBreathingLabelPattern('?breathing', '?breathingLabel', '?breathingLabelSelected') +
+      '  }\n' +
+      '  OPTIONAL { ?pose core:hasSafetyNote ?safetyNote . }\n' +
       '  OPTIONAL { ?pose core:hasRule ?rule . ?rule core:ruleDescription ?ruleDescription . }\n' +
       '  OPTIONAL { ?pose core:hasConstraint ?constraint . ?constraint core:constraintDescription ?constraintDescription . }\n' +
       '  OPTIONAL {\n' +
@@ -1147,36 +1254,45 @@
     );
   }
 
-  function buildVariantSequenceSparql(plan) {
+  function buildVariantSequenceSparql(plan, language) {
     return withPrefixes(
-      'SELECT ?variantLabel ?poseNumber ?asanaLabel ?laterality ?supportType ?chakra ?mantra\n' +
+      'SELECT ?variantLabel ?poseNumber ?asanaLabel ?asanaLabelSelected ?breathingLabel ?breathingLabelSelected ?laterality ?supportType ?chakra ?mantra ?safetyNote\n' +
       'WHERE {\n' +
+      getLanguageValueClause(language) +
       buildVariantValuesClause(plan.variantUris) +
       '  ?pose rdf:type core:Pose ;\n' +
       '        core:belongsToVariant ?variant ;\n' +
       '        core:poseNumber ?poseNumber ;\n' +
       '        core:hasAsana ?asana .\n' +
       '  ?variant rdfs:label ?variantLabel .\n' +
-      '  ?asana rdfs:label ?asanaLabel .\n' +
+      '  FILTER (LANGMATCHES(LANG(?variantLabel), "en"))\n' +
+      getAsanaLabelPattern('?asana', '?asanaLabel', '?asanaLabelSelected') +
+      '  OPTIONAL {\n' +
+      '    ?pose core:hasBreathingPattern ?breathing .\n' +
+      getBreathingLabelPattern('?breathing', '?breathingLabel', '?breathingLabelSelected') +
+      '  }\n' +
       '  OPTIONAL { ?pose core:hasLaterality ?laterality . }\n' +
       '  OPTIONAL { ?pose core:hasSupportType ?supportType . }\n' +
       '  OPTIONAL { ?pose core:hasChakra ?chakra . }\n' +
       '  OPTIONAL { ?pose core:hasMantra ?mantra . }\n' +
+      '  OPTIONAL { ?pose core:hasSafetyNote ?safetyNote . }\n' +
       '}\n' +
       'ORDER BY ?variantLabel ?poseNumber'
     );
   }
 
-  function buildAsanaVariantCoverageSparql(plan) {
+  function buildAsanaVariantCoverageSparql(plan, language) {
     return withPrefixes(
-      'SELECT ?variantLabel ?poseNumber ?laterality ?supportType\n' +
+      'SELECT ?asanaLabel ?asanaLabelSelected ?variantLabel ?poseNumber ?laterality ?supportType\n' +
       'WHERE {\n' +
+      getLanguageValueClause(language) +
       '  ?pose rdf:type core:Pose ;\n' +
       '        core:belongsToVariant ?variant ;\n' +
       '        core:poseNumber ?poseNumber ;\n' +
       '        core:hasAsana ?asana .\n' +
       '  ?variant rdfs:label ?variantLabel .\n' +
-      '  ?asana rdfs:label ?asanaLabel .\n' +
+      '  FILTER (LANGMATCHES(LANG(?variantLabel), "en"))\n' +
+      getAsanaLabelPattern('?asana', '?asanaLabel', '?asanaLabelSelected') +
       '  FILTER (LCASE(STR(?asanaLabel)) = "' + escapeSparqlString(normalizeKey(plan.asanaLabel)) + '")\n' +
       '  OPTIONAL { ?pose core:hasLaterality ?laterality . }\n' +
       '  OPTIONAL { ?pose core:hasSupportType ?supportType . }\n' +
@@ -1185,17 +1301,18 @@
     );
   }
 
-  function buildSparqlFromPlan(model, plan) {
+  function buildSparqlFromPlan(model, plan, language) {
     var predefinedQuestion;
+    var selectedLanguage = normalizeResultLanguage(language || (plan && plan.language));
     var pose;
 
     if (INTENT_TO_QUESTION_ID[plan.intent]) {
       predefinedQuestion = getQuestionById(INTENT_TO_QUESTION_ID[plan.intent]);
-      return predefinedQuestion ? predefinedQuestion.sparql : '';
+      return predefinedQuestion ? getQuestionSparql(INTENT_TO_QUESTION_ID[plan.intent], selectedLanguage) : '';
     }
 
     if (plan.intent === 'cyp_visual_references') {
-      return buildVisualReferenceSparql(plan.asanaLabel);
+      return buildVisualReferenceSparql(plan.asanaLabel, selectedLanguage);
     }
 
     if (plan.intent === 'pose_guidance') {
@@ -1203,7 +1320,7 @@
       if (!pose) {
         throw new Error('Unable to locate the requested base pose for guidance.');
       }
-      return buildPoseGuidanceSparql(pose);
+      return buildPoseGuidanceSparql(pose, selectedLanguage);
     }
 
     if (plan.intent === 'variant_pose_counts') {
@@ -1211,11 +1328,11 @@
     }
 
     if (plan.intent === 'variant_sequence') {
-      return buildVariantSequenceSparql(plan);
+      return buildVariantSequenceSparql(plan, selectedLanguage);
     }
 
     if (plan.intent === 'asana_variant_coverage') {
-      return buildAsanaVariantCoverageSparql(plan);
+      return buildAsanaVariantCoverageSparql(plan, selectedLanguage);
     }
 
     return '';
@@ -1225,7 +1342,7 @@
     return JSON.parse(JSON.stringify(answer || {}));
   }
 
-  function executeDefaultQuestion(model, questionId, questionText, sparql, templateLabel) {
+  function executeDefaultQuestion(model, questionId, questionText, sparql, templateLabel, language) {
     var question = getQuestionById(questionId);
     var answer;
 
@@ -1233,7 +1350,9 @@
       throw new Error('Missing question template for ' + questionId + '.');
     }
 
-    answer = cloneAnswer(question.run(model));
+    answer = cloneAnswer(question.run(model, {
+      language: normalizeResultLanguage(language)
+    }));
     answer.prompt = compactText(questionText) || question.prompt;
 
     if (questionId === 'shared-asanas' && /\bpose\b|\bposes\b/i.test(questionText)) {
@@ -1249,9 +1368,10 @@
     };
   }
 
-  function buildPoseGuidanceAnswer(model, questionText, sparql, templateLabel, plan) {
+  function buildPoseGuidanceAnswer(model, questionText, sparql, templateLabel, plan, language) {
     var pose = findBasePoseByNumber(model, plan.poseNumber) || findBasePoseByAsana(model, plan.asanaLabel);
     var guidance = pose ? model.getPoseGuidance(pose) : null;
+    var selectedLanguage = normalizeResultLanguage(language || plan.language);
     var errorItems;
     var rows;
 
@@ -1300,6 +1420,10 @@
         facts: [
           { label: 'Pose', value: 'Pose ' + guidance.pose.poseNumber },
           { label: 'Asana', value: guidance.pose.asanaLabel },
+          { label: getLanguageColumnLabel(selectedLanguage), value: getPoseAsanaLanguageLabel(guidance.pose, selectedLanguage) },
+          { label: 'Breathing', value: guidance.pose.breathingPatternLabel || '-' },
+          { label: 'Breathing (' + getLanguageOption(selectedLanguage).label + ')', value: getBreathingPatternLanguageLabel(guidance.pose, selectedLanguage) },
+          { label: 'Safety note', value: guidance.pose.safetyNote || '-' },
           { label: 'Rules', value: String(guidance.rules.length) },
           { label: 'Constraints', value: String(guidance.constraints.length) },
           { label: 'Errors', value: String(guidance.errors.length) }
@@ -1337,14 +1461,15 @@
     };
   }
 
-  function buildVisualReferenceAnswer(model, questionText, sparql, templateLabel, plan) {
+  function buildVisualReferenceAnswer(model, questionText, sparql, templateLabel, plan, language) {
     var question = getQuestionById('cyp-visual-references');
     var allAsanas;
     var resolvedAsana;
     var filteredAsanas;
+    var selectedLanguage = normalizeResultLanguage(language || plan.language);
 
     if (!plan.asanaLabel || !question) {
-      return executeDefaultQuestion(model, 'cyp-visual-references', questionText, sparql, templateLabel);
+      return executeDefaultQuestion(model, 'cyp-visual-references', questionText, sparql, templateLabel, selectedLanguage);
     }
 
     allAsanas = getAsanasWithVisuals(model);
@@ -1365,13 +1490,15 @@
           : 'No linked CYP page is currently recorded for ' + plan.asanaLabel + ' in the ontology snapshot.',
         facts: [
           { label: 'Requested asana', value: resolvedAsana ? resolvedAsana.label : plan.asanaLabel },
+          { label: getLanguageColumnLabel(selectedLanguage), value: resolvedAsana ? getRecordLanguageLabel(resolvedAsana, selectedLanguage) : '-' },
           { label: 'Matches', value: String(filteredAsanas.length) }
         ],
         table: {
-          columns: ['Asana', 'CYP page', 'Image'],
+          columns: ['Asana', getLanguageColumnLabel(selectedLanguage), 'CYP page', 'Image'],
           rows: filteredAsanas.map(function (asana) {
             return [
               asana.label,
+              getRecordLanguageLabel(asana, selectedLanguage),
               String(asana.cypPage),
               createVisualTableCell(asana)
             ];
@@ -1407,8 +1534,9 @@
     return [];
   }
 
-  function buildVariantPoseCountAnswer(model, questionText, sparql, templateLabel, plan) {
+  function buildVariantPoseCountAnswer(model, questionText, sparql, templateLabel, plan, language) {
     var variants = getPlanVariants(model, plan);
+    var selectedLanguage = normalizeResultLanguage(language || plan.language);
     var entries;
     var maxCount;
     var minCount;
@@ -1483,14 +1611,16 @@
           { label: 'Pose spread', value: String(maxCount - minCount) }
         ],
         table: {
-          columns: ['Variant', 'Pose count', 'Distinct asanas', 'First pose', 'Last pose'],
+          columns: ['Variant', 'Pose count', 'Distinct asanas', 'First pose', 'First pose ' + getLanguageColumnLabel(selectedLanguage), 'Last pose', 'Last pose ' + getLanguageColumnLabel(selectedLanguage)],
           rows: entries.map(function (entry) {
             return [
               entry.variant.displayLabel,
               String(entry.poseCount),
               String(entry.distinctAsanaCount),
               entry.firstPose ? entry.firstPose.asanaLabel : '-',
-              entry.lastPose ? entry.lastPose.asanaLabel : '-'
+              entry.firstPose ? getPoseAsanaLanguageLabel(entry.firstPose, selectedLanguage) : '-',
+              entry.lastPose ? entry.lastPose.asanaLabel : '-',
+              entry.lastPose ? getPoseAsanaLanguageLabel(entry.lastPose, selectedLanguage) : '-'
             ];
           })
         },
@@ -1500,8 +1630,9 @@
     };
   }
 
-  function buildVariantSequenceAnswer(model, questionText, sparql, templateLabel, plan) {
+  function buildVariantSequenceAnswer(model, questionText, sparql, templateLabel, plan, language) {
     var variants = getPlanVariants(model, plan);
+    var selectedLanguage = normalizeResultLanguage(language || plan.language);
     var entries;
     var allPoses;
 
@@ -1550,17 +1681,21 @@
           { label: 'Total pose rows', value: String(allPoses.length) }
         ],
         table: {
-          columns: ['Variant', '#', 'Asana', 'Laterality', 'Support', 'Chakra', 'Mantra'],
+          columns: ['Variant', '#', 'Asana', getLanguageColumnLabel(selectedLanguage), 'Breathing', 'Breathing (' + getLanguageOption(selectedLanguage).label + ')', 'Laterality', 'Support', 'Chakra', 'Mantra', 'Safety note'],
           rows: entries.reduce(function (accumulator, entry) {
             return accumulator.concat(entry.poses.map(function (pose) {
               return [
                 entry.variant.displayLabel,
                 String(pose.poseNumber),
                 pose.asanaLabel,
+                getPoseAsanaLanguageLabel(pose, selectedLanguage),
+                pose.breathingPatternLabel || '-',
+                getBreathingPatternLanguageLabel(pose, selectedLanguage),
                 pose.laterality || '-',
                 pose.supportType || '-',
                 pose.chakra || '-',
-                pose.mantra || '-'
+                pose.mantra || '-',
+                pose.safetyNote || '-'
               ];
             }));
           }, [])
@@ -1576,8 +1711,9 @@
     };
   }
 
-  function buildAsanaVariantCoverageAnswer(model, questionText, sparql, templateLabel, plan) {
+  function buildAsanaVariantCoverageAnswer(model, questionText, sparql, templateLabel, plan, language) {
     var asana = resolveAsana(model, plan.asanaLabel);
+    var selectedLanguage = normalizeResultLanguage(language || plan.language);
     var poses;
     var grouped = {};
     var rows;
@@ -1632,14 +1768,17 @@
           ': ' + joinList(sectionItems) + '.',
         facts: [
           { label: 'Asana', value: asana.label },
+          { label: getLanguageColumnLabel(selectedLanguage), value: getRecordLanguageLabel(asana, selectedLanguage) },
           { label: 'Variants', value: String(rows.length) },
           { label: 'Total occurrences', value: String(poses.length) }
         ],
         table: {
-          columns: ['Variant', 'Pose numbers', 'Occurrences'],
+          columns: ['Variant', 'Asana', getLanguageColumnLabel(selectedLanguage), 'Pose numbers', 'Occurrences'],
           rows: rows.map(function (entry) {
             return [
               entry.variant.displayLabel,
+              asana.label,
+              getRecordLanguageLabel(asana, selectedLanguage),
               entry.poses.map(function (pose) {
                 return String(pose.poseNumber);
               }).join(', '),
@@ -1664,6 +1803,7 @@
     var questionText = compactText(options.questionText || (session && session.questionText));
     var intent = session && session.plan ? session.plan.intent : 'unsupported';
     var templateLabel = session ? session.templateLabel : TEMPLATE_LABELS.unsupported;
+    var language = normalizeResultLanguage(options.language || (session && session.language) || (session && session.plan && session.plan.language));
 
     if (!session || !session.plan) {
       throw new Error('No custom query plan is available yet.');
@@ -1674,27 +1814,27 @@
     }
 
     if (INTENT_TO_QUESTION_ID[intent] && intent !== 'cyp_visual_references') {
-      return executeDefaultQuestion(model, INTENT_TO_QUESTION_ID[intent], questionText, session.sparql, templateLabel);
+      return executeDefaultQuestion(model, INTENT_TO_QUESTION_ID[intent], questionText, session.sparql, templateLabel, language);
     }
 
     if (intent === 'cyp_visual_references') {
-      return buildVisualReferenceAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+      return buildVisualReferenceAnswer(model, questionText, session.sparql, templateLabel, session.plan, language);
     }
 
     if (intent === 'pose_guidance') {
-      return buildPoseGuidanceAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+      return buildPoseGuidanceAnswer(model, questionText, session.sparql, templateLabel, session.plan, language);
     }
 
     if (intent === 'variant_pose_counts') {
-      return buildVariantPoseCountAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+      return buildVariantPoseCountAnswer(model, questionText, session.sparql, templateLabel, session.plan, language);
     }
 
     if (intent === 'variant_sequence') {
-      return buildVariantSequenceAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+      return buildVariantSequenceAnswer(model, questionText, session.sparql, templateLabel, session.plan, language);
     }
 
     if (intent === 'asana_variant_coverage') {
-      return buildAsanaVariantCoverageAnswer(model, questionText, session.sparql, templateLabel, session.plan);
+      return buildAsanaVariantCoverageAnswer(model, questionText, session.sparql, templateLabel, session.plan, language);
     }
 
     throw new Error('Unsupported intent: ' + intent + '.');
@@ -1704,6 +1844,7 @@
     var questionText = compactText(options.questionText);
     var apiKey = compactText(options.apiKey);
     var modelName = compactText(options.modelName) || DEFAULT_MODEL;
+    var language = normalizeResultLanguage(options.language);
 
     if (!questionText) {
       return Promise.reject(new Error('Enter a natural-language question first.'));
@@ -1726,11 +1867,13 @@
         throw new Error(plan.unsupportedReason || 'Gemini could not map that question to a supported ontology template.');
       }
 
-      sparql = buildSparqlFromPlan(options.model, plan);
+      plan.language = language;
+      sparql = buildSparqlFromPlan(options.model, plan, language);
 
       return {
         questionText: questionText,
         modelName: modelName,
+        language: language,
         plan: plan,
         sparql: sparql,
         templateLabel: TEMPLATE_LABELS[plan.intent] || 'Ontology template'
@@ -1762,6 +1905,7 @@
     loadApiKey: loadApiKey,
     saveApiKey: saveApiKey,
     clearApiKey: clearApiKey,
+    buildSparqlFromPlan: buildSparqlFromPlan,
     planQuestion: planQuestion,
     executePlan: executePlan,
     explainExecution: explainExecution
