@@ -178,13 +178,11 @@
            LAYOUT (2200 × 1400)
              Pose              centre  (1100, 700)    r=72
              Asana             NE      (1720, 320)    r=60
-             BreathingPattern  N       (1100, 220)    r=64   (was PostureRule)
+             BreathingPattern  N       (1100, 220)    r=64
              CorrectionInstr.  NW      (380, 320)     r=64
              PoseError         W       (380, 700)     r=60
              BodyPart          SW      (380, 1080)    r=60
              Variant           SE      (1720, 1080)   r=58
-             PostureRule       NNW     (740, 290)     r=58
-             PostureConstraint S       (1100, 1140)   r=62
              Breathing individuals (Inhale/Exhale/Hold) sit above BreathingPattern
            ===================================================== -->
 
@@ -204,10 +202,6 @@
         <path d="M 1160,752 C 1320,860 1500,1000 1664,1048" marker-end="url(#arrow-struct)"/>
         <!-- Asana ↔ Asana (sameAsanaAs) self-loop right side -->
         <path d="M 1660,295 C 1490,230 1490,410 1660,345" marker-end="url(#arrow-struct)"/>
-        <!-- Pose → PostureRule (hasPostureRule) — curves up-and-left -->
-        <path d="M 1040,648 C 920,520 820,400 770,344" marker-end="url(#arrow-struct)"/>
-        <!-- Pose → PostureConstraint (hasConstraint) — straight south -->
-        <path d="M 1100,772 L 1100,1080" marker-end="url(#arrow-struct)"/>
       </g>
 
       <!-- =========== POSE SELF-LOOPS (SEQUENCE, green) =========== -->
@@ -245,8 +239,8 @@
         <path d="M 1160,758 L 1650,920" marker-end="url(#arrow-data)"/>
         <!-- hasSupportType (far SW) -->
         <path d="M 1040,758 L 620,920" marker-end="url(#arrow-data)"/>
-        <!-- hasSafetyNote — routed left of BodyPart, well clear of involvesBodyPart curve -->
-        <path d="M 1028,720 C 800,800 480,900 248,1060" marker-end="url(#arrow-data)"/>
+        <!-- hasSafetyNote (vertical below Pose) -->
+        <path d="M 1100,772 L 1100,1018" marker-end="url(#arrow-data)"/>
 
         <!-- Asana literals -->
         <!-- hasAlternateName (NW of Asana) -->
@@ -259,11 +253,6 @@
 
         <!-- CorrectionInstruction.correctionText (left of node) -->
         <path d="M 316,320 L 210,320" marker-end="url(#arrow-data)"/>
-
-        <!-- PostureRule.ruleText (above PostureRule) -->
-        <path d="M 740,232 L 740,190" marker-end="url(#arrow-data)"/>
-        <!-- PostureConstraint.constraintText (right of PostureConstraint) -->
-        <path d="M 1162,1140 L 1300,1140" marker-end="url(#arrow-data)"/>
       </g>
 
       <!-- =========== LITERAL DATATYPE BOXES =========== -->
@@ -299,7 +288,7 @@
           <text x="85" y="37" text-anchor="middle" font-size="12" font-weight="400" opacity="0.88">supportType</text>
         </g>
         <!-- Pose: hasSafetyNote -->
-        <g transform="translate(162 1036)">
+        <g transform="translate(1015 1018)">
           <rect width="170" height="48" rx="4" fill="var(--literal)" stroke="var(--literal-ink)" stroke-width="1.4"/>
           <text x="85" y="20" text-anchor="middle">xsd:string</text>
           <text x="85" y="37" text-anchor="middle" font-size="12" font-weight="400" opacity="0.88">safetyNote</text>
@@ -327,18 +316,6 @@
           <rect width="170" height="48" rx="4" fill="var(--literal)" stroke="var(--literal-ink)" stroke-width="1.4"/>
           <text x="85" y="20" text-anchor="middle">xsd:string</text>
           <text x="85" y="37" text-anchor="middle" font-size="12" font-weight="400" opacity="0.88">correctionText</text>
-        </g>
-        <!-- PostureRule.ruleText -->
-        <g transform="translate(655 140)">
-          <rect width="170" height="48" rx="4" fill="var(--literal)" stroke="var(--literal-ink)" stroke-width="1.4"/>
-          <text x="85" y="20" text-anchor="middle">xsd:string</text>
-          <text x="85" y="37" text-anchor="middle" font-size="12" font-weight="400" opacity="0.88">ruleText</text>
-        </g>
-        <!-- PostureConstraint.constraintText -->
-        <g transform="translate(1300 1116)">
-          <rect width="170" height="48" rx="4" fill="var(--literal)" stroke="var(--literal-ink)" stroke-width="1.4"/>
-          <text x="85" y="20" text-anchor="middle">xsd:string</text>
-          <text x="85" y="37" text-anchor="middle" font-size="12" font-weight="400" opacity="0.88">constraintText</text>
         </g>
       </g>
 
@@ -401,16 +378,6 @@
           <rect x="-72" y="-15" width="143" height="30" rx="15" fill="var(--paper)" stroke="var(--structure)" stroke-width="1.2"/>
           <text text-anchor="middle" y="5" fill="var(--ink)">sameAsanaAs</text>
         </g>
-        <!-- hasPostureRule -->
-        <g transform="translate(870 455)">
-          <rect x="-78" y="-15" width="156" height="30" rx="15" fill="var(--paper)" stroke="var(--structure)" stroke-width="1.2"/>
-          <text text-anchor="middle" y="5" fill="var(--ink)">hasPostureRule</text>
-        </g>
-        <!-- hasConstraint -->
-        <g transform="translate(1100 930)">
-          <rect x="-72" y="-15" width="144" height="30" rx="15" fill="var(--paper)" stroke="var(--structure)" stroke-width="1.2"/>
-          <text text-anchor="middle" y="5" fill="var(--ink)">hasConstraint</text>
-        </g>
       </g>
 
       <!-- =========== SEQUENCE SELF-LOOP LABELS =========== -->
@@ -440,13 +407,11 @@
         <g transform="translate(1420 785)"><rect x="-57" y="-13" width="114" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">hasChakra</text></g>
         <g transform="translate(1410 860)"><rect x="-57" y="-13" width="114" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">hasMantra</text></g>
         <g transform="translate(800 855)"><rect x="-78" y="-13" width="156" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">hasSupportType</text></g>
-        <g transform="translate(640 850)"><rect x="-72" y="-13" width="144" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">hasSafetyNote</text></g>
+        <g transform="translate(1100 900)"><rect x="-72" y="-13" width="144" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">hasSafetyNote</text></g>
         <g transform="translate(1620 222)"><rect x="-70" y="-13" width="140" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">hasAlternateName</text></g>
         <g transform="translate(1820 420)"><rect x="-70" y="-13" width="140" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">has CYP page</text></g>
         <g transform="translate(380 608)"><rect x="-83" y="-13" width="166" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">errorDescription</text></g>
         <g transform="translate(258 260)"><rect x="-78" y="-13" width="156" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">correctionText</text></g>
-        <g transform="translate(820 218)"><rect x="-50" y="-13" width="100" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">ruleText</text></g>
-        <g transform="translate(1230 1140)"><rect x="-65" y="-13" width="130" height="26" rx="13" fill="var(--paper)" stroke="var(--data)" stroke-width="1" stroke-dasharray="3 2"/><text text-anchor="middle" y="4">constraintText</text></g>
       </g>
 
       <!-- =========== CLASS NODES =========== -->
@@ -467,7 +432,7 @@
           <tspan x="0" y="15" font-size="9.5" opacity="0.8" font-family="'JetBrains Mono',monospace">core:Asana</tspan>
         </text>
       </g>
-      <!-- Breathing Pattern (replaces PostureRule) -->
+      <!-- Breathing Pattern -->
       <g transform="translate(1100 220)">
         <circle r="64" fill="var(--accent)" stroke="var(--accent-ink)" stroke-width="1.5" filter="url(#soft)"/>
         <text text-anchor="middle" fill="white">
@@ -501,24 +466,6 @@
           <tspan x="0" y="15" font-size="9.5" opacity="0.8" font-family="'JetBrains Mono',monospace">core:BodyPart</tspan>
         </text>
       </g>
-      <!-- Posture Rule -->
-      <g transform="translate(740 290)">
-        <circle r="58" fill="var(--accent)" stroke="var(--accent-ink)" stroke-width="1.5" filter="url(#soft)"/>
-        <text text-anchor="middle" fill="white">
-          <tspan x="0" y="-9" font-size="14" font-weight="600">Posture</tspan>
-          <tspan x="0" y="8" font-size="14" font-weight="600">Rule</tspan>
-          <tspan x="0" y="24" font-size="8.5" opacity="0.8" font-family="'JetBrains Mono',monospace">core:PostureRule</tspan>
-        </text>
-      </g>
-      <!-- Posture Constraint -->
-      <g transform="translate(1100 1140)">
-        <circle r="62" fill="var(--accent)" stroke="var(--accent-ink)" stroke-width="1.5" filter="url(#soft)"/>
-        <text text-anchor="middle" fill="white">
-          <tspan x="0" y="-9" font-size="14" font-weight="600">Posture</tspan>
-          <tspan x="0" y="8" font-size="14" font-weight="600">Constraint</tspan>
-          <tspan x="0" y="24" font-size="8.5" opacity="0.8" font-family="'JetBrains Mono',monospace">core:PostureConstraint</tspan>
-        </text>
-      </g>
       <!-- Variant -->
       <g transform="translate(1720 1080)">
         <circle r="58" fill="var(--accent)" stroke="var(--accent-ink)" stroke-width="1.5" filter="url(#soft)"/>
@@ -537,13 +484,11 @@
 
   <div class="details">
     <div class="detail">
-      <h3>Classes <span class="count">9</span></h3>
+      <h3>Classes <span class="count">7</span></h3>
       <dl>
         <dt>core:Pose</dt><dd>A concrete pose occurrence within a salutation sequence. Central hub connecting asana, body parts, breathing, errors, variant, and sequence neighbours.</dd>
         <dt>core:Asana</dt><dd>Named yoga posture (e.g. Pranamasana, Bhujangasana). May be equivalent to another asana via <span class="mono">sameAsanaAs</span>.</dd>
         <dt>core:BreathingPattern</dt><dd>Enumerated breath phase coordinated with a pose. Three named individuals: <span class="mono">Inhale</span>, <span class="mono">Exhale</span>, <span class="mono">Hold</span>.</dd>
-        <dt>core:PostureRule</dt><dd>Prescriptive alignment cue for a pose — what the body <em>should</em> do (e.g. “keep spine elongated, gaze forward”).</dd>
-        <dt>core:PostureConstraint</dt><dd>Restrictive condition limiting how a pose may be performed (e.g. “knees stay over ankles, never beyond toes”).</dd>
         <dt>core:PoseError</dt><dd>A known incorrect execution pattern.</dd>
         <dt>core:CorrectionInstruction</dt><dd>Remedial cue paired with one or more errors.</dd>
         <dt>core:BodyPart</dt><dd>Anatomical region a pose engages.</dd>
@@ -551,12 +496,10 @@
       </dl>
     </div>
     <div class="detail">
-      <h3>Object Properties <span class="count">13</span></h3>
+      <h3>Object Properties <span class="count">11</span></h3>
       <dl class="two-col">
         <div><dt>hasAsana</dt><dd>Pose → Asana</dd></div>
         <div><dt>hasBreathingPattern</dt><dd>Pose → BreathingPattern</dd></div>
-        <div><dt>hasPostureRule</dt><dd>Pose → PostureRule</dd></div>
-        <div><dt>hasConstraint</dt><dd>Pose → PostureConstraint</dd></div>
         <div><dt>hasPossibleError</dt><dd>Pose → PoseError</dd></div>
         <div><dt>hasCorrection</dt><dd>PoseError → CorrectionInstruction</dd></div>
         <div><dt>involvesBodyPart</dt><dd>Pose → BodyPart</dd></div>
@@ -568,7 +511,7 @@
       </dl>
     </div>
     <div class="detail">
-      <h3>Datatype Properties <span class="count">12</span></h3>
+      <h3>Datatype Properties <span class="count">10</span></h3>
       <dl class="two-col">
         <div><dt>poseNumber</dt><dd>Pose → xsd:integer</dd></div>
         <div><dt>hasChakra</dt><dd>Pose → xsd:string</dd></div>
@@ -580,8 +523,6 @@
         <div><dt>hasCYPPage</dt><dd>Asana → xsd:string</dd></div>
         <div><dt>errorDescription</dt><dd>PoseError → xsd:string</dd></div>
         <div><dt>correctionText</dt><dd>CorrectionInstruction → xsd:string</dd></div>
-        <div><dt>ruleText</dt><dd>PostureRule → xsd:string</dd></div>
-        <div><dt>constraintText</dt><dd>PostureConstraint → xsd:string</dd></div>
       </dl>
     </div>
     <div class="detail">
